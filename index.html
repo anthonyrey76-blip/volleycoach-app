@@ -350,12 +350,18 @@ const OfflineSyncManager = (() => {
                     await applyQueueItem(item);
                     await queueDelete(item.queueId);
                 } catch (err) {
-                    // Échec sur cet item : on s'arrête là (connexion probablement
-                    // retombée en cours de route, ou erreur serveur ponctuelle).
-                    // On ne boucle pas en retry immédiat — le prochain événement
-                    // "online" relancera un cycle complet.
                     console.error("Échec de synchronisation d'un élément en attente :", err);
-                    break;
+                    // On distingue deux cas : une vraie coupure réseau (le
+                    // navigateur signale isOnline=false, ou l'erreur ressemble
+                    // à un échec de fetch) — dans ce cas on s'arrête, la
+                    // connexion est probablement retombée, le prochain
+                    // événement "online" relancera un cycle complet. Sinon
+                    // (erreur de données côté serveur, ex: contrainte
+                    // violée), on continue avec les items suivants plutôt que
+                    // de bloquer indéfiniment toute la queue derrière un
+                    // item fautif — celui-ci reste en attente pour
+                    // investigation, sans paralyser le reste.
+                    if (!navigator.onLine) break;
                 }
             }
         } finally {
@@ -4973,7 +4979,7 @@ function OfflineIndicator({ offlineState, isMobile }) {
     const { isOnline, isSyncing, pendingCount } = offlineState;
     let label, color, dot;
     if (!isOnline) {
-        label = isMobile ? "Hors ligne" : "Hors ligne — les changements seront envoyés au retour du réseau";
+        label = "Hors ligne";
         color = "#888";
         dot = "#888";
     } else if (isSyncing) {
@@ -5726,7 +5732,7 @@ function App({ session }) {
     const sessIds = new Set(curSession?.items?.map((e) => e.id) || []);
     // Session management
     const newSession = useCallback((preItems = [], forceSection = null) => {
-        const id = Date.now().toString();
+        const id = crypto.randomUUID();
         const section = forceSection || activeSection || "volley";
         const s = { id, name: `Séance ${sessions.length + 1}`, section: section || "volley", coach_name: "", teamId: null, items: preItems || [], createdAt: Date.now() };
         setSessions((p) => [...p, s]);
@@ -5753,7 +5759,7 @@ function App({ session }) {
         return { customExercises: migratedCustom, sessions: migratedSessions };
     }
     const duplicateSession = useCallback((src) => {
-        const id = generateId();
+        const id = crypto.randomUUID();
         const dup = {
             ...src,
             id,
@@ -5770,7 +5776,7 @@ function App({ session }) {
         return source.map((it) => ({ ...it, id: it.id + "_tpl_" + generateId() }));
     }
     const useTemplate = useCallback((tpl) => {
-        const id = generateId();
+        const id = crypto.randomUUID();
         const s = {
             id, name: tpl.name, section: tpl.categories?.[0] || "volley",
             coach_name: "", teamId: null,
@@ -6488,7 +6494,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             session_duration: ex.duration_seconds ?? ex.hold_seconds ?? null,
             session_note: "",
         }));
-        const id = generateId();
+        const id = crypto.randomUUID();
         const s = { id, name: preset.name, section: activeSection, items, createdAt: Date.now() };
         setSessions((p) => [...p, s]);
         setCurrentSessionId(id);
