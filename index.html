@@ -2384,14 +2384,14 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
     const [shareProgModal, setShareProgModal] = useState(null); // programme dont la modale de partage est ouverte
     const iStyle = { padding: '7px 10px', border: `1px solid ${C.border}`, borderRadius: 7, fontSize: 13, width: '100%' };
     const sectColor = s => ({ volley: C.rouge, fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316' }[s] || C.rouge);
-    const openNewTeam = () => { setForm({ id: generateId(), name: '', sport: 'volley', players: [], objectives: [] }); setShowForm(true); setEditTeam(null); };
+    const openNewTeam = () => { setForm({ id: crypto.randomUUID(), name: '', sport: 'volley', players: [], objectives: [] }); setShowForm(true); setEditTeam(null); };
     const openEditTeam = t => { setForm({ ...t }); setEditTeam(t.id); setShowForm(true); };
     const saveTeam = () => { onSave(form); setShowForm(false); setEditTeam(null); };
     const deleteTeam = id => {
         if (window.confirm('Supprimer cette équipe ?'))
             onSave(null, id);
     };
-    const openNewPlayer = () => { setPlayerForm({ id: generateId(), name: '', poste: '', niveau: '', notes: '' }); setEditPlayer('new'); };
+    const openNewPlayer = () => { setPlayerForm({ id: crypto.randomUUID(), name: '', poste: '', niveau: '', notes: '' }); setEditPlayer('new'); };
     const savePlayer = () => {
         setForm(f => {
             const players = [...f.players];
@@ -2417,7 +2417,7 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
         const team = teams.find(t => t.id === teamId);
         if (!team)
             return;
-        onSave({ ...team, objectives: [...(team.objectives || []), { id: generateId(), text: newObjText.trim(), done: false, createdAt: Date.now() }] });
+        onSave({ ...team, objectives: [...(team.objectives || []), { id: crypto.randomUUID(), text: newObjText.trim(), done: false, createdAt: Date.now() }] });
         setNewObjText('');
     };
     const removeObj = (teamId, objId) => {
@@ -2438,7 +2438,7 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
     };
     const savePlayerSess = () => {
         const { team, player, sess } = playerSessModal;
-        const newSess = { id: sess?.id || generateId(), name: playerSessName, items: playerSessItems, section: team.sport, coach_name: '', createdAt: Date.now(), playerId: player.id };
+        const newSess = { id: sess?.id || crypto.randomUUID(), name: playerSessName, items: playerSessItems, section: team.sport, coach_name: '', createdAt: Date.now(), playerId: player.id };
         const updatedPlayer = { ...player, sessions: sess ? (player.sessions || []).map(s => s.id === sess.id ? newSess : s) : [...(player.sessions || []), newSess] };
         const updatedTeam = { ...team, players: team.players.map(p => p.id === player.id ? updatedPlayer : p) };
         onSave(updatedTeam);
@@ -5321,8 +5321,9 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared 
     );
 }
 
-function NotificationsMenu({ notifications, onMarkRead, onMarkAllRead, isMobile }) {
+function NotificationsMenu({ notifications, onMarkRead, onMarkAllRead, onRespondTeamInvite, isMobile }) {
     const [open, setOpen] = useState(false);
+    const [respondingId, setRespondingId] = useState(null);
     const ref = useRef(null);
     useEffect(() => {
         const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
@@ -5340,6 +5341,16 @@ function NotificationsMenu({ notifications, onMarkRead, onMarkAllRead, isMobile 
             case "team_join_request": return "Invitation à rejoindre une équipe";
             case "team_join_resolved": return "Réponse à une invitation d'équipe";
             default: return "Notification";
+        }
+    };
+
+    const handleRespond = async (n, approve) => {
+        setRespondingId(n.id);
+        try {
+            await onRespondTeamInvite(n, approve);
+            if (!n.is_read) onMarkRead(n.id);
+        } finally {
+            setRespondingId(null);
         }
     };
 
@@ -5375,20 +5386,33 @@ function NotificationsMenu({ notifications, onMarkRead, onMarkAllRead, isMobile 
             (!notifications || notifications.length === 0) && React.createElement("div", {
                 style: { padding: "20px 14px", textAlign: "center", color: "#666", fontSize: 13 }
             }, "Aucune notification"),
-            (notifications || []).map((n) => React.createElement("button", {
-                key: n.id,
-                onClick: () => !n.is_read && onMarkRead(n.id),
-                style: {
-                    display: "block", width: "100%", textAlign: "left", padding: "10px 14px",
-                    background: n.is_read ? "none" : "rgba(240,165,0,0.08)", border: "none",
-                    borderBottom: "1px solid #222", cursor: n.is_read ? "default" : "pointer",
+            (notifications || []).map((n) => {
+                const isPendingInvite = n.type === "team_join_request" && !n.payload?.resolved;
+                return React.createElement("div", {
+                    key: n.id,
+                    onClick: () => !isPendingInvite && !n.is_read && onMarkRead(n.id),
+                    style: {
+                        padding: "10px 14px",
+                        background: n.is_read ? "none" : "rgba(240,165,0,0.08)",
+                        borderBottom: "1px solid #222", cursor: (!isPendingInvite && !n.is_read) ? "pointer" : "default",
+                    },
                 },
-                onMouseEnter: e => { if (!n.is_read) e.currentTarget.style.background = "rgba(240,165,0,0.15)"; },
-                onMouseLeave: e => { e.currentTarget.style.background = n.is_read ? "none" : "rgba(240,165,0,0.08)"; },
-            },
-                React.createElement("div", { style: { fontSize: 13, color: n.is_read ? "#999" : "#fff", fontWeight: n.is_read ? 400 : 600 } }, notifLabel(n)),
-                React.createElement("div", { style: { fontSize: 11, color: "#666", marginTop: 3 } }, new Date(n.created_at).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }))
-            ))
+                    React.createElement("div", { style: { fontSize: 13, color: n.is_read ? "#999" : "#fff", fontWeight: n.is_read ? 400 : 600 } }, notifLabel(n)),
+                    React.createElement("div", { style: { fontSize: 11, color: "#666", marginTop: 3 } }, new Date(n.created_at).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })),
+                    isPendingInvite && React.createElement("div", { style: { display: "flex", gap: 6, marginTop: 8 } },
+                        React.createElement("button", {
+                            disabled: respondingId === n.id,
+                            onClick: (e) => { e.stopPropagation(); handleRespond(n, true); },
+                            style: { flex: 1, padding: "5px 0", background: C.rouge, color: "#fff", border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: respondingId === n.id ? "default" : "pointer" },
+                        }, "Accepter"),
+                        React.createElement("button", {
+                            disabled: respondingId === n.id,
+                            onClick: (e) => { e.stopPropagation(); handleRespond(n, false); },
+                            style: { flex: 1, padding: "5px 0", background: "none", color: "#999", border: "1px solid #444", borderRadius: 6, fontSize: 12, cursor: respondingId === n.id ? "default" : "pointer" },
+                        }, "Refuser")
+                    )
+                );
+            })
         )
     );
 }
@@ -6014,6 +6038,35 @@ function App({ session }) {
             console.warn("Échec du marquage global des notifications comme lues :", err);
         }
     };
+    // Répond à une invitation d'équipe (notification de type team_join_request).
+    // Approbation : passe par la fonction RPC approve_team_join_request (crée
+    // la ligne team_members). Refus : simple update, autorisé par la policy
+    // RLS existante (l'invité peut résoudre sa propre invitation). Marque le
+    // payload localement comme "résolu" pour ne plus proposer les boutons.
+    const respondTeamInvite = async (notification, approve) => {
+        const requestId = notification.payload?.request_id;
+        if (!requestId) return;
+        try {
+            if (approve) {
+                const { error } = await supabaseClient.rpc("approve_team_join_request", { p_request_id: requestId });
+                if (error) throw error;
+                // Recharge les équipes pour refléter la nouvelle adhésion.
+                const remoteTeams = await loadTeamsFromSupabase();
+                setTeams(remoteTeams);
+            } else {
+                const { error } = await supabaseClient
+                    .from("team_join_requests")
+                    .update({ status: "denied", resolved_at: new Date().toISOString() })
+                    .eq("id", requestId);
+                if (error) throw error;
+            }
+            setNotifications((prev) => prev.map((n) =>
+                n.id === notification.id ? { ...n, payload: { ...n.payload, resolved: true } } : n
+            ));
+        } catch (err) {
+            alert("Échec de la réponse à l'invitation : " + (err.message || err));
+        }
+    };
     useEffect(() => {
         if (!session?.user?.id) return;
         (async () => {
@@ -6322,7 +6375,7 @@ function App({ session }) {
     }, []);
     const saveAsTemplate = useCallback((src) => {
         const tpl = {
-            id: "tpl_" + generateId(),
+            id: crypto.randomUUID(),
             name: src.name || "Modèle sans nom",
             categories: [src.section || "volley"],
             blocks: null,
@@ -6570,7 +6623,7 @@ function App({ session }) {
             // Program import
             const newProg = { ...data, id: generateId(), name: (data.name || "Programme") + " (importé)" };
             if (data.sessions) {
-                const newSessions = (data.sessions || []).map((s) => ({ ...s, id: generateId() }));
+                const newSessions = (data.sessions || []).map((s) => ({ ...s, id: crypto.randomUUID() }));
                 setSessions((p) => [...p, ...newSessions]);
                 newProg.sessionIds = newSessions.map((s) => s.id);
             }
@@ -6579,7 +6632,7 @@ function App({ session }) {
         }
         else if (data.items) {
             // Session import
-            const imp = { ...data, id: generateId(), name: (data.name || "Séance") + " (importée)" };
+            const imp = { ...data, id: crypto.randomUUID(), name: (data.name || "Séance") + " (importée)" };
             setSessions((p) => [...p, imp]);
             setCurrentSessionId(imp.id);
             setActiveTab("session");
@@ -7067,7 +7120,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             display: "block", width: "100%", padding: "10px 14px", border: "none", background: "none",
             textAlign: "left", cursor: "pointer", fontSize: 13, fontWeight: 600, color: sec.color,
             borderBottom: `1px solid ${C.border}`
-        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(NotificationsMenu, { notifications: notifications, onMarkRead: markNotificationRead, onMarkAllRead: markAllNotificationsRead, isMobile: isMobile }), React.createElement(OfflineIndicator, { offlineState: offlineState, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, onExport: exportBackup, onImportBackup: importBackup, onImportJson: () => importJSON(handleImport), onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
+        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(NotificationsMenu, { notifications: notifications, onMarkRead: markNotificationRead, onMarkAllRead: markAllNotificationsRead, onRespondTeamInvite: respondTeamInvite, isMobile: isMobile }), React.createElement(OfflineIndicator, { offlineState: offlineState, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, onExport: exportBackup, onImportBackup: importBackup, onImportJson: () => importJSON(handleImport), onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
             padding: isMobile ? "6px 8px 5px" : "10px 14px",
             border: "none", background: "none", cursor: "pointer", flexShrink: 0,
             display: "flex", flexDirection: isMobile ? "column" : "row",
