@@ -7021,9 +7021,12 @@ Cela remplacera toutes vos données actuelles.`)) {
             const { data, error } = await supabaseClient
                 .from("session_history")
                 .select("id, summary_snapshot")
-                .eq("performed_by", session.user.id)
                 .order("performed_at", { ascending: true });
             if (error) throw error;
+            // Pas de filtre performed_by ici : la policy RLS autorise déjà
+            // exactement ce qu'il faut voir (son propre historique perso, ET
+            // l'historique de toute équipe dont on est membre) — filtrer côté
+            // client en plus masquerait à tort l'historique des coéquipiers.
             // On garde l'id de ligne pour le cache (nécessaire à
             // cacheReplaceAll) mais l'app ne lit que summary_snapshot ensuite.
             rows = (data || []).map((row) => ({ ...row.summary_snapshot, _historyId: row.id }));
