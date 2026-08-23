@@ -5055,7 +5055,7 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
                 : { flexShrink: 0, width: 420, background: '#0c0c0c', borderRight: '1px solid #2a2a2a', order: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
                 React.createElement(ItemTimer, {
                     key: 'big-it-' + activeTimerIdx, item: items[activeTimerIdx], idx: activeTimerIdx, items: items, compact: false,
-                    size: isMobile ? 110 : 280,
+                    size: isMobile ? 110 : 220,
                     onDone: function() { markDoneAndAdvance(activeTimerIdx); },
                     onClose: function() { setActiveTimerIdx(null); }
                 })),
