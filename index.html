@@ -3688,7 +3688,8 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
     // Échelle typographique proportionnelle au diamètre du cercle (référence: 168px -> échelle 1)
     var scale = big ? Math.max(0.72, Math.min(1.7, svgSize / 168)) : 1;
 
-    var rawName = item.titre || item.name || 'Exercice';
+    var rawName0 = item.titre || item.name || 'Exercice';
+    var rawName = item._variantLabel ? rawName0 + ' \u2014 ' + item._variantLabel : rawName0;
     var phaseLabel = isDone ? (isPause ? 'Pause terminée ✓' : 'Terminé ✓')
         : isResting ? ('Repos — série ' + curSet + '/' + totalSets)
         : isPause ? 'Pause en cours'
@@ -5050,11 +5051,11 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
                 React.createElement('div', { style: { height: 4, background: 'linear-gradient(90deg,' + C.rouge + ',' + C.or + ')', borderRadius: 2, width: progress + '%', transition: 'width 0.3s' } }))),
         React.createElement('div', { style: { flex: 1, minHeight: 0, display: 'flex', flexDirection: isMobile ? 'column' : 'row', maxWidth: isMobile ? 720 : 1400, margin: '0 auto', width: '100%' } },
             activeTimerIdx !== null && items[activeTimerIdx] && React.createElement('div', { style: isMobile
-                ? { flexShrink: 0, maxHeight: '34vh', background: '#0c0c0c', borderBottom: '1px solid #2a2a2a', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }
+                ? { flexShrink: 0, maxHeight: '48vh', overflowY: 'auto', background: '#0c0c0c', borderBottom: '1px solid #2a2a2a', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }
                 : { flexShrink: 0, width: 420, background: '#0c0c0c', borderRight: '1px solid #2a2a2a', order: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
                 React.createElement(ItemTimer, {
                     key: 'big-it-' + activeTimerIdx, item: items[activeTimerIdx], idx: activeTimerIdx, items: items, compact: false,
-                    size: isMobile ? 130 : 280,
+                    size: isMobile ? 110 : 280,
                     onDone: function() { markDoneAndAdvance(activeTimerIdx); },
                     onClose: function() { setActiveTimerIdx(null); }
                 })),
