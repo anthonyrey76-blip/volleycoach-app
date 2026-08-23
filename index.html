@@ -1856,7 +1856,7 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
         const doneCount = (prog.sessionIds || []).filter(sid => isDone(prog.id, sid)).length;
         const total = prog.sessionIds.length;
         return doneCount > 0 ? (React.createElement("span", { style: { color: "#10B981", fontWeight: 600 } }, "\u2713 ", doneCount, "/", total, " r\u00E9alis\u00E9e", doneCount > 1 ? "s" : "")) : null;
-    })())), React.createElement("div", { style: { display: "flex", gap: 6 } }, prog.sessionIds?.length > 0 && React.createElement(ClubBtn, { onClick: () => toggleCollapse(prog.id), variant: "ghost", size: "sm" }, collapsedProgs[prog.id] ? "\u25B6" : "\u25BC"), React.createElement(ClubBtn, { onClick: () => startEdit(prog), variant: "ghost", size: "sm" }, "\u270F\uFE0F"), React.createElement(ExportMenu, { onCoach: () => onExport(prog, "coach"), onPlayers: () => onExport(prog, "players") }), React.createElement(ClubBtn, { onClick: () => onDelete(prog.id), variant: "danger", size: "sm" }, "\uD83D\uDDD1"))), prog.sessionIds?.length > 0 && !collapsedProgs[prog.id] && (React.createElement("div", { style: { marginTop: 10 } }, prog.durationWeeks && prog.sessionsPerWeek
+    })())), React.createElement("div", { style: { display: "flex", gap: 6 } }, prog.sessionIds?.length > 0 && React.createElement(ClubBtn, { onClick: () => toggleCollapse(prog.id), variant: "ghost", size: "sm" }, collapsedProgs[prog.id] ? "\u25B6" : "\u25BC"), React.createElement(ClubBtn, { onClick: () => startEdit(prog), variant: "ghost", size: "sm" }, "\u270F\uFE0F"), React.createElement(ClubBtn, { onClick: () => setShareProgModal(prog), variant: "ghost", size: "sm" }, "\uD83D\uDD17"), React.createElement(ExportMenu, { onCoach: () => onExport(prog, "coach"), onPlayers: () => onExport(prog, "players") }), React.createElement(ClubBtn, { onClick: () => onDelete(prog.id), variant: "danger", size: "sm" }, "\uD83D\uDDD1"))), prog.sessionIds?.length > 0 && !collapsedProgs[prog.id] && (React.createElement("div", { style: { marginTop: 10 } }, prog.durationWeeks && prog.sessionsPerWeek
         ? renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave,
         function(sess, k) { onLaunch(sess); },
         function(k) { return !!doneSessions[prog.id + "_" + k]; },
@@ -2227,6 +2227,7 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
     const [playerSessItems, setPlayerSessItems] = useState([]);
     const [playerSessName, setPlayerSessName] = useState('');
     const [detailEx, setDetailEx] = useState(null);
+    const [shareProgModal, setShareProgModal] = useState(null); // programme dont la modale de partage est ouverte
     const iStyle = { padding: '7px 10px', border: `1px solid ${C.border}`, borderRadius: 7, fontSize: 13, width: '100%' };
     const sectColor = s => ({ volley: C.rouge, fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316' }[s] || C.rouge);
     const openNewTeam = () => { setForm({ id: generateId(), name: '', sport: 'volley', players: [], objectives: [] }); setShowForm(true); setEditTeam(null); };
@@ -2328,7 +2329,25 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
             const n = [...playerSessItems];
             [n[i], n[i + 1]] = [n[i + 1], n[i]];
             setPlayerSessItems(n);
-        }, onShowDetail: ex => setDetailEx({ ex, section: playerSessModal.team.sport }) })))), React.createElement(PlayerSessExPicker, { section: playerSessModal.team.sport, onAdd: ex => setPlayerSessItems(its => [...its, { ...ex, id: generateId(), session_sets: ex.sets_default ?? 3 }]) }), React.createElement("div", { style: { display: 'flex', gap: 8, marginTop: 14 } }, React.createElement(ClubBtn, { onClick: savePlayerSess, variant: "primary", disabled: !playerSessName.trim() }, "\uD83D\uDCBE Enregistrer"), React.createElement(ClubBtn, { onClick: () => setPlayerSessModal(null), variant: "ghost" }, "Annuler")))))), detailEx && React.createElement(ExerciseModal, { ex: detailEx.ex, section: detailEx.section, onClose: () => { markModalClosed(); setDetailEx(null); }, inSession: true })));
+        }, onShowDetail: ex => setDetailEx({ ex, section: playerSessModal.team.sport }) })))), React.createElement(PlayerSessExPicker, { section: playerSessModal.team.sport, onAdd: ex => setPlayerSessItems(its => [...its, { ...ex, id: generateId(), session_sets: ex.sets_default ?? 3 }]) }), React.createElement("div", { style: { display: 'flex', gap: 8, marginTop: 14 } }, React.createElement(ClubBtn, { onClick: savePlayerSess, variant: "primary", disabled: !playerSessName.trim() }, "\uD83D\uDCBE Enregistrer"), React.createElement(ClubBtn, { onClick: () => setPlayerSessModal(null), variant: "ghost" }, "Annuler")))))), detailEx && React.createElement(ExerciseModal, { ex: detailEx.ex, section: detailEx.section, onClose: () => { markModalClosed(); setDetailEx(null); }, inSession: true }),
+        shareProgModal && React.createElement("div", {
+            onClick: () => setShareProgModal(null),
+            style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 2500, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px 12px', overflowY: 'auto' }
+        }, React.createElement("div", {
+            onClick: e => e.stopPropagation(),
+            style: { width: '100%', maxWidth: 420, background: C.surface, borderRadius: 14, overflow: 'hidden' }
+        },
+            React.createElement("div", { style: { background: C.noir, padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                React.createElement("div", { style: { color: '#fff', fontWeight: 700, fontSize: 15 } }, "\uD83D\uDD17 Partager \u2014 ", shareProgModal.name),
+                React.createElement("button", { onClick: () => setShareProgModal(null), style: { background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', borderRadius: 7, width: 30, height: 30, cursor: 'pointer', fontSize: 15 } }, "\u2715")),
+            React.createElement("div", { style: { padding: '14px 16px' } },
+                React.createElement(ShareControls, {
+                    objectId: shareProgModal.id, table: "programs", sharesTable: "program_shares",
+                    isShared: !!shareProgModal.is_shared,
+                    onToggleShared: (val) => { onSaveProgram({ ...shareProgModal, is_shared: val }); setShareProgModal((p) => p ? { ...p, is_shared: val } : p); },
+                })
+            )
+        ))));
 }
 // ─── MINI EXERCISE PICKER for player sessions ─────────────────────
 // ── PlayerSessExPicker ──
@@ -3620,7 +3639,7 @@ function TemplatePickSessionModal({ tpl, sessions, onPick, onClose }) {
             React.createElement('button', { onClick: onClose, style: { marginTop: 14, width: '100%', background: 'none', border: 'none', color: C.muted, cursor: 'pointer', fontSize: 12, padding: 6 } }, 'Annuler')));
 }
 
-function TemplatesPanel({ templates, onUse, onDelete, sections }) {
+function TemplatesPanel({ templates, onUse, onDelete, onToggleTemplateShared, sections }) {
     const [expanded, setExpanded] = useState(new Set());
     const toggleExpanded = (id) => setExpanded((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
     if (!templates.length) {
@@ -3651,7 +3670,7 @@ function TemplatesPanel({ templates, onUse, onDelete, sections }) {
                             tpl.blocks?.length ? ` \u2022 ${tpl.blocks.length} blocs` : '')),
                     React.createElement('div', { style: { display: 'flex', gap: 6, flexShrink: 0 } },
                         React.createElement(ClubBtn, { onClick: () => onUse(tpl), variant: 'primary', size: 'sm' }, '+ Utiliser'),
-                        React.createElement('button', { onClick: () => { if (window.confirm(`Supprimer le mod\u00E8le \u00AB ${tpl.name} \u00BB ?`)) onDelete(tpl.id); }, style: {
+                        !tpl.is_default && React.createElement('button', { onClick: () => { if (window.confirm(`Supprimer le mod\u00E8le \u00AB ${tpl.name} \u00BB ?`)) onDelete(tpl.id); }, style: {
                             background: 'none', border: 'none', color: C.muted, cursor: 'pointer', fontSize: 15, padding: '4px 6px'
                         } }, '\uD83D\uDDD1'))),
                 isOpen && React.createElement('div', { style: { marginTop: 10, marginLeft: 17, borderTop: `1px solid ${C.border}`, paddingTop: 10 } },
@@ -3661,7 +3680,11 @@ function TemplatesPanel({ templates, onUse, onDelete, sections }) {
                             React.createElement('ol', { style: { margin: 0, paddingLeft: 18 } },
                                 (b.items || []).map((it, ii) => React.createElement('li', { key: ii, style: { fontSize: 12, color: C.text, marginBottom: 2 } }, exName(it))))))
                         : React.createElement('ol', { style: { margin: 0, paddingLeft: 18 } },
-                            (tpl.items || []).map((it, ii) => React.createElement('li', { key: ii, style: { fontSize: 12, color: C.text, marginBottom: 2 } }, exName(it))))));
+                            (tpl.items || []).map((it, ii) => React.createElement('li', { key: ii, style: { fontSize: 12, color: C.text, marginBottom: 2 } }, exName(it))))),
+                isOpen && !tpl.is_default && React.createElement(ShareControls, {
+                    objectId: tpl.id, table: "templates", sharesTable: "template_shares",
+                    isShared: !!tpl.is_shared, onToggleShared: (val) => onToggleTemplateShared?.(tpl.id, val),
+                }));
         }));
 }
 
@@ -5002,7 +5025,9 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
 function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared }) {
     const [shares, setShares] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [emailInput, setEmailInput] = useState("");
+    const [nameQuery, setNameQuery] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [searching, setSearching] = useState(false);
     const [addError, setAddError] = useState(null);
     const [addLoading, setAddLoading] = useState(false);
     const idField = table === "custom_exercises" ? "exercise_id" : "template_id";
@@ -5038,19 +5063,32 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared 
 
     useEffect(() => { loadShares(); }, [loadShares]);
 
-    const handleAddShare = async (e) => {
-        e.preventDefault();
+    // Recherche par nom, debounced pour ne pas spammer l'API à chaque frappe.
+    // display_name n'étant pas unique, on affiche une liste de suggestions
+    // plutôt qu'une résolution directe — le coach choisit le bon résultat.
+    useEffect(() => {
+        const q = nameQuery.trim();
+        if (q.length < 2) { setSuggestions([]); return; }
+        setSearching(true);
+        const timer = setTimeout(async () => {
+            try {
+                const { data, error } = await supabaseClient.rpc("search_coaches_by_name", { p_query: q });
+                if (error) throw error;
+                setSuggestions(data || []);
+            } catch (err) {
+                console.warn("Échec de la recherche de coachs :", err.message || err);
+                setSuggestions([]);
+            } finally {
+                setSearching(false);
+            }
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [nameQuery]);
+
+    const handleAddShare = async (coachId) => {
         setAddError(null);
-        const email = emailInput.trim().toLowerCase();
-        if (!email) return;
         setAddLoading(true);
         try {
-            const { data: coachId, error: resolveErr } = await supabaseClient.rpc("find_coach_id_by_email", { p_email: email });
-            if (resolveErr) throw resolveErr;
-            if (!coachId) {
-                setAddError("Aucun coach trouvé avec cet email.");
-                return;
-            }
             const { error: insertErr } = await supabaseClient
                 .from(sharesTable)
                 .insert({ [idField]: objectId, shared_with: coachId });
@@ -5059,7 +5097,8 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared 
                 else throw insertErr;
                 return;
             }
-            setEmailInput("");
+            setNameQuery("");
+            setSuggestions([]);
             await loadShares();
         } catch (err) {
             setAddError(err.message || "Une erreur est survenue.");
@@ -5083,16 +5122,32 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared 
             React.createElement("input", { type: "checkbox", checked: !!isShared, onChange: (e) => onToggleShared(e.target.checked) }),
             "Visible par tout coach d'une équipe en commun"
         ),
-        React.createElement("form", { onSubmit: handleAddShare, style: { display: "flex", gap: 6, marginBottom: 8 } },
+        React.createElement("div", { style: { position: "relative", marginBottom: 8 } },
             React.createElement("input", {
-                type: "email", placeholder: "Email d'un coach", value: emailInput,
-                onChange: (e) => setEmailInput(e.target.value),
-                style: { flex: 1, padding: "6px 8px", borderRadius: 6, border: "1px solid #444", background: "#111", color: "#fff", fontSize: 13 },
+                type: "text", placeholder: "Chercher un coach par nom…", value: nameQuery,
+                onChange: (e) => setNameQuery(e.target.value),
+                style: { width: "100%", padding: "6px 8px", borderRadius: 6, border: "1px solid #444", background: "#111", color: "#fff", fontSize: 13 },
             }),
-            React.createElement("button", {
-                type: "submit", disabled: addLoading,
-                style: { padding: "6px 12px", background: C.rouge, color: "#fff", border: "none", borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: addLoading ? "default" : "pointer" },
-            }, addLoading ? "…" : "Partager")
+            searching && React.createElement("div", { style: { fontSize: 11, color: "#666", marginTop: 4 } }, "Recherche…"),
+            !searching && suggestions.length > 0 && React.createElement("div", {
+                style: { marginTop: 4, border: "1px solid #333", borderRadius: 6, overflow: "hidden" }
+            },
+                suggestions.map((s) => React.createElement("button", {
+                    key: s.id,
+                    disabled: addLoading,
+                    onClick: () => handleAddShare(s.id),
+                    style: {
+                        display: "block", width: "100%", textAlign: "left", padding: "7px 10px",
+                        background: "#111", border: "none", borderBottom: "1px solid #222",
+                        color: "#fff", fontSize: 13, cursor: addLoading ? "default" : "pointer",
+                    },
+                    onMouseEnter: e => e.currentTarget.style.background = "#1a1a1a",
+                    onMouseLeave: e => e.currentTarget.style.background = "#111",
+                }, s.display_name))
+            ),
+            !searching && nameQuery.trim().length >= 2 && suggestions.length === 0 && React.createElement("div", {
+                style: { fontSize: 11, color: "#666", marginTop: 4 }
+            }, "Aucun coach trouvé.")
         ),
         addError && React.createElement("div", { style: { color: C.rouge, fontSize: 11, marginBottom: 8 } }, addError),
         loading && React.createElement("div", { style: { color: "#666", fontSize: 12 } }, "Chargement…"),
@@ -5921,6 +5976,7 @@ function App({ session }) {
     const [insertExerciseModal, setInsertExerciseModal] = useState(null); // { atIdx } — position d'insertion visée
     const [noteModal, setNoteModal] = useState(null); // { session, teamId }
     const [printModal, setPrintModal] = useState(null); // session
+    const [shareSessionModal, setShareSessionModal] = useState(null); // session dont la modale de partage est ouverte
     const [playersExportModal, setPlayersExportModal] = useState(null); // { sessions, program } | null
     const [multiPosteModal, setMultiPosteModal] = useState(null); // session being configured for multi-postes
     const [showGeneralTimer, setShowGeneralTimer] = useState(false);
@@ -6123,6 +6179,9 @@ function App({ session }) {
     }, []);
     const deleteTemplate = useCallback((tplId) => {
         setTemplates((p) => p.filter((t) => t.id !== tplId));
+    }, []);
+    const toggleTemplateShared = useCallback((tplId, isShared) => {
+        setTemplates((p) => p.map((t) => t.id === tplId ? { ...t, is_shared: isShared } : t));
     }, []);
     const updateSession = (fn) => setSessions((p) => p.map((s) => s.id === currentSessionId ? fn(s) : s));
     const addToSession = useCallback((ex) => {
@@ -6591,6 +6650,7 @@ Cela remplacera toutes vos données actuelles.`)) {
                         team_id: s.team_id || null,
                         name: s.name || "Séance",
                         data: s,
+                        is_shared: s.is_shared || false,
                     };
                     await cachePut("sessions", s.id, row.data);
                     await OfflineSyncManager.enqueue("sessions", "upsert", row);
@@ -6889,7 +6949,7 @@ Cela remplacera toutes vos données actuelles.`)) {
                 background: showTemplates ? C.or + "15" : "transparent",
                 color: showTemplates ? C.or : C.muted,
             } }, "\uD83D\uDDC2\uFE0F Mod\u00E8les" + (templates.length > 0 ? ` (${templates.length})` : "")))),
-        activeTab === "session" && showTemplates && React.createElement(TemplatesPanel, { templates: templates, onUse: (tpl) => setTemplateChoiceModal({ tpl }), onDelete: deleteTemplate, sections: SECTIONS }),
+        activeTab === "session" && showTemplates && React.createElement(TemplatesPanel, { templates: templates, onUse: (tpl) => setTemplateChoiceModal({ tpl }), onDelete: deleteTemplate, onToggleTemplateShared: toggleTemplateShared, sections: SECTIONS }),
         templateChoiceModal && React.createElement(TemplateChoiceModal, {
             tpl: templateChoiceModal.tpl,
             onNewSession: () => { useTemplate(templateChoiceModal.tpl); setTemplateChoiceModal(null); },
@@ -6957,7 +7017,7 @@ Cela remplacera toutes vos données actuelles.`)) {
     React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" } },
         React.createElement("select", { value: curSession?.section || "volley", onChange: e => updateSession(s => ({ ...s, section: e.target.value })), style: { fontSize: 11, color: SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge, background: (SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge) + "15", border: `1px solid ${SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge}`, borderRadius: 6, padding: "4px 8px", cursor: "pointer", fontWeight: 600 } }, SECTIONS.map(s => React.createElement("option", { key: s.k, value: s.k }, s.l))),
         React.createElement("input", { value: curSession?.coach_name || "", onChange: e => updateSession(s => ({ ...s, coach_name: e.target.value })), placeholder: "Coach...", style: { fontSize: 11, background: "transparent", border: "1px solid #ddd", borderRadius: 6, padding: "4px 8px", width: 90, color: C.muted } }),
-        React.createElement("select", { value: curSession?.teamId || "", onChange: e => updateSession(s => ({ ...s, teamId: e.target.value || null })), style: { fontSize: 11, color: C.muted, background: "transparent", border: "1px solid #ddd", borderRadius: 6, padding: "4px 8px", cursor: "pointer", flex: 1, minWidth: 0, maxWidth: 160 } }, React.createElement("option", { value: "" }, "\u00C9quipe..."), teams.map(t => React.createElement("option", { key: t.id, value: t.id }, t.name)))), React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } }, React.createElement(ClubBtn, { onClick: () => setLaunchSession(curSession), disabled: !curSession.items?.length, variant: "primary" }, "\uD83D\uDE80 Lancer"), React.createElement(ClubBtn, { onClick: () => setMultiPosteModal(curSession), variant: (curSession?.columns || curSession?.circuits?.length) ? "gold" : "ghost", size: "sm" }, "\u2699\uFE0F ", curSession?.columns ? `Mode (${curSession?.columns?.length})` : curSession?.circuits?.length ? `Mode (${curSession.circuits.length} circuit${curSession.circuits.length > 1 ? "s" : ""})` : "Mode"), React.createElement(ClubBtn, { onClick: () => markDone(curSession, null, null, curSession.teamId || null), disabled: !curSession.items?.length, variant: "success" }, "\u2713 Termin\u00E9"), React.createElement(ClubBtn, { onClick: () => setNoteModal({ session: curSession, teamId: curSession?.teamId || null }), variant: "ghost", size: "sm" }, "\uD83D\uDCDD Note"), React.createElement(ClubBtn, { onClick: () => setPrintModal(curSession), disabled: !curSession.items?.length, variant: "ghost", size: "sm" }, "\uD83D\uDDA8\uFE0F"), React.createElement(ExportMenu, { onCoach: () => exportJSON(curSession, (curSession?.name || "seance") + "_coach"), onPlayers: () => exportPlayersSession(curSession) }), React.createElement(ClubBtn, { onClick: () => {
+        React.createElement("select", { value: curSession?.teamId || "", onChange: e => updateSession(s => ({ ...s, teamId: e.target.value || null })), style: { fontSize: 11, color: C.muted, background: "transparent", border: "1px solid #ddd", borderRadius: 6, padding: "4px 8px", cursor: "pointer", flex: 1, minWidth: 0, maxWidth: 160 } }, React.createElement("option", { value: "" }, "\u00C9quipe..."), teams.map(t => React.createElement("option", { key: t.id, value: t.id }, t.name)))), React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } }, React.createElement(ClubBtn, { onClick: () => setLaunchSession(curSession), disabled: !curSession.items?.length, variant: "primary" }, "\uD83D\uDE80 Lancer"), React.createElement(ClubBtn, { onClick: () => setMultiPosteModal(curSession), variant: (curSession?.columns || curSession?.circuits?.length) ? "gold" : "ghost", size: "sm" }, "\u2699\uFE0F ", curSession?.columns ? `Mode (${curSession?.columns?.length})` : curSession?.circuits?.length ? `Mode (${curSession.circuits.length} circuit${curSession.circuits.length > 1 ? "s" : ""})` : "Mode"), React.createElement(ClubBtn, { onClick: () => markDone(curSession, null, null, curSession.teamId || null), disabled: !curSession.items?.length, variant: "success" }, "\u2713 Termin\u00E9"), React.createElement(ClubBtn, { onClick: () => setNoteModal({ session: curSession, teamId: curSession?.teamId || null }), variant: "ghost", size: "sm" }, "\uD83D\uDCDD Note"), React.createElement(ClubBtn, { onClick: () => setShareSessionModal(curSession), variant: "ghost", size: "sm" }, "\uD83D\uDD17"), React.createElement(ClubBtn, { onClick: () => setPrintModal(curSession), disabled: !curSession.items?.length, variant: "ghost", size: "sm" }, "\uD83D\uDDA8\uFE0F"), React.createElement(ExportMenu, { onCoach: () => exportJSON(curSession, (curSession?.name || "seance") + "_coach"), onPlayers: () => exportPlayersSession(curSession) }), React.createElement(ClubBtn, { onClick: () => {
             if (window.confirm("Supprimer cette séance ?")) {
                 const remaining = sessions.filter((s) => s.id !== currentSessionId);
                 setSessions(remaining);
@@ -7123,7 +7183,29 @@ Cela remplacera toutes vos données actuelles.`)) {
             }
             markDone(noteModal.session, null, note, noteModal.teamId || null);
             setNoteModal(null);
-        }, onClose: () => setNoteModal(null) })), printModal && (React.createElement(PrintModal, { session: printModal, onClose: () => setPrintModal(null) })), multiPosteModal && (React.createElement(MultiPosteSetupModal, { session: multiPosteModal, teams: teams, onSave: (patch) => {
+        }, onClose: () => setNoteModal(null) })), printModal && (React.createElement(PrintModal, { session: printModal, onClose: () => setPrintModal(null) })),
+        shareSessionModal && React.createElement("div", {
+            onClick: () => setShareSessionModal(null),
+            style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 2500, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px 12px', overflowY: 'auto' }
+        }, React.createElement("div", {
+            onClick: e => e.stopPropagation(),
+            style: { width: '100%', maxWidth: 420, background: C.surface, borderRadius: 14, overflow: 'hidden' }
+        },
+            React.createElement("div", { style: { background: C.noir, padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                React.createElement("div", { style: { color: '#fff', fontWeight: 700, fontSize: 15 } }, "\uD83D\uDD17 Partager \u2014 ", shareSessionModal.name),
+                React.createElement("button", { onClick: () => setShareSessionModal(null), style: { background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', borderRadius: 7, width: 30, height: 30, cursor: 'pointer', fontSize: 15 } }, "\u2715")),
+            React.createElement("div", { style: { padding: '14px 16px' } },
+                React.createElement(ShareControls, {
+                    objectId: shareSessionModal.id, table: "sessions", sharesTable: "session_shares",
+                    isShared: !!shareSessionModal.is_shared,
+                    onToggleShared: (val) => {
+                        setSessions((p) => p.map((s) => s.id === shareSessionModal.id ? { ...s, is_shared: val } : s));
+                        setShareSessionModal((s) => s ? { ...s, is_shared: val } : s);
+                    },
+                })
+            )
+        )),
+        multiPosteModal && (React.createElement(MultiPosteSetupModal, { session: multiPosteModal, teams: teams, onSave: (patch) => {
             const id = multiPosteModal.id;
             const { _clearColumnIds, ...sessionPatch } = patch;
             setSessions(p => p.map(s => {
