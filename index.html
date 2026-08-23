@@ -5547,13 +5547,18 @@ function App({ session }) {
     // templates) depuis les tables détaillées, en remplacement de la
     // restauration par blob unique. Une fois chargé, on marque les refs
     // "hydraté" pour activer les synchronisations automatiques debounced
-    // plus bas (syncedSessionIdsRef, sessionsHydratedRef, etc. — sans quoi
+    // plus bas (syncedSessionsSnapshotRef, sessionsHydratedRef, etc. — sans quoi
     // le premier rendu, avec des tableaux vides, effacerait tout en base
     // par erreur). Ces refs sont déclarées ici pour que leur ordre de
     // lecture dans le fichier reste clair, puis réutilisées plus bas.
-    const syncedSessionIdsRef = useRef(new Set());
+    // syncedSessionsSnapshotRef : Map id -> dernier JSON envoyé, pour ne
+    // pousser en queue que les séances réellement modifiées depuis le
+    // dernier envoi (comparaison de contenu, pas juste de présence d'id) —
+    // sans ça, chaque re-render après le chargement initial repousserait
+    // inutilement toutes les séances vers la queue.
+    const syncedSessionsSnapshotRef = useRef(new Map());
     const sessionsHydratedRef = useRef(false);
-    const syncedTemplateIdsRef = useRef(new Set());
+    const syncedTemplatesSnapshotRef = useRef(new Map());
     const templatesHydratedRef = useRef(false);
     const [userDataStatus, setUserDataStatus] = useState("loading"); // loading | ready | error
     useEffect(() => {
@@ -5576,17 +5581,16 @@ function App({ session }) {
                 setTeams(remoteTeams);
                 setPrograms(remotePrograms);
                 setHistory(remoteHistory);
-                syncedSessionIdsRef.current = new Set(remoteSessions.map((s) => s.id));
-                syncedTemplateIdsRef.current = new Set(remoteTemplates.filter((t) => !t.is_default).map((t) => t.id));
-                // Différé après le prochain cycle de rendu : sans ça, l'effet
-                // de sync debounced de sessions/templates (déclenché par le
-                // setSessions/setTemplates ci-dessus) verrait déjà "hydraté"
-                // et repousserait inutilement toutes les données tout juste
-                // lues vers la queue, alors que rien n'a réellement changé.
-                setTimeout(() => {
-                    sessionsHydratedRef.current = true;
-                    templatesHydratedRef.current = true;
-                }, 0);
+                // Peuple les snapshots avec le contenu tel que reçu du serveur :
+                // l'effet de sync debounced comparera le contenu futur à ceci,
+                // donc un premier passage sans modification réelle ne poussera
+                // rien en queue (voir syncedSessionsSnapshotRef plus haut).
+                syncedSessionsSnapshotRef.current = new Map(remoteSessions.map((s) => [s.id, JSON.stringify(s)]));
+                syncedTemplatesSnapshotRef.current = new Map(
+                    remoteTemplates.filter((t) => !t.is_default).map((t) => [t.id, JSON.stringify(t)])
+                );
+                sessionsHydratedRef.current = true;
+                templatesHydratedRef.current = true;
                 setUserDataStatus("ready");
             } catch (err) {
                 if (cancelled) return;
@@ -6244,7 +6248,7 @@ Cela remplacera toutes vos données actuelles.`)) {
     // édition d'un item...), on observe le state et on pousse l'ensemble
     // vers Supabase après un court silence (debounce). Évite de spammer
     // l'API à chaque frappe/glissement, et couvre tous les cas d'un coup.
-    // syncedSessionIdsRef garde trace de ce qui a déjà été vu en base pour
+    // syncedSessionsSnapshotRef garde trace du dernier contenu envoyé, pour
     // détecter les suppressions (une séance qui disparaît du state local).
     // Refs déclarées plus haut, avec userDataStatus, pour un ordre de
     // lecture clair (elles doivent exister avant que le chargement initial
@@ -6254,9 +6258,16 @@ Cela remplacera toutes vos données actuelles.`)) {
         const timer = setTimeout(async () => {
             try {
                 const currentIds = new Set(sessions.map((s) => s.id));
-                const removedIds = [...syncedSessionIdsRef.current].filter((id) => !currentIds.has(id));
+                const removedIds = [...syncedSessionsSnapshotRef.current.keys()].filter((id) => !currentIds.has(id));
 
                 for (const s of sessions) {
+                    const serialized = JSON.stringify(s);
+                    // Ne pousse en queue que si le contenu a réellement changé
+                    // depuis le dernier envoi (comparaison JSON), pas juste
+                    // parce que l'id existe déjà — sinon chaque re-render
+                    // (y compris le tout premier après chargement) repousserait
+                    // inutilement toutes les séances vers la queue.
+                    if (syncedSessionsSnapshotRef.current.get(s.id) === serialized) continue;
                     const row = {
                         id: s.id,
                         owner_id: session.user.id,
@@ -6266,12 +6277,13 @@ Cela remplacera toutes vos données actuelles.`)) {
                     };
                     await cachePut("sessions", s.id, row.data);
                     await OfflineSyncManager.enqueue("sessions", "upsert", row);
+                    syncedSessionsSnapshotRef.current.set(s.id, serialized);
                 }
                 for (const id of removedIds) {
                     await cacheDelete("sessions", id);
                     await OfflineSyncManager.enqueue("sessions", "delete", { id });
+                    syncedSessionsSnapshotRef.current.delete(id);
                 }
-                syncedSessionIdsRef.current = currentIds;
             } catch (err) {
                 console.error("Échec de la synchronisation des séances :", err);
             }
@@ -6303,9 +6315,11 @@ Cela remplacera toutes vos données actuelles.`)) {
             try {
                 const ownTemplates = templates.filter((t) => !t.is_default);
                 const currentIds = new Set(ownTemplates.map((t) => t.id));
-                const removedIds = [...syncedTemplateIdsRef.current].filter((id) => !currentIds.has(id));
+                const removedIds = [...syncedTemplatesSnapshotRef.current.keys()].filter((id) => !currentIds.has(id));
 
                 for (const t of ownTemplates) {
+                    const serialized = JSON.stringify(t);
+                    if (syncedTemplatesSnapshotRef.current.get(t.id) === serialized) continue;
                     const row = {
                         id: t.id,
                         owner_id: session.user.id,
@@ -6315,12 +6329,13 @@ Cela remplacera toutes vos données actuelles.`)) {
                     };
                     await cachePut("templates", t.id, { ...t, is_default: false });
                     await OfflineSyncManager.enqueue("templates", "upsert", row);
+                    syncedTemplatesSnapshotRef.current.set(t.id, serialized);
                 }
                 for (const id of removedIds) {
                     await cacheDelete("templates", id);
                     await OfflineSyncManager.enqueue("templates", "delete", { id });
+                    syncedTemplatesSnapshotRef.current.delete(id);
                 }
-                syncedTemplateIdsRef.current = currentIds;
             } catch (err) {
                 console.error("Échec de la synchronisation des templates :", err);
             }
