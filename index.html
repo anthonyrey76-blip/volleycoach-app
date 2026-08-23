@@ -7002,7 +7002,7 @@ Cela remplacera toutes vos données actuelles.`)) {
     // recompose à la lecture, pour ne rien changer au reste du code React
     // qui manipule toujours team.players / team.objectives comme avant.
     const persistTeam = async (team) => {
-        const teamRow = { id: team.id, name: team.name, created_by: session.user.id };
+        const teamRow = { id: team.id, name: team.name, sport: team.sport || 'volley', created_by: session.user.id };
         const players = team.players || [];
         const objectives = team.objectives || [];
 
@@ -7027,7 +7027,7 @@ Cela remplacera toutes vos données actuelles.`)) {
     // imbriquée identique à celle d'avant la migration.
     const loadTeamsFromSupabase = async () => {
         return loadTableOfflineFirst("teams", async () => {
-        const { data: teamRows, error: teamErr } = await supabaseClient.from("teams").select("id, name");
+        const { data: teamRows, error: teamErr } = await supabaseClient.from("teams").select("id, name, sport");
         if (teamErr) throw teamErr;
         if (!teamRows || teamRows.length === 0) return [];
 
@@ -7056,7 +7056,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             }).filter(Boolean);
             const myObjectives = (objRows || []).filter((o) => o.team_id === t.id)
                 .map((o) => ({ id: o.id, text: o.text, done: o.done }));
-            return { id: t.id, name: t.name, players: myPlayers, objectives: myObjectives };
+            return { id: t.id, name: t.name, sport: t.sport || 'volley', players: myPlayers, objectives: myObjectives };
         });
         });
     };
