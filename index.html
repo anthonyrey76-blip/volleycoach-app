@@ -97,11 +97,303 @@ const CATALOG_SECTION_TARGETS = {
     cross: (rows) => { CROSS_DB_RAW = rows; },
 };
 
+// ============================================================================
+// ── Mode hors-ligne : stockage local (IndexedDB) + queue de synchronisation ──
+// ============================================================================
+// Deux object stores :
+// - "cache"   : dernier état connu de chaque objet (par table + id), lu au
+//               démarrage pour afficher immédiatement les dernières données
+//               sans attendre le réseau.
+// - "queue"   : changements en attente d'envoi vers Supabase (créés hors
+//               ligne ou pendant une coupure), rejoués dans l'ordre au retour
+//               du réseau puis vidés au fur et à mesure des succès.
+// Conception pensée pour ne jamais solliciter le réseau ou le CPU en tâche de
+// fond : pas de polling, uniquement des écritures locales instantanées et une
+// synchronisation déclenchée par l'événement navigateur "online" (voir plus
+// bas OfflineSyncManager).
+
+const OFFLINE_DB_NAME = "volleycoach_offline_v1";
+const OFFLINE_DB_VERSION = 1;
+
+function openOfflineDb() {
+    return new Promise((resolve, reject) => {
+        const req = indexedDB.open(OFFLINE_DB_NAME, OFFLINE_DB_VERSION);
+        req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains("cache")) {
+                db.createObjectStore("cache", { keyPath: "cacheKey" }); // cacheKey = `${table}:${id}`
+            }
+            if (!db.objectStoreNames.contains("queue")) {
+                const store = db.createObjectStore("queue", { keyPath: "queueId", autoIncrement: true });
+                store.createIndex("byCreatedAt", "createdAt");
+            }
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+let _offlineDbPromise = null;
+function getOfflineDb() {
+    if (!_offlineDbPromise) _offlineDbPromise = openOfflineDb();
+    return _offlineDbPromise;
+}
+
+// ── Cache : dernier état connu de chaque objet ──
+async function cachePut(table, id, data) {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("cache", "readwrite");
+        tx.objectStore("cache").put({ cacheKey: `${table}:${id}`, table, id, data, updatedAt: Date.now() });
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+async function cacheGetAll(table) {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("cache", "readonly");
+        const req = tx.objectStore("cache").getAll();
+        req.onsuccess = () => resolve((req.result || []).filter((r) => r.table === table).map((r) => r.data));
+        req.onerror = () => reject(req.error);
+    });
+}
+
+async function cacheDelete(table, id) {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("cache", "readwrite");
+        tx.objectStore("cache").delete(`${table}:${id}`);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+async function cacheReplaceAll(table, items, idField = "id") {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("cache", "readwrite");
+        const store = tx.objectStore("cache");
+        // Supprime les entrées existantes de cette table avant de réinsérer,
+        // pour refléter fidèlement l'état serveur (y compris les suppressions
+        // faites depuis un autre appareil).
+        const getAllReq = store.getAll();
+        getAllReq.onsuccess = () => {
+            (getAllReq.result || []).filter((r) => r.table === table).forEach((r) => store.delete(r.cacheKey));
+            items.forEach((item) => {
+                store.put({ cacheKey: `${table}:${item[idField]}`, table, id: item[idField], data: item, updatedAt: Date.now() });
+            });
+        };
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+// ── Queue : changements en attente d'envoi vers Supabase ──
+// op: "upsert" | "delete". table: nom de la table Supabase cible.
+async function queuePush(table, op, payload) {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("queue", "readwrite");
+        tx.objectStore("queue").add({ table, op, payload, createdAt: Date.now() });
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+async function queueGetAll() {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("queue", "readonly");
+        const req = tx.objectStore("queue").index("byCreatedAt").getAll();
+        req.onsuccess = () => resolve(req.result || []);
+        req.onerror = () => reject(req.error);
+    });
+}
+
+async function queueDelete(queueId) {
+    const db = await getOfflineDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("queue", "readwrite");
+        tx.objectStore("queue").delete(queueId);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
 const CATALOG_CACHE_KEY = "volleycoach_catalog_cache_v1";
+
+// ── Chargement générique offline-first ──
+// Essaie Supabase en premier (données à jour) ; si la requête échoue
+// (hors ligne, coupure réseau), retombe silencieusement sur le cache local
+// IndexedDB — l'app affiche alors les dernières données connues plutôt que
+// de bloquer sur un écran d'erreur. Si Supabase répond, le cache est
+// rafraîchi en conséquence (cacheReplaceAll) pour rester le reflet fidèle du
+// serveur, y compris les suppressions faites depuis un autre appareil.
+async function loadTableOfflineFirst(table, fetchFn) {
+    try {
+        const rows = await fetchFn();
+        await cacheReplaceAll(table, rows);
+        return rows;
+    } catch (err) {
+        console.warn(`Lecture Supabase impossible pour ${table}, utilisation du cache local :`, err.message || err);
+        return cacheGetAll(table);
+    }
+}
+
 
 // Télécharge le catalogue depuis Supabase si le cache local est absent ou
 // périmé (comparaison sur max(updated_at) côté serveur, requête légère avant
 // de retélécharger les ~600 Ko de données si rien n'a changé).
+// ── Gestionnaire de synchronisation hors-ligne ──
+// Écoute passivement les événements natifs "online"/"offline" du navigateur
+// (aucun sondage périodique, donc aucun coût CPU/batterie tant que la
+// connectivité ne change pas). Au retour en ligne, rejoue la queue en
+// attente vers Supabase, dans l'ordre, un item à la fois. Si un item échoue
+// (encore hors ligne en réalité, ou erreur serveur), on arrête le cycle et on
+// attend le prochain événement "online" plutôt que de boucler en retry.
+//
+// Exposé comme un petit objet global avec des callbacks d'abonnement, pour
+// que App() (React) puisse s'y brancher sans dupliquer la logique d'écoute.
+const OfflineSyncManager = (() => {
+    let isOnline = navigator.onLine;
+    let isSyncing = false;
+    let pendingCount = 0;
+    const listeners = new Set();
+
+    function notify() {
+        listeners.forEach((fn) => fn({ isOnline, isSyncing, pendingCount }));
+    }
+
+    async function refreshPendingCount() {
+        const items = await queueGetAll();
+        pendingCount = items.length;
+        notify();
+    }
+
+    // Applique un item de la queue vers Supabase. Chaque table a une forme
+    // de payload légèrement différente (upsert direct vs suppression), mais
+    // toutes utilisent le même schéma { table, op, payload }.
+    async function applyQueueItem(item) {
+        const { table, op, payload } = item;
+        if (op === "delete") {
+            const { error } = await supabaseClient.from(table).delete().eq("id", payload.id);
+            if (error) throw error;
+        } else if (op === "team_full_upsert") {
+            // Opération composite : une équipe entière (avec joueurs et
+            // objectifs imbriqués) écrite en une seule entrée de queue plutôt
+            // que plusieurs, pour éviter un état partiellement synchronisé si
+            // la connexion retombe au milieu de l'opération. payload contient
+            // { teamRow, coachId, players, objectives }.
+            const { teamRow, coachId, players, objectives } = payload;
+            let { error } = await supabaseClient.from("teams").upsert(teamRow);
+            if (error) throw error;
+
+            ({ error } = await supabaseClient.from("team_members").upsert(
+                { team_id: teamRow.id, coach_id: coachId, role: "owner" },
+                { onConflict: "team_id,coach_id" }
+            ));
+            if (error) throw error;
+
+            const { data: existingPlayers } = await supabaseClient
+                .from("player_teams").select("player_id").eq("team_id", teamRow.id);
+            const existingPlayerIds = new Set((existingPlayers || []).map((p) => p.player_id));
+            const currentPlayerIds = new Set(players.map((p) => p.id));
+
+            if (players.length > 0) {
+                const playerRows = players.map((p) => ({
+                    id: p.id, first_name: p.name, last_name: "", created_by: coachId,
+                    poste: p.poste, niveau: p.niveau, notes: p.notes,
+                }));
+                ({ error } = await supabaseClient.from("players").upsert(playerRows));
+                if (error) throw error;
+
+                const linkRows = players.map((p) => ({ player_id: p.id, team_id: teamRow.id }));
+                ({ error } = await supabaseClient.from("player_teams").upsert(linkRows, { onConflict: "player_id,team_id" }));
+                if (error) throw error;
+
+                for (const p of players) {
+                    for (const sess of p.sessions || []) {
+                        await supabaseClient.from("sessions").upsert({
+                            id: sess.id, owner_id: coachId, team_id: teamRow.id, player_id: p.id,
+                            name: sess.name || "Séance", data: sess,
+                        });
+                    }
+                }
+            }
+            const removedPlayerIds = [...existingPlayerIds].filter((id) => !currentPlayerIds.has(id));
+            if (removedPlayerIds.length > 0) {
+                await supabaseClient.from("players").delete().in("id", removedPlayerIds);
+            }
+
+            await supabaseClient.from("team_objectives").delete().eq("team_id", teamRow.id);
+            if (objectives.length > 0) {
+                await supabaseClient.from("team_objectives").upsert(
+                    objectives.map((o) => ({ id: o.id, team_id: teamRow.id, text: o.text, done: !!o.done }))
+                );
+            }
+        } else {
+            const { error } = await supabaseClient.from(table).upsert(payload);
+            if (error) throw error;
+        }
+    }
+
+    async function flushQueue() {
+        if (isSyncing || !isOnline) return;
+        isSyncing = true;
+        notify();
+        try {
+            const items = await queueGetAll();
+            for (const item of items) {
+                try {
+                    await applyQueueItem(item);
+                    await queueDelete(item.queueId);
+                } catch (err) {
+                    // Échec sur cet item : on s'arrête là (connexion probablement
+                    // retombée en cours de route, ou erreur serveur ponctuelle).
+                    // On ne boucle pas en retry immédiat — le prochain événement
+                    // "online" relancera un cycle complet.
+                    console.error("Échec de synchronisation d'un élément en attente :", err);
+                    break;
+                }
+            }
+        } finally {
+            isSyncing = false;
+            await refreshPendingCount();
+        }
+    }
+
+    window.addEventListener("online", () => {
+        isOnline = true;
+        notify();
+        flushQueue();
+    });
+    window.addEventListener("offline", () => {
+        isOnline = false;
+        notify();
+    });
+
+    return {
+        subscribe(fn) {
+            listeners.add(fn);
+            fn({ isOnline, isSyncing, pendingCount }); // état immédiat à l'abonnement
+            return () => listeners.delete(fn);
+        },
+        // Enregistre un changement dans la queue locale ET déclenche une
+        // tentative de sync immédiate si déjà en ligne (pas d'attente inutile
+        // si le réseau est disponible au moment de l'action).
+        async enqueue(table, op, payload) {
+            await queuePush(table, op, payload);
+            await refreshPendingCount();
+            if (isOnline) flushQueue();
+        },
+        flushQueue,
+        refreshPendingCount,
+        getState: () => ({ isOnline, isSyncing, pendingCount }),
+    };
+})();
+
 async function loadCatalogFromSupabase() {
     let cached = null;
     try {
@@ -109,28 +401,43 @@ async function loadCatalogFromSupabase() {
         if (raw) cached = JSON.parse(raw);
     } catch { /* cache corrompu ou absent : on retélécharge */ }
 
-    const { data: freshnessRows, error: freshnessErr } = await supabaseClient
-        .from("catalog_exercises")
-        .select("updated_at")
-        .order("updated_at", { ascending: false })
-        .limit(1);
-    if (freshnessErr) throw freshnessErr;
-    const serverLatest = freshnessRows?.[0]?.updated_at || null;
-
-    if (cached && cached.serverLatest === serverLatest && Array.isArray(cached.rows)) {
-        applyCatalogRows(cached.rows);
-        return;
-    }
-
-    const { data: rows, error: fetchErr } = await supabaseClient
-        .from("catalog_exercises")
-        .select("section, data");
-    if (fetchErr) throw fetchErr;
-
-    applyCatalogRows(rows);
     try {
-        localStorage.setItem(CATALOG_CACHE_KEY, JSON.stringify({ serverLatest, rows }));
-    } catch { /* quota localStorage dépassé : tant pis, on retéléchargera à la prochaine ouverture */ }
+        const { data: freshnessRows, error: freshnessErr } = await supabaseClient
+            .from("catalog_exercises")
+            .select("updated_at")
+            .order("updated_at", { ascending: false })
+            .limit(1);
+        if (freshnessErr) throw freshnessErr;
+        const serverLatest = freshnessRows?.[0]?.updated_at || null;
+
+        if (cached && cached.serverLatest === serverLatest && Array.isArray(cached.rows)) {
+            applyCatalogRows(cached.rows);
+            return;
+        }
+
+        const { data: rows, error: fetchErr } = await supabaseClient
+            .from("catalog_exercises")
+            .select("section, data");
+        if (fetchErr) throw fetchErr;
+
+        applyCatalogRows(rows);
+        try {
+            localStorage.setItem(CATALOG_CACHE_KEY, JSON.stringify({ serverLatest, rows }));
+        } catch { /* quota localStorage dépassé : tant pis, on retéléchargera à la prochaine ouverture */ }
+    } catch (err) {
+        // Hors ligne ou Supabase injoignable : retombe sur le cache local
+        // s'il existe, plutôt que de bloquer l'app. Le catalogue est
+        // indispensable pour construire une séance — sans repli ici, l'app
+        // serait inutilisable hors ligne malgré tout le reste du dispositif.
+        if (cached && Array.isArray(cached.rows)) {
+            console.warn("Catalogue : lecture Supabase impossible, utilisation du cache local :", err.message || err);
+            applyCatalogRows(cached.rows);
+            return;
+        }
+        // Aucun cache disponible (tout premier lancement hors ligne, jamais
+        // connecté avant) : on ne peut vraiment rien faire, on relance l'erreur.
+        throw err;
+    }
 }
 
 // Répartit les lignes reçues (section, data) dans les 6 tableaux _DB_RAW et
@@ -4656,6 +4963,45 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
         React.createElement('style', null, '@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}'));
 }
 
+// ── OfflineIndicator ──
+// Badge permanent dans le header : vert (en ligne, synchronisé), or/orange
+// (en attente d'envoi ou synchronisation en cours), rouge grisé (hors ligne).
+// Purement informatif — reflète offlineState sans jamais déclencher de
+// requête lui-même (pas de bouton "vérifier maintenant" qui inciterait à du
+// sondage manuel répété).
+function OfflineIndicator({ offlineState, isMobile }) {
+    const { isOnline, isSyncing, pendingCount } = offlineState;
+    let label, color, dot;
+    if (!isOnline) {
+        label = isMobile ? "Hors ligne" : "Hors ligne — les changements seront envoyés au retour du réseau";
+        color = "#888";
+        dot = "#888";
+    } else if (isSyncing) {
+        label = "Synchronisation…";
+        color = C.or;
+        dot = C.or;
+    } else if (pendingCount > 0) {
+        label = `${pendingCount} en attente`;
+        color = C.or;
+        dot = C.or;
+    } else {
+        label = "À jour";
+        color = "#4ADE80";
+        dot = "#4ADE80";
+    }
+    return React.createElement("div", {
+        title: label,
+        style: {
+            display: "flex", alignItems: "center", gap: 6, padding: "5px 10px",
+            borderRadius: 99, border: `1px solid #444`, fontSize: 11, color,
+            whiteSpace: "nowrap",
+        }
+    },
+        React.createElement("span", { style: { width: 7, height: 7, borderRadius: 99, background: dot, flexShrink: 0 } }),
+        !isMobile && React.createElement("span", null, label)
+    );
+}
+
 // ── AccountMenu ──
 // Menu compte : email du coach connecté, changement de mot de passe, déconnexion.
 function AccountMenu({ session, profile, onProfileUpdated, isMobile }) {
@@ -4696,12 +5042,12 @@ function AccountMenu({ session, profile, onProfileUpdated, isMobile }) {
         }
         setNameLoading(true);
         try {
-            const { error: err } = await supabaseClient
-                .from("profiles")
-                .update({ display_name: trimmed })
-                .eq("id", session.user.id);
-            if (err) throw err;
-            onProfileUpdated({ ...profile, display_name: trimmed });
+            const updatedProfile = { ...profile, id: session.user.id, display_name: trimmed };
+            await cachePut("profile", session.user.id, updatedProfile);
+            await OfflineSyncManager.enqueue("profiles", "upsert", {
+                id: session.user.id, display_name: trimmed, is_super_admin: profile?.is_super_admin || false,
+            });
+            onProfileUpdated(updatedProfile);
             setEditingName(false);
         } catch (err) {
             setNameError(err.message || "Une erreur est survenue.");
@@ -5140,16 +5486,37 @@ function App({ session }) {
     const [teams, setTeams] = useState([]);
     const [profile, setProfile] = useState(null); // { id, display_name, is_super_admin }
     const [syncStatus, setSyncStatus] = useState({ state: "idle", lastSyncAt: null, error: null }); // idle | syncing | synced | error
+    // État hors-ligne : isOnline (connectivité), isSyncing (queue en cours de
+    // vidage), pendingCount (nombre de changements en attente d'envoi).
+    // OfflineSyncManager gère tout le cycle de vie ; App() ne fait que
+    // s'abonner pour refléter l'état dans l'indicateur visuel permanent.
+    const [offlineState, setOfflineState] = useState(() => OfflineSyncManager.getState());
+    useEffect(() => {
+        const unsubscribe = OfflineSyncManager.subscribe(setOfflineState);
+        return unsubscribe;
+    }, []);
     useEffect(() => {
         if (!session?.user?.id) return;
-        supabaseClient
-            .from("profiles")
-            .select("id, display_name, is_super_admin")
-            .eq("id", session.user.id)
-            .single()
-            .then(({ data, error }) => {
-                if (!error && data) setProfile(data);
-            });
+        (async () => {
+            try {
+                const { data, error } = await supabaseClient
+                    .from("profiles")
+                    .select("id, display_name, is_super_admin")
+                    .eq("id", session.user.id)
+                    .single();
+                if (error) throw error;
+                setProfile(data);
+                await cachePut("profile", session.user.id, data);
+            } catch (err) {
+                // Hors ligne ou requête impossible : retombe sur le dernier
+                // profil connu en cache, pour que le nom d'affichage reste
+                // visible même sans réseau (comme le reste des données).
+                console.warn("Profil : lecture Supabase impossible, utilisation du cache local :", err.message || err);
+                const cached = await cacheGetAll("profile");
+                const mine = cached.find((p) => p.id === session.user.id);
+                if (mine) setProfile(mine);
+            }
+        })();
     }, [session?.user?.id]);
     // Catalogue d'exercices (volley/fitness/plyo/mobilité/souplesse/cross) :
     // chargé depuis Supabase une fois authentifié, avec cache local (cf.
@@ -5561,14 +5928,19 @@ function App({ session }) {
         // survie de la séance source). team_id n'est renseigné que si la
         // valeur ressemble à un vrai UUID d'équipe (teams migrées) — sinon
         // on garde null pour ne pas violer la contrainte de clé étrangère.
+        // id généré côté client (plutôt que laissé à Postgres) pour pouvoir
+        // le mettre en queue de façon stable même hors ligne.
         const looksLikeUuid = typeof teamId === "string" && /^[0-9a-f-]{36}$/i.test(teamId);
-        supabaseClient.from("session_history").insert({
+        const historyId = crypto.randomUUID();
+        const historyRow = {
+            id: historyId,
             session_id: null,
             team_id: looksLikeUuid ? teamId : null,
             performed_by: session.user.id,
             summary_snapshot: entry,
-        }).then(({ error }) => {
-            if (error) console.error("Échec de l'enregistrement de l'historique :", error);
+        };
+        cachePut("session_history", historyId, entry).then(() => {
+            OfflineSyncManager.enqueue("session_history", "upsert", historyRow);
         });
     };
     // Program management
@@ -5583,15 +5955,18 @@ function App({ session }) {
             name: prog.name || "Programme",
             data: { ...prog, id },
         };
-        const { error } = await supabaseClient.from("programs").upsert(row);
-        if (error) { alert("Échec de l'enregistrement du programme : " + error.message); throw error; }
+        await cachePut("programs", id, row.data);
+        await OfflineSyncManager.enqueue("programs", "upsert", row);
         return { ...prog, id };
     };
 
     const loadProgramsFromSupabase = async () => {
-        const { data, error } = await supabaseClient.from("programs").select("data").eq("owner_id", session.user.id);
-        if (error) throw error;
-        return (data || []).map((row) => row.data);
+        return loadTableOfflineFirst("programs", async () => {
+            const { data, error } = await supabaseClient.from("programs").select("id, data").eq("owner_id", session.user.id);
+            if (error) throw error;
+            // id de la ligne prioritaire sur data.id (même raison que pour templates).
+            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+        });
     };
 
     const saveProgram = async (prog) => {
@@ -5612,8 +5987,8 @@ function App({ session }) {
     };
     const deleteProgram = async (id) => {
         if (!window.confirm("Supprimer ce programme ?")) return;
-        const { error } = await supabaseClient.from("programs").delete().eq("id", id);
-        if (error) { alert("Échec de la suppression du programme : " + error.message); return; }
+        await cacheDelete("programs", id);
+        await OfflineSyncManager.enqueue("programs", "delete", { id });
         setPrograms((p) => p.filter((x) => x.id !== id));
     };
     const exportProgram = (prog, mode) => {
@@ -5818,6 +6193,11 @@ Cela remplacera toutes vos données actuelles.`)) {
     // Remplace la logique locale-uniquement précédente : chaque sauvegarde/
     // suppression écrit directement en base. section = _section de l'exercice
     // (volley/fitness/pliometrie/mobilite/souplesse/cross).
+    // Offline-first : écrit immédiatement dans le cache local (lecture
+    // instantanée, survit à un refresh/fermeture d'app) puis met en queue
+    // pour envoi à Supabase — tout de suite si en ligne, au retour réseau
+    // sinon. Ne lève plus d'erreur bloquante sur une simple coupure réseau,
+    // qui est désormais un cas normal plutôt qu'un échec.
     const persistCustomExercise = async (ex) => {
         const isNew = !ex.id || !customExercises.some((e) => e.id === ex.id);
         const id = ex.id && !isNew ? ex.id : crypto.randomUUID();
@@ -5829,29 +6209,26 @@ Cela remplacera toutes vos données actuelles.`)) {
             data: { ...ex, id },
             is_shared: ex.is_shared || false,
         };
-        const { error } = await supabaseClient.from("custom_exercises").upsert(row);
-        if (error) {
-            alert("Échec de l'enregistrement de l'exercice : " + error.message);
-            throw error;
-        }
+        await cachePut("custom_exercises", id, row.data);
+        await OfflineSyncManager.enqueue("custom_exercises", "upsert", row);
         return { ...ex, id };
     };
 
     const deleteCustomExerciseRemote = async (id) => {
-        const { error } = await supabaseClient.from("custom_exercises").delete().eq("id", id);
-        if (error) {
-            alert("Échec de la suppression de l'exercice : " + error.message);
-            throw error;
-        }
+        await cacheDelete("custom_exercises", id);
+        await OfflineSyncManager.enqueue("custom_exercises", "delete", { id });
     };
 
     const loadCustomExercisesFromSupabase = async () => {
-        const { data, error } = await supabaseClient
-            .from("custom_exercises")
-            .select("data")
-            .eq("owner_id", session.user.id);
-        if (error) throw error;
-        return (data || []).map((row) => row.data);
+        return loadTableOfflineFirst("custom_exercises", async () => {
+            const { data, error } = await supabaseClient
+                .from("custom_exercises")
+                .select("id, data")
+                .eq("owner_id", session.user.id);
+            if (error) throw error;
+            // id de la ligne prioritaire sur data.id (même raison que pour templates/programs).
+            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+        });
     };
 
     // ── Synchronisation automatique des séances (table sessions) ──
@@ -5872,20 +6249,20 @@ Cela remplacera toutes vos données actuelles.`)) {
                 const currentIds = new Set(sessions.map((s) => s.id));
                 const removedIds = [...syncedSessionIdsRef.current].filter((id) => !currentIds.has(id));
 
-                if (sessions.length > 0) {
-                    const rows = sessions.map((s) => ({
+                for (const s of sessions) {
+                    const row = {
                         id: s.id,
                         owner_id: session.user.id,
                         team_id: s.team_id || null,
                         name: s.name || "Séance",
                         data: s,
-                    }));
-                    const { error } = await supabaseClient.from("sessions").upsert(rows);
-                    if (error) throw error;
+                    };
+                    await cachePut("sessions", s.id, row.data);
+                    await OfflineSyncManager.enqueue("sessions", "upsert", row);
                 }
-                if (removedIds.length > 0) {
-                    const { error } = await supabaseClient.from("sessions").delete().in("id", removedIds);
-                    if (error) throw error;
+                for (const id of removedIds) {
+                    await cacheDelete("sessions", id);
+                    await OfflineSyncManager.enqueue("sessions", "delete", { id });
                 }
                 syncedSessionIdsRef.current = currentIds;
             } catch (err) {
@@ -5896,12 +6273,15 @@ Cela remplacera toutes vos données actuelles.`)) {
     }, [sessions]);
 
     const loadSessionsFromSupabase = async () => {
-        const { data, error } = await supabaseClient
-            .from("sessions")
-            .select("data")
-            .eq("owner_id", session.user.id);
-        if (error) throw error;
-        return (data || []).map((row) => row.data);
+        return loadTableOfflineFirst("sessions", async () => {
+            const { data, error } = await supabaseClient
+                .from("sessions")
+                .select("id, data")
+                .eq("owner_id", session.user.id);
+            if (error) throw error;
+            // id de la ligne prioritaire sur data.id (même raison que pour templates/programs).
+            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+        });
     };
 
     // ── Synchronisation automatique des templates créés par le coach ──
@@ -5918,20 +6298,20 @@ Cela remplacera toutes vos données actuelles.`)) {
                 const currentIds = new Set(ownTemplates.map((t) => t.id));
                 const removedIds = [...syncedTemplateIdsRef.current].filter((id) => !currentIds.has(id));
 
-                if (ownTemplates.length > 0) {
-                    const rows = ownTemplates.map((t) => ({
+                for (const t of ownTemplates) {
+                    const row = {
                         id: t.id,
                         owner_id: session.user.id,
                         name: t.name || "Modèle",
                         data: t,
                         is_default: false,
-                    }));
-                    const { error } = await supabaseClient.from("templates").upsert(rows);
-                    if (error) throw error;
+                    };
+                    await cachePut("templates", t.id, { ...t, is_default: false });
+                    await OfflineSyncManager.enqueue("templates", "upsert", row);
                 }
-                if (removedIds.length > 0) {
-                    const { error } = await supabaseClient.from("templates").delete().in("id", removedIds);
-                    if (error) throw error;
+                for (const id of removedIds) {
+                    await cacheDelete("templates", id);
+                    await OfflineSyncManager.enqueue("templates", "delete", { id });
                 }
                 syncedTemplateIdsRef.current = currentIds;
             } catch (err) {
@@ -5943,13 +6323,22 @@ Cela remplacera toutes vos données actuelles.`)) {
 
     // Charge les templates par défaut (is_default, partagés) + les templates
     // propres au coach, fusionnés dans le même tableau comme aujourd'hui.
+    // Les templates par défaut sont mis en cache au même titre que les
+    // autres bien qu'ils ne soient jamais réécrits par la sync ci-dessus,
+    // pour rester visibles hors-ligne.
     const loadTemplatesFromSupabase = async () => {
-        const { data, error } = await supabaseClient
-            .from("templates")
-            .select("data, is_default")
-            .or(`is_default.eq.true,owner_id.eq.${session.user.id}`);
-        if (error) throw error;
-        return (data || []).map((row) => ({ ...row.data, is_default: row.is_default }));
+        return loadTableOfflineFirst("templates", async () => {
+            const { data, error } = await supabaseClient
+                .from("templates")
+                .select("id, data, is_default")
+                .or(`is_default.eq.true,owner_id.eq.${session.user.id}`);
+            if (error) throw error;
+            // row.id (le vrai UUID de la ligne) prime sur data.id, qui peut
+            // contenir un ancien id texte legacy (ex: "tpl_ech_mixte") hérité
+            // du JSON d'origine — sans ça, la sync automatique tenterait de
+            // réécrire la ligne avec cet id texte invalide pour une colonne uuid.
+            return (data || []).map((row) => ({ ...row.data, id: row.id, is_default: row.is_default }));
+        });
     };
 
     // ── CRUD teams / players / team_objectives ──
@@ -5960,82 +6349,30 @@ Cela remplacera toutes vos données actuelles.`)) {
     // qui manipule toujours team.players / team.objectives comme avant.
     const persistTeam = async (team) => {
         const teamRow = { id: team.id, name: team.name, created_by: session.user.id };
-        const { error: teamErr } = await supabaseClient.from("teams").upsert(teamRow);
-        if (teamErr) { alert("Échec de l'enregistrement de l'équipe : " + teamErr.message); throw teamErr; }
-
-        // S'assure que le coach est bien membre owner de sa propre équipe
-        // (nécessaire pour que les policies RLS is_team_member() s'appliquent).
-        await supabaseClient.from("team_members").upsert(
-            { team_id: team.id, coach_id: session.user.id, role: "owner" },
-            { onConflict: "team_id,coach_id" }
-        );
-
-        // Joueurs : upsert de tous les joueurs actuels, suppression de ceux disparus.
         const players = team.players || [];
-        const { data: existingPlayers } = await supabaseClient
-            .from("player_teams")
-            .select("player_id")
-            .eq("team_id", team.id);
-        const existingPlayerIds = new Set((existingPlayers || []).map((p) => p.player_id));
-        const currentPlayerIds = new Set(players.map((p) => p.id));
-
-        if (players.length > 0) {
-            const playerRows = players.map((p) => ({
-                id: p.id,
-                first_name: p.name || "Joueur",
-                last_name: "",
-                created_by: session.user.id,
-                poste: p.poste || null,
-                niveau: p.niveau || null,
-                notes: p.notes || null,
-            }));
-            const { error: playersErr } = await supabaseClient.from("players").upsert(playerRows);
-            if (playersErr) { alert("Échec de l'enregistrement des joueurs : " + playersErr.message); throw playersErr; }
-
-            const linkRows = players.map((p) => ({ player_id: p.id, team_id: team.id }));
-            const { error: linkErr } = await supabaseClient.from("player_teams").upsert(linkRows, { onConflict: "player_id,team_id" });
-            if (linkErr) { alert("Échec du lien joueur-équipe : " + linkErr.message); throw linkErr; }
-
-            // Séances personnalisées des joueurs (team.players[].sessions) :
-            // remontées dans la table sessions avec team_id + player_id.
-            for (const p of players) {
-                for (const sess of p.sessions || []) {
-                    await supabaseClient.from("sessions").upsert({
-                        id: sess.id,
-                        owner_id: session.user.id,
-                        team_id: team.id,
-                        player_id: p.id,
-                        name: sess.name || "Séance",
-                        data: sess,
-                    });
-                }
-            }
-        }
-        const removedPlayerIds = [...existingPlayerIds].filter((id) => !currentPlayerIds.has(id));
-        if (removedPlayerIds.length > 0) {
-            await supabaseClient.from("players").delete().in("id", removedPlayerIds);
-        }
-
-        // Objectifs : remplace entièrement (supprime tout, réinsère) — plus
-        // simple que le diff, et les objectifs n'ont pas de sous-données liées.
-        await supabaseClient.from("team_objectives").delete().eq("team_id", team.id);
         const objectives = team.objectives || [];
-        if (objectives.length > 0) {
-            const objRows = objectives.map((o) => ({ id: o.id, team_id: team.id, text: o.text, done: !!o.done }));
-            const { error: objErr } = await supabaseClient.from("team_objectives").upsert(objRows);
-            if (objErr) console.error("Échec de l'enregistrement des objectifs :", objErr);
-        }
+
+        // Écriture locale immédiate (cache), pour une lecture instantanée
+        // même hors ligne. La décomposition en tables détaillées se fait
+        // uniquement côté queue/Supabase (voir applyQueueItem, op
+        // "team_full_upsert") — le cache local garde la forme imbriquée
+        // simple, identique à ce que loadTeamsFromSupabase recompose.
+        await cachePut("teams", team.id, team);
+        await OfflineSyncManager.enqueue("teams", "team_full_upsert", {
+            teamRow, coachId: session.user.id, players, objectives,
+        });
     };
 
     const deleteTeamRemote = async (id) => {
-        const { error } = await supabaseClient.from("teams").delete().eq("id", id);
-        if (error) { alert("Échec de la suppression de l'équipe : " + error.message); throw error; }
+        await cacheDelete("teams", id);
+        await OfflineSyncManager.enqueue("teams", "delete", { id });
     };
 
     // Recompose team.players[] et team.objectives[] à partir des tables
     // détaillées, pour que le reste de l'app continue de lire une structure
     // imbriquée identique à celle d'avant la migration.
     const loadTeamsFromSupabase = async () => {
+        return loadTableOfflineFirst("teams", async () => {
         const { data: teamRows, error: teamErr } = await supabaseClient.from("teams").select("id, name");
         if (teamErr) throw teamErr;
         if (!teamRows || teamRows.length === 0) return [];
@@ -6048,7 +6385,7 @@ Cela remplacera toutes vos données actuelles.`)) {
         const { data: playerRows } = playerIds.length > 0
             ? await supabaseClient.from("players").select("*").in("id", playerIds)
             : { data: [] };
-        const { data: playerSessRows } = await supabaseClient.from("sessions").select("data, team_id, player_id").in("team_id", teamIds).not("player_id", "is", null);
+        const { data: playerSessRows } = await supabaseClient.from("sessions").select("id, data, team_id, player_id").in("team_id", teamIds).not("player_id", "is", null);
 
         return teamRows.map((t) => {
             const myLinks = (linkRows || []).filter((l) => l.team_id === t.id);
@@ -6057,7 +6394,7 @@ Cela remplacera toutes vos données actuelles.`)) {
                 if (!p) return null;
                 const mySessions = (playerSessRows || [])
                     .filter((s) => s.team_id === t.id && s.player_id === p.id)
-                    .map((s) => s.data);
+                    .map((s) => ({ ...s.data, id: s.id }));
                 return {
                     id: p.id, name: p.first_name, poste: p.poste, niveau: p.niveau,
                     notes: p.notes, sessions: mySessions,
@@ -6067,18 +6404,32 @@ Cela remplacera toutes vos données actuelles.`)) {
                 .map((o) => ({ id: o.id, text: o.text, done: o.done }));
             return { id: t.id, name: t.name, players: myPlayers, objectives: myObjectives };
         });
+        });
     };
 
     // Recompose une entrée d'historique locale à partir de summary_snapshot
     // (la copie figée) — reste identique au format attendu par HistoryPanel.
     const loadHistoryFromSupabase = async () => {
-        const { data, error } = await supabaseClient
-            .from("session_history")
-            .select("summary_snapshot")
-            .eq("performed_by", session.user.id)
-            .order("performed_at", { ascending: true });
-        if (error) throw error;
-        return (data || []).map((row) => row.summary_snapshot);
+        let rows;
+        try {
+            const { data, error } = await supabaseClient
+                .from("session_history")
+                .select("id, summary_snapshot")
+                .eq("performed_by", session.user.id)
+                .order("performed_at", { ascending: true });
+            if (error) throw error;
+            // On garde l'id de ligne pour le cache (nécessaire à
+            // cacheReplaceAll) mais l'app ne lit que summary_snapshot ensuite.
+            rows = (data || []).map((row) => ({ ...row.summary_snapshot, _historyId: row.id }));
+            await cacheReplaceAll("session_history", rows, "_historyId");
+        } catch (err) {
+            console.warn("Lecture Supabase impossible pour session_history, utilisation du cache local :", err.message || err);
+            rows = await cacheGetAll("session_history");
+        }
+        // cacheGetAll ne garantit pas l'ordre chronologique (repli hors ligne
+        // uniquement) : on retrie par date, cohérent avec l'ordre attendu par
+        // HistoryPanel.
+        return [...rows].sort((a, b) => (a.date || 0) - (b.date || 0)).map(({ _historyId, ...entry }) => entry);
     };
 
     const saveTeam = async (team, deleteId) => {
@@ -6163,7 +6514,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             display: "block", width: "100%", padding: "10px 14px", border: "none", background: "none",
             textAlign: "left", cursor: "pointer", fontSize: 13, fontWeight: 600, color: sec.color,
             borderBottom: `1px solid ${C.border}`
-        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(ClubBtn, { onClick: () => importJSON(handleImport), variant: "ghost", size: "sm", style: { color: "#ccc", borderColor: "#555" } }, isMobile ? "\uD83D\uDCE5" : "\uD83D\uDCE5 Importer"), React.createElement(BackupMenu, { onExport: exportBackup, onImport: importBackup, onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
+        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(ClubBtn, { onClick: () => importJSON(handleImport), variant: "ghost", size: "sm", style: { color: "#ccc", borderColor: "#555" } }, isMobile ? "\uD83D\uDCE5" : "\uD83D\uDCE5 Importer"), React.createElement(BackupMenu, { onExport: exportBackup, onImport: importBackup, onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }), React.createElement(OfflineIndicator, { offlineState: offlineState, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
             padding: isMobile ? "6px 8px 5px" : "10px 14px",
             border: "none", background: "none", cursor: "pointer", flexShrink: 0,
             display: "flex", flexDirection: isMobile ? "column" : "row",
