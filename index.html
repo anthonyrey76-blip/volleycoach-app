@@ -6167,7 +6167,9 @@ function App({ session }) {
                 // l'effet de sync debounced comparera le contenu futur à ceci,
                 // donc un premier passage sans modification réelle ne poussera
                 // rien en queue (voir syncedSessionsSnapshotRef plus haut).
-                syncedSessionsSnapshotRef.current = new Map(remoteSessions.map((s) => [s.id, JSON.stringify(s)]));
+                syncedSessionsSnapshotRef.current = new Map(
+                    remoteSessions.filter((s) => s._ownedByMe !== false).map((s) => [s.id, JSON.stringify(s)])
+                );
                 syncedTemplatesSnapshotRef.current = new Map(
                     remoteTemplates.filter((t) => !t.is_default).map((t) => [t.id, JSON.stringify(t)])
                 );
@@ -6893,10 +6895,14 @@ Cela remplacera toutes vos données actuelles.`)) {
         if (!sessionsHydratedRef.current) return; // n'écrit rien avant le premier chargement depuis la base
         const timer = setTimeout(async () => {
             try {
-                const currentIds = new Set(sessions.map((s) => s.id));
+                // Exclut les séances partagées par un autre coach (visibles
+                // grâce au retrait du filtre owner_id dans loadSessionsFromSupabase,
+                // mais qui ne doivent jamais être réécrites par ma propre sync).
+                const ownSessions = sessions.filter((s) => s._ownedByMe !== false);
+                const currentIds = new Set(ownSessions.map((s) => s.id));
                 const removedIds = [...syncedSessionsSnapshotRef.current.keys()].filter((id) => !currentIds.has(id));
 
-                for (const s of sessions) {
+                for (const s of ownSessions) {
                     const serialized = JSON.stringify(s);
                     // Ne pousse en queue que si le contenu a réellement changé
                     // depuis le dernier envoi (comparaison JSON), pas juste
@@ -6932,11 +6938,21 @@ Cela remplacera toutes vos données actuelles.`)) {
         return loadTableOfflineFirst("sessions", async () => {
             const { data, error } = await supabaseClient
                 .from("sessions")
-                .select("id, data")
-                .eq("owner_id", session.user.id);
+                .select("id, owner_id, data");
             if (error) throw error;
+            // Pas de filtre owner_id ici : la policy RLS autorise déjà
+            // exactement ce qu'il faut voir (mes séances, ET celles
+            // partagées avec moi via is_shared/équipe commune ou partage
+            // ciblé) — filtrer côté client en plus masquerait à tort les
+            // séances partagées par un coéquipier. Même raisonnement que
+            // pour loadHistoryFromSupabase.
             // id de la ligne prioritaire sur data.id (même raison que pour templates/programs).
-            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+            // _ownedByMe conservé pour exclure les séances partagées de la
+            // sync automatique (voir plus bas) — sans ça, la sync tenterait
+            // de réécrire owner_id sur des séances qui ne sont pas les
+            // miennes à chaque modification locale, même si la RLS bloque
+            // finalement l'update, mieux vaut ne jamais tenter l'écriture.
+            return (data || []).map((row) => ({ ...row.data, id: row.id, _ownedByMe: row.owner_id === session.user.id }));
         });
     };
 
