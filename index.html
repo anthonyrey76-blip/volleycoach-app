@@ -5186,7 +5186,12 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared,
     const [searching, setSearching] = useState(false);
     const [addError, setAddError] = useState(null);
     const [addLoading, setAddLoading] = useState(false);
-    const idField = table === "custom_exercises" ? "exercise_id" : "template_id";
+    const idField = {
+        custom_exercises: "exercise_id",
+        templates: "template_id",
+        programs: "program_id",
+        sessions: "session_id",
+    }[table] || "template_id";
 
     const loadShares = useCallback(async () => {
         setLoading(true);
