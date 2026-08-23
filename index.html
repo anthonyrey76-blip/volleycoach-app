@@ -1180,7 +1180,9 @@ function ExCard({ ex, section, onAdd, onEdit, onDuplicate, inSession, onShowDeta
                     React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" } },
                         React.createElement("span", { style: { background: catColor + "20", color: catColor, borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, cats),
                         level && React.createElement(LevelBadge, { level: level }),
-                        isCustom && React.createElement("span", { style: { background: C.orLight, color: C.or, borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\u270F\uFE0F Custom"))),
+                        isCustom && (ex._ownedByMe !== false
+                            ? React.createElement("span", { style: { background: C.orLight, color: C.or, borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\u270F\uFE0F Custom")
+                            : React.createElement("span", { style: { background: "#EDE9FE", color: "#7C3AED", borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\uD83D\uDD17 Partagé par ", ex._sharedByName || "un autre coach")))),
                 React.createElement("div", { style: { display: "flex", gap: 4, alignItems: "center", flexShrink: 0 } },
                 (isVolley && evolutions.length > 0) || hasVariants ? React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); setShowEvo(!showEvo); }, variant: showEvo ? "gold" : "outline", size: "sm" }, showEvo ? "\u25B2" : (isVolley && evolutions.length > 0 ? `+${evolutions.length}\u00A0\u00E9vo.` : `+${variants.length}\u00A0var.`)) :
                 React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onAdd?.(ex); }, variant: inSession ? "ghost" : "primary", size: "sm", disabled: inSession }, inSession ? "\u2713" : "+ Ajouter"))),
@@ -1193,7 +1195,7 @@ function ExCard({ ex, section, onAdd, onEdit, onDuplicate, inSession, onShowDeta
                 equipment.slice(0, 2).map(e => React.createElement(Chip, { key: e, icon: "\uD83D\uDD27", label: e })),
                 ex.nombre_joueurs && isVolley && React.createElement(Chip, { icon: "\uD83D\uDC65", label: `${ex.nombre_joueurs.ideal} j.` })),
             React.createElement("div", { style: { display: "flex", gap: 4, marginTop: 6 } },
-                isCustom && React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onEdit?.(ex); }, variant: "ghost", size: "sm" }, "\u270F\uFE0F"),
+                isCustom && ex._ownedByMe !== false && React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onEdit?.(ex); }, variant: "ghost", size: "sm" }, "\u270F\uFE0F"),
                 React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onDuplicate?.(ex); }, variant: "ghost", size: "sm" }, "\u29C9")),
             
             showEvo && isVolley && singlePick && (React.createElement("div", { onClick: e => e.stopPropagation(), style: { marginTop: 10, borderTop: `1px solid ${C.border}`, paddingTop: 10 } },
@@ -1401,7 +1403,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 React.createElement(ExerciseEditor, { ex: editingEx, section: section, onSave: ex => { onSaveCustom({ ...ex, _section: section }); setEditingEx(null); }, onCancel: () => setEditingEx(null) })))),
         detailEx && (React.createElement(ExerciseModal, {
             ex: detailEx, section: section, onClose: () => setDetailEx(null), onAdd: e => { onAdd(e); }, inSession: sessIds.has(detailEx.id),
-            myCustomExerciseIds: new Set((customExercises || []).map((e) => e.id)),
+            myCustomExerciseIds: new Set((customExercises || []).filter((e) => e._ownedByMe !== false).map((e) => e.id)),
             onToggleExerciseShared: (exId, val) => {
                 const target = (customExercises || []).find((e) => e.id === exId);
                 if (target) onSaveCustom({ ...target, is_shared: val });
@@ -2450,7 +2452,7 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
         const updatedPlayer = { ...player, sessions: (player.sessions || []).filter(s => s.id !== sessId) };
         onSave({ ...team, players: team.players.map(p => p.id === player.id ? updatedPlayer : p) });
     };
-    return (React.createElement("div", null, React.createElement("div", { style: { display: 'flex', justifyContent: 'space-between', marginBottom: 14 } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 15 } }, "\uD83D\uDC65 \u00C9quipes & joueurs"), React.createElement(ClubBtn, { onClick: openNewTeam, variant: "primary", size: "sm" }, "+ Nouvelle \u00E9quipe")), showForm && (React.createElement("div", { style: { background: C.surface, border: `2px solid ${C.or}`, borderRadius: 12, padding: 16, marginBottom: 14 } }, React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 } }, React.createElement("label", { style: { display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: C.muted } }, "Nom de l'\u00E9quipe *", React.createElement("input", { value: form.name, onChange: e => setForm(f => ({ ...f, name: e.target.value })), style: iStyle, placeholder: "U18 Filles, S\u00E9niors A..." })), React.createElement("label", { style: { display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: C.muted } }, "Sport principal", React.createElement("select", { value: form.sport, onChange: e => setForm(f => ({ ...f, sport: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "volley" }, "\uD83C\uDFD0 Volley"), React.createElement("option", { value: "fitness" }, "\uD83C\uDFCB\uFE0F Fitness"), React.createElement("option", { value: "mobilite" }, "\uD83E\uDDB4 Mobilit\u00E9"), React.createElement("option", { value: "souplesse" }, "\uD83E\uDDD8 Souplesse")))), React.createElement("div", { style: { marginBottom: 12 } }, React.createElement("div", { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } }, React.createElement("span", { style: { fontSize: 12, color: C.muted, fontWeight: 600 } }, "Joueurs (", form.players.length, ")"), React.createElement(ClubBtn, { onClick: openNewPlayer, variant: "outline", size: "sm" }, "+ Ajouter")), editPlayer && (React.createElement("div", { style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 10, marginBottom: 8 } }, React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 8, marginBottom: 8 } }, React.createElement("input", { value: playerForm.name, onChange: e => setPlayerForm(f => ({ ...f, name: e.target.value })), style: iStyle, placeholder: "Nom du joueur *" }), React.createElement("select", { value: playerForm.poste, onChange: e => setPlayerForm(f => ({ ...f, poste: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "" }, "Poste..."), (form.sport === 'volley' ? POSTES_VOLLEY : POSTES_FITNESS).map(p => React.createElement("option", { key: p, value: p }, p))), React.createElement("select", { value: playerForm.niveau, onChange: e => setPlayerForm(f => ({ ...f, niveau: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "" }, "Niveau..."), ['Débutant', 'Intermédiaire', 'Avancé', 'Élite'].map(n => React.createElement("option", { key: n, value: n }, n)))), React.createElement("input", { value: playerForm.notes, onChange: e => setPlayerForm(f => ({ ...f, notes: e.target.value })), style: { ...iStyle, marginBottom: 8 }, placeholder: "Notes (optionnel)" }), React.createElement("div", { style: { display: 'flex', gap: 6 } }, React.createElement(ClubBtn, { onClick: savePlayer, variant: "primary", size: "sm", disabled: !playerForm.name.trim() }, "\u2713 Valider"), React.createElement(ClubBtn, { onClick: () => setEditPlayer(null), variant: "ghost", size: "sm" }, "Annuler")))), form.players.map(p => (React.createElement("div", { key: p.id, style: { display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: C.bg, borderRadius: 7, marginBottom: 4 } }, React.createElement("span", { style: { flex: 1, fontSize: 13, fontWeight: 600 } }, p.name), p.poste && React.createElement("span", { style: { fontSize: 10, color: sectColor(form.sport), background: sectColor(form.sport) + '15', borderRadius: 4, padding: '1px 6px' } }, p.poste), p.niveau && React.createElement("span", { style: { fontSize: 10, color: C.muted } }, p.niveau), React.createElement("button", { onClick: () => { setPlayerForm({ ...p }); setEditPlayer(p.id); }, style: { background: 'none', border: 'none', cursor: 'pointer', color: C.muted, fontSize: 13 } }, "\u270F\uFE0F"), React.createElement("button", { onClick: () => removePlayer(p.id), style: { background: 'none', border: 'none', cursor: 'pointer', color: C.rouge, fontSize: 14 } }, "\u2715"))))), React.createElement("div", { style: { display: 'flex', gap: 8 } }, React.createElement(ClubBtn, { onClick: saveTeam, variant: "primary", disabled: !form.name.trim() }, "\uD83D\uDCBE Enregistrer"), React.createElement(ClubBtn, { onClick: () => setShowForm(false), variant: "ghost" }, "Annuler")))), teams.length === 0 && !showForm && (React.createElement("div", { style: { textAlign: 'center', color: C.hint, marginTop: 40 } }, React.createElement("div", { style: { fontSize: 40, marginBottom: 10 } }, "\uD83D\uDC65"), "Aucune \u00E9quipe. Cr\u00E9ez-en une pour suivre vos joueurs.")), teams.map(team => {
+    return (React.createElement("div", null, React.createElement("div", { style: { display: 'flex', justifyContent: 'space-between', marginBottom: 14 } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 15 } }, "\uD83D\uDC65 \u00C9quipes & joueurs"), React.createElement(ClubBtn, { onClick: openNewTeam, variant: "primary", size: "sm" }, "+ Nouvelle \u00E9quipe")), showForm && (React.createElement("div", { style: { background: C.surface, border: `2px solid ${C.or}`, borderRadius: 12, padding: 16, marginBottom: 14 } }, React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 } }, React.createElement("label", { style: { display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: C.muted } }, "Nom de l'\u00E9quipe *", React.createElement("input", { value: form.name, onChange: e => setForm(f => ({ ...f, name: e.target.value })), style: iStyle, placeholder: "U18 Filles, S\u00E9niors A..." })), React.createElement("label", { style: { display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: C.muted } }, "Sport principal", React.createElement("select", { value: form.sport, onChange: e => setForm(f => ({ ...f, sport: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "volley" }, "\uD83C\uDFD0 Volley"), React.createElement("option", { value: "fitness" }, "\uD83C\uDFCB\uFE0F Fitness"), React.createElement("option", { value: "mobilite" }, "\uD83E\uDDB4 Mobilit\u00E9"), React.createElement("option", { value: "souplesse" }, "\uD83E\uDDD8 Souplesse")))), React.createElement("div", { style: { marginBottom: 12 } }, React.createElement("div", { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } }, React.createElement("span", { style: { fontSize: 12, color: C.muted, fontWeight: 600 } }, "Joueurs (", form.players.length, ")"), React.createElement(ClubBtn, { onClick: openNewPlayer, variant: "outline", size: "sm" }, "+ Ajouter")), editPlayer && (React.createElement("div", { style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: 10, marginBottom: 8 } }, React.createElement("div", { style: { display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 8, marginBottom: 8 } }, React.createElement("input", { value: playerForm.name, onChange: e => setPlayerForm(f => ({ ...f, name: e.target.value })), style: iStyle, placeholder: "Nom du joueur *" }), form.sport === 'volley' ? React.createElement("select", { value: playerForm.poste, onChange: e => setPlayerForm(f => ({ ...f, poste: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "" }, "Poste..."), POSTES_VOLLEY.map(p => React.createElement("option", { key: p, value: p }, p))) : React.createElement("div", null), React.createElement("select", { value: playerForm.niveau, onChange: e => setPlayerForm(f => ({ ...f, niveau: e.target.value })), style: { ...iStyle, cursor: 'pointer' } }, React.createElement("option", { value: "" }, "Niveau..."), ['Débutant', 'Intermédiaire', 'Avancé', 'Élite'].map(n => React.createElement("option", { key: n, value: n }, n)))), React.createElement("input", { value: playerForm.notes, onChange: e => setPlayerForm(f => ({ ...f, notes: e.target.value })), style: { ...iStyle, marginBottom: 8 }, placeholder: "Notes (optionnel)" }), React.createElement("div", { style: { display: 'flex', gap: 6 } }, React.createElement(ClubBtn, { onClick: savePlayer, variant: "primary", size: "sm", disabled: !playerForm.name.trim() }, "\u2713 Valider"), React.createElement(ClubBtn, { onClick: () => setEditPlayer(null), variant: "ghost", size: "sm" }, "Annuler")))), form.players.map(p => (React.createElement("div", { key: p.id, style: { display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px', background: C.bg, borderRadius: 7, marginBottom: 4 } }, React.createElement("span", { style: { flex: 1, fontSize: 13, fontWeight: 600 } }, p.name), p.poste && React.createElement("span", { style: { fontSize: 10, color: sectColor(form.sport), background: sectColor(form.sport) + '15', borderRadius: 4, padding: '1px 6px' } }, p.poste), p.niveau && React.createElement("span", { style: { fontSize: 10, color: C.muted } }, p.niveau), React.createElement("button", { onClick: () => { setPlayerForm({ ...p }); setEditPlayer(p.id); }, style: { background: 'none', border: 'none', cursor: 'pointer', color: C.muted, fontSize: 13 } }, "\u270F\uFE0F"), React.createElement("button", { onClick: () => removePlayer(p.id), style: { background: 'none', border: 'none', cursor: 'pointer', color: C.rouge, fontSize: 14 } }, "\u2715"))))), React.createElement("div", { style: { display: 'flex', gap: 8 } }, React.createElement(ClubBtn, { onClick: saveTeam, variant: "primary", disabled: !form.name.trim() }, "\uD83D\uDCBE Enregistrer"), React.createElement(ClubBtn, { onClick: () => setShowForm(false), variant: "ghost" }, "Annuler")))), teams.length === 0 && !showForm && (React.createElement("div", { style: { textAlign: 'center', color: C.hint, marginTop: 40 } }, React.createElement("div", { style: { fontSize: 40, marginBottom: 10 } }, "\uD83D\uDC65"), "Aucune \u00E9quipe. Cr\u00E9ez-en une pour suivre vos joueurs.")), teams.map(team => {
         const isExp = expandedTeam === team.id;
         const sc = sectColor(team.sport);
         const hCount = teamHistory(team.id).length;
@@ -5176,7 +5178,7 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
 //   ajoute une ligne dans la table de partage correspondante.
 // table doit être "custom_exercises" ou "templates" ; sharesTable la table de
 // partage ciblé associée ("custom_exercise_shares" / "template_shares").
-function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared }) {
+function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared, onTargetShared = null }) {
     const [shares, setShares] = useState([]);
     const [loading, setLoading] = useState(true);
     const [nameQuery, setNameQuery] = useState("");
@@ -5254,6 +5256,7 @@ function ShareControls({ objectId, table, sharesTable, isShared, onToggleShared 
             setNameQuery("");
             setSuggestions([]);
             await loadShares();
+            if (onTargetShared) await onTargetShared(coachId);
         } catch (err) {
             setAddError(err.message || "Une erreur est survenue.");
         } finally {
@@ -6292,6 +6295,32 @@ function App({ session }) {
         if (!target) return;
         await saveCustom({ ...target, is_shared: isShared });
     };
+    // Cascade de partage : quand une séance est partagée (is_shared ou
+    // ciblé), ses exercices custom référencés doivent l'être aussi, sinon le
+    // coach destinataire voit la séance mais pas le détail des exercices
+    // custom qu'elle utilise (RLS les bloquerait sinon).
+    const customExerciseIdsInSession = (sess) => {
+        const myIds = new Set(customExercises.map((e) => e.id));
+        return [...new Set((sess.items || []).map((it) => it.id).filter((id) => myIds.has(id)))];
+    };
+    const cascadeShareSessionExercisesIsShared = async (sess, isShared) => {
+        const ids = customExerciseIdsInSession(sess);
+        for (const id of ids) {
+            const ex = customExercises.find((e) => e.id === id);
+            if (ex && !!ex.is_shared !== isShared) await toggleExerciseShared(id, isShared);
+        }
+    };
+    const cascadeShareSessionExercisesTargeted = async (sess, coachId) => {
+        const ids = customExerciseIdsInSession(sess);
+        for (const id of ids) {
+            try {
+                await supabaseClient.from("custom_exercise_shares").insert({ exercise_id: id, shared_with: coachId });
+            } catch {
+                // Déjà partagé avec ce coach ou autre souci mineur : on continue
+                // avec les autres exercices plutôt que d'interrompre la cascade.
+            }
+        }
+    };
     // DB per section
     const DB = {
         volley: VOLLEY_DB_RAW,
@@ -6815,13 +6844,32 @@ Cela remplacera toutes vos données actuelles.`)) {
 
     const loadCustomExercisesFromSupabase = async () => {
         return loadTableOfflineFirst("custom_exercises", async () => {
-            const { data, error } = await supabaseClient
+            // 1. Mes propres exercices custom.
+            const { data: mine, error: mineErr } = await supabaseClient
                 .from("custom_exercises")
-                .select("id, data")
-                .eq("owner_id", session.user.id);
-            if (error) throw error;
+                .select("id, owner_id, data");
+            if (mineErr) throw mineErr;
+            // Le select sans .eq() ci-dessus laisse la RLS filtrer elle-même :
+            // elle autorise déjà exactement (mes exercices) OU (is_shared via
+            // équipe commune) OU (partage ciblé) — donc un seul select suffit,
+            // pas besoin de trois requêtes séparées à fusionner.
+            const rows = mine || [];
+            const ownerIds = [...new Set(rows.filter((r) => r.owner_id !== session.user.id).map((r) => r.owner_id))];
+            let ownerNames = {};
+            if (ownerIds.length > 0) {
+                const { data: names } = await supabaseClient.rpc("resolve_coach_names", { p_ids: ownerIds });
+                ownerNames = Object.fromEntries((names || []).map((n) => [n.id, n.display_name]));
+            }
             // id de la ligne prioritaire sur data.id (même raison que pour templates/programs).
-            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+            // _ownedByMe / _sharedByName renseignés pour l'affichage du badge
+            // (voir ExerciseModal) — préfixés par _ pour ne jamais entrer en
+            // conflit avec un champ métier existant du JSON.
+            return rows.map((row) => ({
+                ...row.data,
+                id: row.id,
+                _ownedByMe: row.owner_id === session.user.id,
+                _sharedByName: row.owner_id !== session.user.id ? (ownerNames[row.owner_id] || "un autre coach") : null,
+            }));
         });
     };
 
@@ -7408,10 +7456,12 @@ Cela remplacera toutes vos données actuelles.`)) {
                 React.createElement(ShareControls, {
                     objectId: shareSessionModal.id, table: "sessions", sharesTable: "session_shares",
                     isShared: !!shareSessionModal.is_shared,
-                    onToggleShared: (val) => {
+                    onToggleShared: async (val) => {
                         setSessions((p) => p.map((s) => s.id === shareSessionModal.id ? { ...s, is_shared: val } : s));
                         setShareSessionModal((s) => s ? { ...s, is_shared: val } : s);
+                        await cascadeShareSessionExercisesIsShared(shareSessionModal, val);
                     },
+                    onTargetShared: (coachId) => cascadeShareSessionExercisesTargeted(shareSessionModal, coachId),
                 })
             )
         )),
