@@ -5578,8 +5578,15 @@ function App({ session }) {
                 setHistory(remoteHistory);
                 syncedSessionIdsRef.current = new Set(remoteSessions.map((s) => s.id));
                 syncedTemplateIdsRef.current = new Set(remoteTemplates.filter((t) => !t.is_default).map((t) => t.id));
-                sessionsHydratedRef.current = true;
-                templatesHydratedRef.current = true;
+                // Différé après le prochain cycle de rendu : sans ça, l'effet
+                // de sync debounced de sessions/templates (déclenché par le
+                // setSessions/setTemplates ci-dessus) verrait déjà "hydraté"
+                // et repousserait inutilement toutes les données tout juste
+                // lues vers la queue, alors que rien n'a réellement changé.
+                setTimeout(() => {
+                    sessionsHydratedRef.current = true;
+                    templatesHydratedRef.current = true;
+                }, 0);
                 setUserDataStatus("ready");
             } catch (err) {
                 if (cancelled) return;
