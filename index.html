@@ -4969,7 +4969,84 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
         React.createElement('style', null, '@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}'));
 }
 
-// ── OfflineIndicator ──
+// ── NotificationsMenu ──
+// Badge + panneau déroulant listant les notifications du coach (demandes de
+// partage, résolutions, invitations d'équipe...). Les notifications sont
+// créées uniquement côté serveur (triggers Supabase), jamais par le client —
+// ce composant ne fait que lire et marquer comme lues.
+function NotificationsMenu({ notifications, onMarkRead, onMarkAllRead, isMobile }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+    useEffect(() => {
+        const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+        document.addEventListener("mousedown", h);
+        return () => document.removeEventListener("mousedown", h);
+    }, []);
+
+    const unreadCount = (notifications || []).filter((n) => !n.is_read).length;
+
+    const notifLabel = (n) => {
+        const p = n.payload || {};
+        switch (n.type) {
+            case "session_share_request": return `Demande de partage pour une séance`;
+            case "session_share_resolved": return p.status === "approved" ? "Votre demande de partage a été acceptée" : "Votre demande de partage a été refusée";
+            case "team_join_request": return "Invitation à rejoindre une équipe";
+            case "team_join_resolved": return "Réponse à une invitation d'équipe";
+            default: return "Notification";
+        }
+    };
+
+    return React.createElement("div", { ref: ref, style: { position: "relative" } },
+        React.createElement(ClubBtn, {
+            onClick: () => setOpen(v => !v), variant: "ghost", size: "sm",
+            style: { color: "#ccc", borderColor: "#555", position: "relative" }
+        },
+            isMobile ? "🔔" : "🔔 Notifications",
+            unreadCount > 0 && React.createElement("span", {
+                style: {
+                    position: "absolute", top: -4, right: -4, background: C.rouge, color: "#fff",
+                    borderRadius: 99, fontSize: 10, fontWeight: 700, minWidth: 16, height: 16,
+                    display: "flex", alignItems: "center", justifyContent: "center", padding: "0 3px",
+                }
+            }, unreadCount > 9 ? "9+" : unreadCount)
+        ),
+        open && React.createElement("div", {
+            style: {
+                position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 200,
+                background: C.noir, border: "1px solid #333", borderRadius: 10,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.4)", minWidth: 280, maxWidth: 340,
+                maxHeight: 400, overflowY: "auto",
+            }
+        },
+            React.createElement("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", borderBottom: "1px solid #333" } },
+                React.createElement("span", { style: { fontSize: 11, color: "#666", letterSpacing: 1, textTransform: "uppercase" } }, "Notifications"),
+                unreadCount > 0 && React.createElement("button", {
+                    onClick: onMarkAllRead,
+                    style: { background: "none", border: "none", color: C.or, fontSize: 11, cursor: "pointer", padding: 0 },
+                }, "Tout marquer lu")
+            ),
+            (!notifications || notifications.length === 0) && React.createElement("div", {
+                style: { padding: "20px 14px", textAlign: "center", color: "#666", fontSize: 13 }
+            }, "Aucune notification"),
+            (notifications || []).map((n) => React.createElement("button", {
+                key: n.id,
+                onClick: () => !n.is_read && onMarkRead(n.id),
+                style: {
+                    display: "block", width: "100%", textAlign: "left", padding: "10px 14px",
+                    background: n.is_read ? "none" : "rgba(240,165,0,0.08)", border: "none",
+                    borderBottom: "1px solid #222", cursor: n.is_read ? "default" : "pointer",
+                },
+                onMouseEnter: e => { if (!n.is_read) e.currentTarget.style.background = "rgba(240,165,0,0.15)"; },
+                onMouseLeave: e => { e.currentTarget.style.background = n.is_read ? "none" : "rgba(240,165,0,0.08)"; },
+            },
+                React.createElement("div", { style: { fontSize: 13, color: n.is_read ? "#999" : "#fff", fontWeight: n.is_read ? 400 : 600 } }, notifLabel(n)),
+                React.createElement("div", { style: { fontSize: 11, color: "#666", marginTop: 3 } }, new Date(n.created_at).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }))
+            ))
+        )
+    );
+}
+
+
 // Badge permanent dans le header : vert (en ligne, synchronisé), or/orange
 // (en attente d'envoi ou synchronisation en cours), rouge grisé (hors ligne).
 // Purement informatif — reflète offlineState sans jamais déclencher de
@@ -5010,8 +5087,9 @@ function OfflineIndicator({ offlineState, isMobile }) {
 
 // ── AccountMenu ──
 // Menu compte : email du coach connecté, changement de mot de passe, déconnexion.
-function AccountMenu({ session, profile, onProfileUpdated, isMobile }) {
+function AccountMenu({ session, profile, onProfileUpdated, onExport, onImportBackup, onImportJson, onSyncToCloud, onRestoreFromCloud, syncStatus, isMobile }) {
     const [open, setOpen] = useState(false);
+    const [showDataMenu, setShowDataMenu] = useState(false);
     const [showPasswordForm, setShowPasswordForm] = useState(false);
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -5031,6 +5109,7 @@ function AccountMenu({ session, profile, onProfileUpdated, isMobile }) {
             if (ref.current && !ref.current.contains(e.target)) {
                 setOpen(false);
                 setShowPasswordForm(false);
+                setShowDataMenu(false);
                 setEditingName(false);
             }
         };
@@ -5162,6 +5241,47 @@ function AccountMenu({ session, profile, onProfileUpdated, isMobile }) {
                         borderRadius: 6, fontWeight: 600, fontSize: 13, cursor: pwLoading ? "default" : "pointer", opacity: pwLoading ? 0.6 : 1,
                     }
                 }, pwLoading ? "Patientez…" : "Valider")
+            ),
+            !showDataMenu && React.createElement("button", {
+                onClick: () => setShowDataMenu(true),
+                style: backupBtnStyle,
+                onMouseEnter: e => e.currentTarget.style.background = "#222",
+                onMouseLeave: e => e.currentTarget.style.background = "none",
+            },
+                React.createElement("div", { style: { fontWeight: 600, color: "#fff" } }, "💾 Données"),
+                React.createElement("div", { style: { fontSize: 11, color: "#888", marginTop: 2 } }, "Sauvegarde et synchronisation")
+            ),
+            showDataMenu && React.createElement("div", { style: { borderBottom: "1px solid #333" } },
+                React.createElement("div", { style: { padding: "8px 14px", fontSize: 11, color: syncStatus?.state === "error" ? C.rouge : (syncStatus?.lastSyncAt ? "#4ADE80" : "#888") } },
+                    syncStatus?.state === "syncing" ? "⏳ Synchronisation…"
+                        : syncStatus?.state === "error" ? "⚠️ Erreur de sync"
+                        : syncStatus?.lastSyncAt ? "☁️ Sync : " + new Date(syncStatus.lastSyncAt).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })
+                        : "☁️ Jamais synchronisé"
+                ),
+                React.createElement("button", {
+                    onClick: onSyncToCloud, style: backupBtnStyle,
+                    onMouseEnter: e => e.currentTarget.style.background = "#222", onMouseLeave: e => e.currentTarget.style.background = "none",
+                }, React.createElement("div", { style: { fontWeight: 600, color: "#fff" } }, "☁️ Synchroniser")),
+                React.createElement("button", {
+                    onClick: onRestoreFromCloud, style: backupBtnStyle,
+                    onMouseEnter: e => e.currentTarget.style.background = "#222", onMouseLeave: e => e.currentTarget.style.background = "none",
+                }, React.createElement("div", { style: { fontWeight: 600, color: C.or } }, "☁️ Récupérer depuis le cloud")),
+                React.createElement("button", {
+                    onClick: onExport, style: backupBtnStyle,
+                    onMouseEnter: e => e.currentTarget.style.background = "#222", onMouseLeave: e => e.currentTarget.style.background = "none",
+                }, React.createElement("div", { style: { fontWeight: 600, color: "#fff" } }, "📤 Exporter .coachback")),
+                React.createElement("button", {
+                    onClick: onImportBackup, style: backupBtnStyle,
+                    onMouseEnter: e => e.currentTarget.style.background = "#222", onMouseLeave: e => e.currentTarget.style.background = "none",
+                }, React.createElement("div", { style: { fontWeight: 600, color: C.or } }, "📥 Importer .coachback")),
+                React.createElement("button", {
+                    onClick: onImportJson, style: { ...backupBtnStyle, borderBottom: "none" },
+                    onMouseEnter: e => e.currentTarget.style.background = "#222", onMouseLeave: e => e.currentTarget.style.background = "none",
+                }, React.createElement("div", { style: { fontWeight: 600, color: "#ccc" } }, "📥 Importer un fichier JSON")),
+                React.createElement("button", {
+                    onClick: () => setShowDataMenu(false),
+                    style: { width: "100%", padding: "6px 0", background: "none", border: "none", color: "#666", fontSize: 11, cursor: "pointer" },
+                }, "◂ Retour")
             ),
             React.createElement("button", {
                 onClick: handleSignOut,
@@ -5501,6 +5621,52 @@ function App({ session }) {
         const unsubscribe = OfflineSyncManager.subscribe(setOfflineState);
         return unsubscribe;
     }, []);
+    // Notifications : lues au chargement (offline-first, comme le reste),
+    // puis rafraîchies périodiquement uniquement au retour en ligne (pas de
+    // polling actif — on se raccroche à l'événement déjà écouté par
+    // OfflineSyncManager plutôt que d'ajouter un minuteur dédié).
+    const [notifications, setNotifications] = useState([]);
+    const loadNotificationsFromSupabase = async () => {
+        return loadTableOfflineFirst("notifications", async () => {
+            const { data, error } = await supabaseClient
+                .from("notifications")
+                .select("*")
+                .eq("recipient_id", session.user.id)
+                .order("created_at", { ascending: false });
+            if (error) throw error;
+            return data || [];
+        });
+    };
+    const refreshNotifications = useCallback(async () => {
+        if (!session?.user?.id) return;
+        try {
+            const rows = await loadNotificationsFromSupabase();
+            setNotifications(rows);
+        } catch (err) {
+            console.warn("Échec du rafraîchissement des notifications :", err);
+        }
+    }, [session?.user?.id]);
+    useEffect(() => {
+        if (offlineState.isOnline) refreshNotifications();
+    }, [offlineState.isOnline]);
+    const markNotificationRead = async (id) => {
+        setNotifications((prev) => prev.map((n) => n.id === id ? { ...n, is_read: true } : n));
+        try {
+            await supabaseClient.from("notifications").update({ is_read: true }).eq("id", id);
+        } catch (err) {
+            console.warn("Échec du marquage de la notification comme lue :", err);
+        }
+    };
+    const markAllNotificationsRead = async () => {
+        const unreadIds = notifications.filter((n) => !n.is_read).map((n) => n.id);
+        if (unreadIds.length === 0) return;
+        setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+        try {
+            await supabaseClient.from("notifications").update({ is_read: true }).in("id", unreadIds);
+        } catch (err) {
+            console.warn("Échec du marquage global des notifications comme lues :", err);
+        }
+    };
     useEffect(() => {
         if (!session?.user?.id) return;
         (async () => {
@@ -5572,13 +5738,14 @@ function App({ session }) {
         let cancelled = false;
         (async () => {
             try {
-                const [exercises, remoteSessions, remoteTemplates, remoteTeams, remotePrograms, remoteHistory] = await Promise.all([
+                const [exercises, remoteSessions, remoteTemplates, remoteTeams, remotePrograms, remoteHistory, remoteNotifications] = await Promise.all([
                     loadCustomExercisesFromSupabase(),
                     loadSessionsFromSupabase(),
                     loadTemplatesFromSupabase(),
                     loadTeamsFromSupabase(),
                     loadProgramsFromSupabase(),
                     loadHistoryFromSupabase(),
+                    loadNotificationsFromSupabase(),
                 ]);
                 if (cancelled) return;
                 setCustomExercises(exercises);
@@ -5587,6 +5754,7 @@ function App({ session }) {
                 setTeams(remoteTeams);
                 setPrograms(remotePrograms);
                 setHistory(remoteHistory);
+                setNotifications(remoteNotifications);
                 // Peuple les snapshots avec le contenu tel que reçu du serveur :
                 // l'effet de sync debounced comparera le contenu futur à ceci,
                 // donc un premier passage sans modification réelle ne poussera
@@ -6542,7 +6710,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             display: "block", width: "100%", padding: "10px 14px", border: "none", background: "none",
             textAlign: "left", cursor: "pointer", fontSize: 13, fontWeight: 600, color: sec.color,
             borderBottom: `1px solid ${C.border}`
-        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(ClubBtn, { onClick: () => importJSON(handleImport), variant: "ghost", size: "sm", style: { color: "#ccc", borderColor: "#555" } }, isMobile ? "\uD83D\uDCE5" : "\uD83D\uDCE5 Importer"), React.createElement(BackupMenu, { onExport: exportBackup, onImport: importBackup, onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }), React.createElement(OfflineIndicator, { offlineState: offlineState, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
+        }, onMouseEnter: e => e.currentTarget.style.background = sec.color + "10", onMouseLeave: e => e.currentTarget.style.background = "none" }, sec.l)))))), React.createElement(NotificationsMenu, { notifications: notifications, onMarkRead: markNotificationRead, onMarkAllRead: markAllNotificationsRead, isMobile: isMobile }), React.createElement(OfflineIndicator, { offlineState: offlineState, isMobile: isMobile }), React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, onExport: exportBackup, onImportBackup: importBackup, onImportJson: () => importJSON(handleImport), onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile }))), React.createElement("div", { style: { display: "flex", overflowX: isMobile ? "hidden" : "auto", WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } }, TABS.map((t) => (React.createElement("button", { key: t.k, onClick: () => setActiveTab(t.k), style: {
             padding: isMobile ? "6px 8px 5px" : "10px 14px",
             border: "none", background: "none", cursor: "pointer", flexShrink: 0,
             display: "flex", flexDirection: isMobile ? "column" : "row",
