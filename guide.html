@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide utilisateur — VolleyCoach Club</title>
+<style>
+:root{
+  --noir:#111111; --rouge:#C8102E; --or:#F0A500;
+  --or-light:#FFF3CC; --rouge-light:#FFF0F2;
+  --bg:#F5F5F5; --surface:#FFFFFF; --border:#E0E0E0;
+  --text:#111111; --muted:#666666; --hint:#999999;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6;
+}
+
+.topbar{
+  background:var(--noir); color:#fff; padding:14px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+  border-bottom:3px solid var(--or);
+}
+.topbar .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:17px;}
+.topbar .brand .dot{width:10px;height:10px;border-radius:99px;background:var(--rouge);flex-shrink:0;}
+.topbar .subtitle{font-size:12px; color:#aaa; font-weight:400;}
+.topbar button{
+  background:var(--or); color:#111; border:none; border-radius:8px;
+  padding:8px 14px; font-weight:700; font-size:13px; cursor:pointer;
+  display:none;
+}
+@media(max-width:860px){ .topbar button{display:inline-block;} }
+
+.layout{display:flex; max-width:1280px; margin:0 auto; align-items:flex-start;}
+.sidebar{
+  width:260px; flex-shrink:0; position:sticky; top:60px;
+  max-height:calc(100vh - 60px); overflow-y:auto;
+  padding:24px 12px 40px; border-right:1px solid var(--border);
+}
+.sidebar nav a{
+  display:block; padding:7px 12px; border-radius:8px; color:var(--muted);
+  text-decoration:none; font-size:13.5px; font-weight:600; margin-bottom:2px;
+  border-left:3px solid transparent;
+}
+.sidebar nav a:hover{background:var(--or-light); color:#111;}
+.sidebar nav a.sub{padding-left:26px; font-weight:400; font-size:12.5px;}
+.sidebar nav .grp{
+  font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--hint);
+  margin:18px 0 6px 12px; font-weight:700;
+}
+.sidebar nav .grp:first-child{margin-top:0;}
+
+@media(max-width:860px){
+  .sidebar{
+    position:fixed; top:0; left:0; height:100vh; max-height:100vh; width:280px;
+    background:var(--surface); z-index:200; transform:translateX(-100%);
+    transition:transform .25s ease; box-shadow:4px 0 24px rgba(0,0,0,.2);
+    padding-top:70px;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:150;}
+  .overlay.open{display:block;}
+}
+
+main{flex:1; min-width:0; padding:32px 40px 80px;}
+@media(max-width:860px){ main{padding:24px 20px 60px;} }
+
+.hero{
+  background:var(--noir); color:#fff; border-radius:16px; padding:36px 32px;
+  margin-bottom:36px; position:relative; overflow:hidden;
+}
+.hero::after{
+  content:""; position:absolute; top:-40px; right:-40px; width:180px; height:180px;
+  border-radius:99px; background:radial-gradient(circle, var(--or) 0%, transparent 70%);
+  opacity:.25;
+}
+.hero h1{font-size:clamp(24px,4vw,34px); font-weight:800; margin-bottom:8px;}
+.hero p{color:#ccc; font-size:15px; max-width:640px; position:relative;}
+.hero .badges{display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; position:relative;}
+.hero .badge{
+  background:rgba(240,165,0,.15); color:var(--or); border:1px solid var(--or);
+  border-radius:99px; padding:4px 12px; font-size:12px; font-weight:700;
+}
+
+section.section{margin-bottom:56px; scroll-margin-top:76px;}
+section.section h2{
+  font-size:22px; font-weight:800; color:var(--noir); margin-bottom:6px;
+  display:flex; align-items:center; gap:10px;
+}
+section.section h2 .icon{
+  width:34px; height:34px; border-radius:9px; background:var(--rouge);
+  color:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:16px; flex-shrink:0;
+}
+section.section > .lead{color:var(--muted); font-size:14.5px; margin-bottom:22px; max-width:680px;}
+
+h3.sub{
+  font-size:15.5px; font-weight:700; margin:26px 0 10px; color:var(--noir);
+  scroll-margin-top:76px;
+  padding-left:10px; border-left:3px solid var(--or);
+}
+h3.sub:first-of-type{margin-top:18px;}
+
+p{margin-bottom:12px; font-size:14.5px; max-width:720px;}
+ul, ol{margin:0 0 14px 20px; font-size:14.5px; max-width:700px;}
+li{margin-bottom:6px;}
+
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:18px 20px; margin-bottom:16px;
+}
+.card.tip{border-left:4px solid var(--or); background:var(--or-light);}
+.card.tip strong{color:#8a5f00;}
+.card.warn{border-left:4px solid var(--rouge); background:var(--rouge-light);}
+.card.warn strong{color:var(--rouge);}
+
+.steps{list-style:none; margin:0 0 16px; padding:0; counter-reset:step; max-width:700px;}
+.steps li{
+  counter-increment:step; position:relative; padding:4px 0 4px 40px; margin-bottom:10px;
+  font-size:14.5px;
+}
+.steps li::before{
+  content:counter(step); position:absolute; left:0; top:2px; width:26px; height:26px;
+  background:var(--noir); color:var(--or); border-radius:8px; font-weight:800;
+  font-size:12.5px; display:flex; align-items:center; justify-content:center;
+}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:760px; margin-bottom:16px;}
+@media(max-width:640px){ .grid2{grid-template-columns:1fr;} }
+.grid2 .card{margin-bottom:0;}
+
+table.roles{width:100%; max-width:700px; border-collapse:collapse; margin-bottom:18px; font-size:13.5px;}
+table.roles th, table.roles td{ text-align:left; padding:9px 12px; border-bottom:1px solid var(--border); }
+table.roles th{background:var(--noir); color:#fff; font-size:12px; text-transform:uppercase; letter-spacing:.5px;}
+table.roles tr:last-child td{border-bottom:none;}
+
+.pill{
+  display:inline-flex; align-items:center; gap:4px; background:var(--noir); color:var(--or);
+  border-radius:99px; padding:2px 10px; font-size:11.5px; font-weight:700;
+}
+
+.divider{height:1px; background:var(--border); margin:44px 0;}
+
+.badge-inline{display:inline-block; background:var(--or-light); color:#8a5f00; border-radius:6px; padding:1px 7px; font-size:12.5px; font-weight:700;}
+.badge-shared{display:inline-block; background:#EDE9FE; color:#7C3AED; border-radius:6px; padding:1px 7px; font-size:12.5px; font-weight:700;}
+
+footer{text-align:center; padding:30px 20px; color:var(--hint); font-size:12.5px; border-top:1px solid var(--border); margin-top:20px;}
+
+.sidebar nav a.active{background:var(--noir); color:var(--or); border-left-color:var(--rouge);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> VolleyCoach Club <span class="subtitle">— Guide utilisateur</span></div>
+  <button id="menuBtn">☰ Menu</button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <nav id="navList"></nav>
+  </aside>
+
+  <main id="mainContent">
+
+    <div class="hero">
+      <h1>Le guide complet de VolleyCoach Club</h1>
+      <p>Tout ce qu'il faut savoir pour préparer vos séances, suivre vos équipes et collaborer avec les autres coachs — du premier lancement jusqu'au partage avancé.</p>
+      <div class="badges">
+        <span class="badge">☁️ Synchronisation cloud</span>
+        <span class="badge">📴 Fonctionne hors ligne</span>
+        <span class="badge">🤝 Multi-coach</span>
+      </div>
+    </div>
+
+    <section class="section" id="prise-en-main">
+      <h2><span class="icon">🔑</span>Prise en main</h2>
+      <p class="lead">Comment se connecter et se repérer dans l'application.</p>
+
+      <h3 class="sub" id="connexion">Se connecter</h3>
+      <ol class="steps">
+        <li>Ouvrez l'application — l'écran de connexion s'affiche.</li>
+        <li>Saisissez l'email et le mot de passe qui vous ont été communiqués.</li>
+        <li>Validez. Au premier lancement, l'application télécharge le catalogue d'exercices et vos données : un court écran de chargement s'affiche.</li>
+      </ol>
+      <div class="card tip">
+        <strong>Bon à savoir —</strong> les comptes ne sont pas créés depuis l'application. Si vous n'avez pas encore d'accès, demandez-le à la personne qui administre VolleyCoach Club pour votre structure.
+      </div>
+
+      <h3 class="sub" id="ecran-principal">Se repérer dans l'écran principal</h3>
+      <p>En haut de l'écran, une barre regroupe :</p>
+      <ul>
+        <li>🔔 <strong>Notifications</strong> — vos alertes de partage et d'invitations d'équipe.</li>
+        <li>Un <strong>indicateur de connexion</strong> — il indique si vous êtes en ligne, en attente de synchronisation, ou hors ligne.</li>
+        <li>👤 <strong>Compte</strong> — votre profil, la sauvegarde de vos données et la déconnexion.</li>
+      </ul>
+      <p>En bas (ou sur le côté selon l'écran), les onglets principaux permettent de naviguer entre les sections : <strong>Séance</strong>, <strong>Bibliothèque</strong>, <strong>Programmes</strong>, <strong>Équipes</strong>, <strong>Outils</strong>.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="seances">
+      <h2><span class="icon">📋</span>Créer et gérer une séance</h2>
+      <p class="lead">La séance est l'unité de base de votre travail quotidien : une liste d'exercices, avec leurs séries, répétitions et temps de repos.</p>
+
+      <h3 class="sub" id="creer-seance">Créer une séance</h3>
+      <ol class="steps">
+        <li>Allez dans l'onglet <strong>Séance</strong>.</li>
+        <li>Touchez <strong>+ Nouvelle séance</strong>.</li>
+        <li>Donnez-lui un nom, choisissez la discipline (volley, fitness, pliométrie, mobilité, souplesse ou cross-training) et associez-la à une équipe si besoin.</li>
+      </ol>
+
+      <h3 class="sub" id="ajouter-exercices">Ajouter des exercices</h3>
+      <p>Depuis l'onglet <strong>Bibliothèque</strong>, parcourez les exercices par discipline et catégorie. Touchez un exercice pour voir son détail (description, étapes, muscles sollicités, matériel) puis <strong>Ajouter à la séance</strong>.</p>
+      <div class="grid2">
+        <div class="card">
+          <strong>Variantes</strong>
+          <p style="margin-bottom:0">Certains exercices proposent plusieurs variantes (ex. distance, orientation). Choisissez celle qui convient avant l'ajout — elle apparaît ensuite dans le nom de l'exercice au sein de la séance.</p>
+        </div>
+        <div class="card">
+          <strong>Évolutions</strong>
+          <p style="margin-bottom:0">D'autres exercices proposent des niveaux de progression (Év.1, Év.2…) pour faire évoluer la difficulté sans changer d'exercice.</p>
+        </div>
+      </div>
+
+      <h3 class="sub" id="regler-parametres">Régler séries, répétitions et repos</h3>
+      <p>Sur chaque carte d'exercice dans la séance, ajustez librement :</p>
+      <ul>
+        <li><strong>Séries</strong> — le nombre de répétitions du bloc.</li>
+        <li><strong>Répétitions ou durée</strong> — selon l'exercice, l'un ou l'autre (parfois les deux, la durée servant alors de repère pendant un travail en répétitions).</li>
+        <li><strong>Repos</strong> — le temps de récupération entre les séries.</li>
+        <li><strong>Note / Charge</strong> — un champ libre pour une consigne ou une charge à utiliser.</li>
+      </ul>
+      <p>Utilisez les flèches ▲▼ pour réordonner les exercices, la croix ✕ pour en retirer un, et l'icône ⇄ pour le remplacer par un autre.</p>
+
+      <h3 class="sub" id="modele">Enregistrer comme modèle</h3>
+      <p>Une séance qui revient régulièrement peut être sauvegardée comme <strong>modèle</strong> (dans le menu de la séance) pour être réutilisée sans tout reconstruire. Retrouvez vos modèles — et ceux fournis par défaut avec l'application — dans le panneau <strong>Modèles</strong>.</p>
+
+      <h3 class="sub" id="lancer">Lancer une séance</h3>
+      <p>Le bouton <strong>🚀 Lancer</strong> ouvre le mode d'exécution, pensé pour être utilisé pendant l'entraînement :</p>
+      <ul>
+        <li>Cochez chaque exercice au fur et à mesure qu'il est réalisé.</li>
+        <li>Touchez <strong>⏱ Timer</strong> sur un exercice à durée pour lancer un minuteur dédié, avec le nom complet de l'exercice (y compris sa variante) affiché en grand.</li>
+        <li>Le bouton <strong>✓ Terminé</strong> clôture la séance et l'enregistre dans l'historique.</li>
+      </ul>
+      <div class="card tip">
+        <strong>Mode Poste —</strong> pour un entraînement organisé en ateliers tournants (plusieurs groupes de joueurs sur des exercices différents en simultané), utilisez <strong>⚙️ Mode</strong> pour configurer des colonnes ou des circuits, puis lancez la séance normalement.
+      </div>
+
+      <h3 class="sub" id="note-export">Note et export</h3>
+      <p>Le bouton <strong>📝 Note</strong> permet d'ajouter un commentaire libre à la séance. <strong>🖨️</strong> génère un export imprimable, et le menu d'export propose une version pour vous (coach) ou une version simplifiée pour les joueurs.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="exercices-perso">
+      <h2><span class="icon">✏️</span>Créer vos propres exercices</h2>
+      <p class="lead">Le catalogue ne couvre pas tout : vous pouvez ajouter vos propres exercices, visibles au même titre que les autres dans la Bibliothèque.</p>
+      <ol class="steps">
+        <li>Dans l'onglet <strong>Bibliothèque</strong>, touchez <strong>+ Créer un exercice</strong>.</li>
+        <li>Renseignez son nom, sa catégorie, sa description et les autres champs utiles.</li>
+        <li>Enregistrez : il apparaît désormais dans la bibliothèque avec le badge <span class="badge-inline">✏️ Custom</span>.</li>
+      </ol>
+      <p>Un exercice personnalisé peut être modifié ou partagé à tout moment — voir la section <a href="#partage">Partager avec les autres coachs</a>.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="equipes">
+      <h2><span class="icon">👥</span>Équipes et joueurs</h2>
+      <p class="lead">L'onglet Équipes centralise vos effectifs, leurs séances personnalisées, les objectifs de la saison et l'historique.</p>
+
+      <h3 class="sub" id="creer-equipe">Créer une équipe</h3>
+      <ol class="steps">
+        <li>Onglet <strong>Équipes</strong> → <strong>+ Nouvelle équipe</strong>.</li>
+        <li>Nommez-la et choisissez sa discipline principale (volley, fitness…).</li>
+      </ol>
+      <div class="card warn">
+        <strong>Le poste (volley) —</strong> le champ « Poste » d'un joueur (Pointu, Central, Passeur, Libéro…) n'apparaît que pour une équipe de volley : les autres disciplines n'ont pas cette notion.
+      </div>
+
+      <h3 class="sub" id="joueurs">Gérer les joueurs</h3>
+      <p>Dans une équipe dépliée, l'onglet <strong>👥 Joueurs</strong> permet d'ajouter un joueur (nom, poste, niveau, notes) et, pour chacun, de lui créer une <strong>séance personnalisée</strong> distincte des séances collectives de l'équipe.</p>
+
+      <h3 class="sub" id="objectifs">Objectifs de saison</h3>
+      <p>L'onglet <strong>Objectifs</strong> d'une équipe permet de lister ce que vous souhaitez travailler sur la saison et de cocher ce qui est atteint.</p>
+
+      <h3 class="sub" id="historique-equipe">Historique de l'équipe</h3>
+      <p>Chaque séance terminée (la vôtre, et celles des coachs avec qui vous partagez cette équipe) apparaît dans l'onglet <strong>Historique</strong> de l'équipe : nom de la séance, date, taux de complétion.</p>
+
+      <h3 class="sub" id="membres">Membres et invitations</h3>
+      <p>L'onglet <strong>🧑‍🤝‍🧑 Membres</strong> liste les coachs qui ont accès à cette équipe.</p>
+      <ol class="steps">
+        <li>Tapez le nom du coach à inviter dans le champ de recherche.</li>
+        <li>Sélectionnez-le dans la liste de suggestions.</li>
+        <li>Une invitation lui est envoyée — elle apparaît dans ses <strong>notifications</strong>, avec un bouton pour l'accepter ou la refuser.</li>
+      </ol>
+      <p>Une fois membre, chaque coach a un rôle :</p>
+      <table class="roles">
+        <tr><th>Rôle</th><th>Peut faire</th></tr>
+        <tr><td><strong>Propriétaire</strong></td><td>Tout — y compris gérer les rôles des autres membres et les retirer de l'équipe.</td></tr>
+        <tr><td><strong>Éditeur</strong></td><td>Consulter et modifier les joueurs, séances, programmes de l'équipe.</td></tr>
+        <tr><td><strong>Lecteur</strong></td><td>Consulter uniquement, sans modifier.</td></tr>
+      </table>
+      <p>Seul le <strong>propriétaire</strong> peut changer le rôle d'un membre ou le retirer de l'équipe.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="programmes">
+      <h2><span class="icon">📅</span>Programmes</h2>
+      <p class="lead">Un programme organise plusieurs séances dans le temps — une préparation physique sur plusieurs semaines, par exemple.</p>
+      <ol class="steps">
+        <li>Onglet <strong>Programmes</strong> → <strong>+ Nouveau programme</strong>.</li>
+        <li>Donnez-lui un nom et une description.</li>
+        <li>Ajoutez les séances qui le composent et organisez-les dans le temps (durée, nombre de séances par semaine).</li>
+        <li>Associez-le à une équipe ou à un joueur si besoin.</li>
+      </ol>
+      <p>Comme pour les séances, un programme peut être exporté (version coach ou version joueurs) et partagé avec d'autres coachs.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="historique-perso">
+      <h2><span class="icon">🕘</span>Historique</h2>
+      <p class="lead">Chaque séance marquée « Terminée » est enregistrée dans l'historique, avec la date, le taux de réalisation et le temps passé.</p>
+      <p>L'historique regroupe automatiquement vos propres séances et celles de vos coéquipiers pour les équipes que vous partagez. Vous pouvez effacer <strong>votre propre</strong> historique depuis ce panneau — jamais celui des autres coachs.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="partage">
+      <h2><span class="icon">🔗</span>Partager avec les autres coachs</h2>
+      <p class="lead">Séances, exercices personnalisés, modèles et programmes peuvent tous être partagés avec vos collègues, de deux façons complémentaires.</p>
+
+      <h3 class="sub" id="deux-facons">Les deux façons de partager</h3>
+      <div class="grid2">
+        <div class="card">
+          <strong>☑️ Partage par équipe</strong>
+          <p style="margin-bottom:0">En cochant « Visible par tout coach d'une équipe en commun », l'élément devient visible par <em>tous</em> les coachs qui partagent au moins une équipe avec vous — sans avoir à les choisir un par un.</p>
+        </div>
+        <div class="card">
+          <strong>🔍 Partage ciblé</strong>
+          <p style="margin-bottom:0">En recherchant un coach par son nom, vous partagez l'élément avec cette seule personne — utile pour un partage ponctuel, sans lien avec une équipe.</p>
+        </div>
+      </div>
+      <p>Les deux peuvent être utilisés en même temps sur un même élément.</p>
+
+      <h3 class="sub" id="quoi-partager">Ce qui peut être partagé</h3>
+      <table class="roles">
+        <tr><th>Élément</th><th>Où trouver le bouton de partage</th></tr>
+        <tr><td>Séance</td><td>Icône <span class="pill">🔗</span> dans la barre d'actions de la séance ouverte</td></tr>
+        <tr><td>Exercice personnalisé</td><td>Ouvrez le détail de l'exercice depuis la Bibliothèque</td></tr>
+        <tr><td>Modèle</td><td>Dépliez le modèle dans le panneau Modèles</td></tr>
+        <tr><td>Programme</td><td>Icône <span class="pill">🔗</span> sur la carte du programme, onglet Équipes</td></tr>
+      </table>
+
+      <h3 class="sub" id="comment-partager">Partager un élément — pas à pas</h3>
+      <ol class="steps">
+        <li>Ouvrez l'écran de partage de l'élément concerné (voir le tableau ci-dessus).</li>
+        <li>Cochez la case si vous voulez le rendre visible à toute une équipe en commun.</li>
+        <li>Ou bien tapez le nom d'un coach dans le champ de recherche et sélectionnez-le dans la liste pour un partage ciblé.</li>
+        <li>Le coach destinataire voit désormais l'élément apparaître dans son application, à la prochaine synchronisation.</li>
+      </ol>
+      <p>Pour retirer un partage ciblé, ouvrez à nouveau l'écran de partage et touchez <strong>Retirer</strong> à côté du nom du coach concerné.</p>
+
+      <h3 class="sub" id="cascade">Le partage automatique des exercices utilisés</h3>
+      <p>Quand vous partagez une <strong>séance</strong> qui contient un ou plusieurs de vos exercices personnalisés, ceux-ci sont automatiquement partagés en même temps — sinon le coach destinataire verrait la séance mais pas le détail de ces exercices. Cette cascade s'applique aussi bien au partage par équipe qu'au partage ciblé.</p>
+      <div class="card tip">
+        <strong>À savoir —</strong> si vous ajoutez un nouvel exercice personnalisé à une séance <em>déjà</em> partagée, pensez à décocher puis recocher le partage (ou à re-choisir le coach) pour que ce nouvel exercice soit inclus à son tour.
+      </div>
+
+      <h3 class="sub" id="voir-partages">Ce que vous voyez quand quelque chose vous est partagé</h3>
+      <p>Un exercice personnalisé partagé par un autre coach porte le badge <span class="badge-shared">🔗 Partagé par …</span> plutôt que <span class="badge-inline">✏️ Custom</span> — vous pouvez l'utiliser dans vos séances, mais seul son auteur peut le modifier ou le supprimer.</p>
+      <p>Une séance partagée avec vous s'ouvre normalement, mais affiche la mention <strong>« Séance partagée — lecture seule »</strong> : vous pouvez la consulter, la lancer et l'exécuter, mais pas modifier son contenu, la renommer ou la supprimer — cela reste la main de son créateur.</p>
+
+      <h3 class="sub" id="notifications">Notifications</h3>
+      <p>La cloche 🔔 dans la barre supérieure prévient de toute nouvelle invitation d'équipe ou activité de partage. Un chiffre rouge indique le nombre de notifications non lues. Touchez une notification pour la marquer comme lue, ou <strong>Tout marquer lu</strong> pour les traiter d'un coup.</p>
+      <p>Une invitation à rejoindre une équipe affiche directement deux boutons <strong>Accepter</strong> / <strong>Refuser</strong> dans la notification elle-même.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="hors-ligne">
+      <h2><span class="icon">📴</span>Utiliser l'application hors ligne</h2>
+      <p class="lead">Sur le terrain, la connexion n'est pas toujours fiable. VolleyCoach Club continue de fonctionner sans réseau.</p>
+
+      <h3 class="sub" id="fonctionnement-hl">Comment ça fonctionne</h3>
+      <p>Une fois que vous vous êtes connecté au moins une fois avec du réseau, toutes vos données (catalogue, séances, exercices, équipes…) restent disponibles sur l'appareil, même en avion ou en salle sans couverture.</p>
+      <ul>
+        <li>Vous pouvez <strong>consulter</strong> toutes vos données hors ligne.</li>
+        <li>Vous pouvez <strong>créer et modifier</strong> des séances hors ligne — les changements sont mémorisés localement.</li>
+        <li>Dès que le réseau revient, tout se synchronise automatiquement avec le cloud.</li>
+      </ul>
+
+      <h3 class="sub" id="indicateur">L'indicateur de connexion</h3>
+      <p>Le petit badge dans la barre supérieure indique l'état en temps réel :</p>
+      <ul>
+        <li><span class="pill">🟢 À jour</span> — tout est synchronisé.</li>
+        <li><span class="pill">🟠 X en attente</span> — des changements locaux n'ont pas encore été envoyés (pas de réseau, ou envoi en cours).</li>
+        <li><span class="pill">⚪ Hors ligne</span> — aucune connexion actuellement disponible.</li>
+      </ul>
+      <div class="card tip">
+        <strong>Pas d'inquiétude à avoir —</strong> rien n'est jamais perdu : vos actions sont conservées sur l'appareil et envoyées dès que possible, sans action de votre part.
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="compte-donnees">
+      <h2><span class="icon">👤</span>Compte et données</h2>
+      <p class="lead">Le menu <strong>👤 Compte</strong>, en haut à droite, regroupe tout ce qui concerne votre profil et vos données.</p>
+
+      <h3 class="sub" id="profil">Votre profil</h3>
+      <p>Modifiez votre nom d'affichage — c'est celui que les autres coachs verront dans les recherches de partage et les listes de membres — et changez votre mot de passe.</p>
+
+      <h3 class="sub" id="donnees-sauvegarde">Sauvegarde et synchronisation</h3>
+      <p>Dans <strong>💾 Données</strong> :</p>
+      <ul>
+        <li><strong>☁️ Synchroniser</strong> — force un envoi immédiat de vos données vers le cloud.</li>
+        <li><strong>☁️ Récupérer depuis le cloud</strong> — recharge vos données depuis le serveur.</li>
+        <li><strong>📤 Exporter .coachback</strong> — télécharge une sauvegarde complète de vos données sur votre appareil.</li>
+        <li><strong>📥 Importer .coachback / JSON</strong> — restaure une sauvegarde ou importe un fichier partagé par un autre moyen.</li>
+      </ul>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section" id="faq">
+      <h2><span class="icon">❓</span>Questions fréquentes</h2>
+
+      <h3 class="sub" id="faq-1">Je ne trouve pas un exercice, que faire ?</h3>
+      <p>Vérifiez d'abord que vous êtes dans la bonne discipline (volley, fitness, pliométrie…). S'il n'existe vraiment pas, vous pouvez le créer vous-même — voir <a href="#exercices-perso">Créer vos propres exercices</a>.</p>
+
+      <h3 class="sub" id="faq-2">Pourquoi je ne peux pas modifier cette séance ?</h3>
+      <p>Elle vous a probablement été partagée par un autre coach — seul son créateur peut la modifier. Regardez si la mention « Séance partagée » apparaît.</p>
+
+      <h3 class="sub" id="faq-3">J'ai fait des changements hors ligne, où sont-ils passés ?</h3>
+      <p>Ils sont bien conservés sur votre appareil et s'enverront automatiquement au retour du réseau. Regardez l'indicateur de connexion pour suivre l'état de l'envoi.</p>
+
+      <h3 class="sub" id="faq-4">Comment retirer un coach d'une équipe ?</h3>
+      <p>Seul le propriétaire de l'équipe peut le faire, depuis l'onglet <strong>Membres</strong> de l'équipe concernée.</p>
+    </section>
+
+  </main>
+</div>
+
+<footer>VolleyCoach Club — Guide utilisateur</footer>
+
+<script>
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const menuBtn = document.getElementById('menuBtn');
+menuBtn.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); });
+overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
+document.getElementById('navList').addEventListener('click', (e) => {
+  if (e.target.tagName === 'A'){ sidebar.classList.remove('open'); overlay.classList.remove('open'); }
+});
+
+const nav = document.getElementById('navList');
+const headings = document.querySelectorAll('main h2, main h3.sub');
+headings.forEach(h => {
+  if (h.tagName === 'H2'){
+    const grp = document.createElement('div'); grp.className='grp'; grp.textContent = h.textContent.trim();
+    nav.appendChild(grp);
+  }
+  const a = document.createElement('a');
+  a.href = '#' + h.id;
+  a.textContent = h.dataset.short || h.textContent.trim();
+  if (h.tagName === 'H3') a.classList.add('sub');
+  nav.appendChild(a);
+});
+
+const links = nav.querySelectorAll('a');
+const sections = Array.from(headings);
+function onScroll(){
+  let current = sections[0];
+  for (const h of sections){ if (h.getBoundingClientRect().top < 100) current = h; }
+  links.forEach(l => l.classList.toggle('active', current && l.getAttribute('href') === '#' + current.id));
+}
+document.addEventListener('scroll', onScroll);
+onScroll();
+</script>
+</body>
+</html>
