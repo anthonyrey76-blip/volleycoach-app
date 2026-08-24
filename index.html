@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.15.1</title>
+<title>VolleyCoach Club v2.15.3</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.15.1";
+const APP_VERSION = "2.15.3";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -1821,7 +1821,7 @@ function SessionPreviewModal({ session, onClose, onShowExercise, onLaunch }) {
                 }))));
 }
 
-function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport, onLaunch, onShowExercise }) {
+function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport, onLaunch, onShowExercise, onCascadeShareIsShared, onCascadeShareTargeted }) {
     const isMobile = useIsMobile();
     const [collapsedProgs, setCollapsedProgs] = useState({});
     const toggleCollapse = (pid) => setCollapsedProgs(p => ({ ...p, [pid]: !p[pid] }));
@@ -1942,7 +1942,12 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
             React.createElement(ShareControls, {
                 objectId: shareProgModal.id, table: "programs", sharesTable: "program_shares",
                 isShared: !!shareProgModal.is_shared,
-                onToggleShared: (val) => { onSave({ ...shareProgModal, is_shared: val }); setShareProgModal((p) => p ? { ...p, is_shared: val } : p); },
+                onToggleShared: async (val) => {
+                    onSave({ ...shareProgModal, is_shared: val });
+                    setShareProgModal((p) => p ? { ...p, is_shared: val } : p);
+                    await onCascadeShareIsShared?.(shareProgModal, val);
+                },
+                onTargetShared: (coachId) => onCascadeShareTargeted?.(shareProgModal, coachId),
             })
         )
     ))));
@@ -2426,7 +2431,7 @@ function TeamMembersTab({ teamId, myUserId }) {
     );
 }
 
-function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram, onLaunch, onExportPlayer, myUserId }) {
+function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram, onLaunch, onExportPlayer, myUserId, onCascadeShareIsShared, onCascadeShareTargeted }) {
     const isMobile = useIsMobile();
     const [expandedTeam, setExpandedTeam] = useState(null);
     const [teamTab, setTeamTab] = useState({}); // { teamId: 'joueurs'|'seances'|'programmes'|'historique' }
@@ -2565,7 +2570,12 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
                 React.createElement(ShareControls, {
                     objectId: shareProgModal.id, table: "programs", sharesTable: "program_shares",
                     isShared: !!shareProgModal.is_shared,
-                    onToggleShared: (val) => { onSaveProgram({ ...shareProgModal, is_shared: val }); setShareProgModal((p) => p ? { ...p, is_shared: val } : p); },
+                    onToggleShared: async (val) => {
+                        onSaveProgram({ ...shareProgModal, is_shared: val });
+                        setShareProgModal((p) => p ? { ...p, is_shared: val } : p);
+                        await onCascadeShareIsShared?.(shareProgModal, val);
+                    },
+                    onTargetShared: (coachId) => onCascadeShareTargeted?.(shareProgModal, coachId),
                 })
             )
         ))));
@@ -6458,6 +6468,53 @@ function App({ session }) {
             }
         }
     };
+    // Même cascade que pour les séances, mais un programme référence des
+    // séances entières (sessionIds) plutôt que des exercices directement :
+    // on résout d'abord les séances liées, puis on cumule les exercices
+    // custom de chacune, avant d'appliquer le même partage que ci-dessus.
+    const linkedSessionsInProgram = (prog) => sessions.filter((s) => (prog.sessionIds || []).includes(s.id));
+    const customExerciseIdsInProgram = (prog) => {
+        const linkedSessions = linkedSessionsInProgram(prog);
+        const idSet = new Set();
+        linkedSessions.forEach((s) => customExerciseIdsInSession(s).forEach((id) => idSet.add(id)));
+        return [...idSet];
+    };
+    // Cascade complète de partage d'un programme : programme → ses séances
+    // (sessionIds) → les exercices custom de ces séances. Un programme
+    // partagé sans que ses séances le soient aussi laisserait le coach
+    // destinataire voir la structure du programme sans jamais pouvoir
+    // ouvrir aucune de ses séances (la RLS de sessions les lui masquerait).
+    const cascadeShareProgramIsShared = async (prog, isShared) => {
+        const linkedSessions = linkedSessionsInProgram(prog);
+        for (const sess of linkedSessions) {
+            if (!!sess.is_shared !== isShared) {
+                setSessions((p) => p.map((s) => s.id === sess.id ? { ...s, is_shared: isShared } : s));
+            }
+        }
+        const ids = customExerciseIdsInProgram(prog);
+        for (const id of ids) {
+            const ex = customExercises.find((e) => e.id === id);
+            if (ex && !!ex.is_shared !== isShared) await toggleExerciseShared(id, isShared);
+        }
+    };
+    const cascadeShareProgramTargeted = async (prog, coachId) => {
+        const linkedSessions = linkedSessionsInProgram(prog);
+        for (const sess of linkedSessions) {
+            try {
+                await supabaseClient.from("session_shares").insert({ session_id: sess.id, shared_with: coachId });
+            } catch {
+                // Déjà partagé avec ce coach ou autre souci mineur : on continue.
+            }
+        }
+        const ids = customExerciseIdsInProgram(prog);
+        for (const id of ids) {
+            try {
+                await supabaseClient.from("custom_exercise_shares").insert({ exercise_id: id, shared_with: coachId });
+            } catch {
+                // Déjà partagé avec ce coach ou autre souci mineur : on continue.
+            }
+        }
+    };
     // DB per section
     const DB = {
         volley: VOLLEY_DB_RAW,
@@ -6511,6 +6568,14 @@ function App({ session }) {
             name: (src.name || "Séance") + " (copie)",
             items: (src.items || []).map((it) => ({ ...it })),
             createdAt: Date.now(),
+            // Une copie est une toute nouvelle séance, appartenant au coach
+            // qui duplique — jamais partagée, quel que soit l'état de partage
+            // de la séance source (is_shared, ownership hérité du chargement
+            // via _ownedByMe). Sans ça, dupliquer une séance partagée
+            // produisait une "copie" qui restait visiblement liée au
+            // partage/propriétaire d'origine.
+            is_shared: false,
+            _ownedByMe: true,
         };
         setSessions((p) => [...p, dup]);
         setCurrentSessionId(id);
@@ -6728,9 +6793,15 @@ function App({ session }) {
     const persistProgram = async (prog) => {
         const isNew = !prog.id || !programs.some((p) => p.id === prog.id);
         const id = prog.id && !isNew ? prog.id : crypto.randomUUID();
+        // owner_id ne doit JAMAIS être réécrit sur un programme qui n'est pas
+        // le mien (cas d'un éditeur non-propriétaire modifiant un programme
+        // partagé) — sinon on volerait la propriété au vrai créateur. Pour un
+        // nouveau programme, je suis nécessairement le propriétaire.
+        const existing = programs.find((p) => p.id === id);
+        const ownerId = existing && existing._ownedByMe === false ? undefined : session.user.id;
         const row = {
             id,
-            owner_id: session.user.id,
+            ...(ownerId ? { owner_id: ownerId } : {}),
             team_id: prog.teamId || null,
             player_id: prog.playerId || null,
             name: prog.name || "Programme",
@@ -6738,16 +6809,42 @@ function App({ session }) {
         };
         await cachePut("programs", id, row.data);
         await OfflineSyncManager.enqueue("programs", "upsert", row);
-        return { ...prog, id };
+        return { ...prog, id, _ownedByMe: existing ? existing._ownedByMe : true };
     };
 
     const loadProgramsFromSupabase = async () => {
         return loadTableOfflineFirst("programs", async () => {
-            const { data, error } = await supabaseClient.from("programs").select("id, data").eq("owner_id", session.user.id);
+            const { data, error } = await supabaseClient.from("programs").select("id, owner_id, data");
             if (error) throw error;
+            // Pas de filtre owner_id ici : la policy RLS autorise déjà
+            // exactement ce qu'il faut voir (mes programmes, ET ceux
+            // partagés avec moi via is_shared/équipe commune ou partage
+            // ciblé) — même raisonnement que pour sessions/session_history.
             // id de la ligne prioritaire sur data.id (même raison que pour templates).
-            return (data || []).map((row) => ({ ...row.data, id: row.id }));
+            // _ownedByMe conservé pour exclure les programmes partagés de la
+            // sauvegarde (voir persistProgram) — on ne doit jamais réécrire
+            // owner_id sur un programme qui n'est pas le mien.
+            return (data || []).map((row) => ({ ...row.data, id: row.id, _ownedByMe: row.owner_id === session.user.id }));
         });
+    };
+
+    // Re-cascade automatique : si le programme sauvegardé est déjà partagé
+    // (is_shared ou ciblé), toute nouvelle séance ajoutée par n'importe quel
+    // éditeur doit être partagée avec les mêmes destinataires — sinon un
+    // programme collaboratif se retrouverait avec des séances invisibles
+    // pour certains membres au fil des modifications. On relit les
+    // destinataires actuels à chaque sauvegarde plutôt que de les mémoriser,
+    // pour rester exact même si le partage a changé entre-temps.
+    const reCascadeProgramShareIfNeeded = async (prog) => {
+        try {
+            const { data: shareRows } = await supabaseClient
+                .from("program_shares").select("shared_with").eq("program_id", prog.id);
+            const targetedIds = (shareRows || []).map((r) => r.shared_with);
+            if (prog.is_shared) await cascadeShareProgramIsShared(prog, true);
+            for (const coachId of targetedIds) await cascadeShareProgramTargeted(prog, coachId);
+        } catch (err) {
+            console.warn("Échec de la re-cascade de partage du programme :", err);
+        }
     };
 
     const saveProgram = async (prog) => {
@@ -6762,6 +6859,7 @@ function App({ session }) {
                 }
                 return [...p, saved];
             });
+            if (saved.is_shared || !saved.id) await reCascadeProgramShareIfNeeded(saved);
         } catch {
             // Erreur déjà signalée dans persistProgram.
         }
@@ -7568,7 +7666,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             style: { width: "100%", marginTop: 6, padding: "8px 10px",
                 border: "2px dashed #D1D5DB", borderRadius: 10,
                 background: "none", color: "#9CA3AF", cursor: "pointer", fontSize: 13 }
-        }, "\u23F8 + Ajouter une pause / transition")))))), activeTab === "programs" && (React.createElement(ProgramBuilder, { sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); } })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
+        }, "\u23F8 + Ajouter une pause / transition")))))), activeTab === "programs" && (React.createElement(ProgramBuilder, { sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
     React.createElement("div", { style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "20px", textAlign: "center" } },
         React.createElement("div", { style: { fontSize: 36, marginBottom: 10 } }, "\uD83C\uDFD0"),
         React.createElement("div", { style: { fontWeight: 700, fontSize: 15, marginBottom: 6 } }, "Scoreur de match"),
