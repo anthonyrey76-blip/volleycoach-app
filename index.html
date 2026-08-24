@@ -3734,22 +3734,22 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
         : isRepsWait ? ('Série ' + curSet + '/' + totalSets + ' — à vous')
         : ('Série ' + curSet + '/' + totalSets);
 
-    var ctrlBtns = React.createElement('div', { style: { display: 'flex', gap: big ? Math.round(10*scale) : 6 } },
+    var ctrlBtns = React.createElement('div', { style: { display: 'flex', gap: big ? Math.round(8*scale) : 6, justifyContent: 'center', alignItems: 'center' } },
         !isDone && (isRunning || isPaused2) && React.createElement('button', {
             onClick: pauseResume,
-            style: { padding: big ? Math.round(8*scale)+'px '+Math.round(18*scale)+'px' : '3px 10px', borderRadius: 8, border: 'none', background: isPaused2 ? '#10B981' : '#F59E0B', color: isPaused2 ? '#fff' : '#000', cursor: 'pointer', fontSize: big ? Math.round(15*scale) : 11, fontWeight: 700 }
+            style: { padding: big ? Math.round(5*scale)+'px '+Math.round(16*scale)+'px' : '3px 10px', borderRadius: 8, border: 'none', background: isPaused2 ? '#10B981' : '#F59E0B', color: isPaused2 ? '#fff' : '#000', cursor: 'pointer', fontSize: big ? Math.round(13*scale) : 11, fontWeight: 700 }
         }, isPaused2 ? '▶ Reprendre' : '⏸ Pause'),
         React.createElement('button', {
             onClick: resetTimer,
-            style: { padding: big ? Math.round(8*scale)+'px '+Math.round(14*scale)+'px' : '3px 8px', borderRadius: 8, border: '1px solid #444', background: 'none', color: '#888', cursor: 'pointer', fontSize: big ? Math.round(15*scale) : 11 }
+            style: { padding: big ? Math.round(5*scale)+'px '+Math.round(12*scale)+'px' : '3px 8px', borderRadius: 8, border: '1px solid #444', background: 'none', color: '#888', cursor: 'pointer', fontSize: big ? Math.round(13*scale) : 11 }
         }, '↺'),
         React.createElement('button', {
             onClick: function(e) { e.stopPropagation(); onClose && onClose(); },
-            style: { background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: big ? Math.round(20*scale) : 13 }
+            style: { background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: big ? Math.round(17*scale) : 13 }
         }, '✕'));
 
-    var dotSize = big ? Math.round(30*scale) : 20;
-    var dotFont = big ? Math.round(13*scale) : 9;
+    var dotSize = big ? Math.round(20*scale) : 20;
+    var dotFont = big ? Math.round(10*scale) : 9;
 
     // Taille du nom adaptative : un nom long doit rétrécir pour ne jamais repousser
     // le cercle et les boutons hors de la zone visible du panneau (surtout en mobile,
@@ -3776,14 +3776,14 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
             isRepsWait
                 ? React.createElement('button', {
                     onClick: completeRepsSet,
-                    style: { width: big ? 'min(' + svgSize + 'px, 38vh, 60vw)' : svgSize, height: big ? 'min(' + svgSize + 'px, 38vh, 60vw)' : svgSize, aspectRatio: '1', borderRadius: '50%', flexShrink: 1, border: (big ? 5 : 3) + 'px solid ' + C.rouge,
+                    style: { width: big ? 'min(' + svgSize + 'px, 44vh, 65vw)' : svgSize, height: big ? 'min(' + svgSize + 'px, 44vh, 65vw)' : svgSize, aspectRatio: '1', borderRadius: '50%', flexShrink: 1, border: (big ? 5 : 3) + 'px solid ' + C.rouge,
                         background: C.rouge + '20', color: C.rouge, fontWeight: 800, fontSize: big ? Math.round(20*scale) : 11, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', lineHeight: 1.2 }
                 }, item.session_reps
                     ? (big ? '✓\n' + item.session_reps + ' r\u00E9p.\nfaites' : '✓ ' + item.session_reps + '\nr\u00E9p.')
                     : (big ? '✓\nSérie faite' : '✓ Série\nfaite'))
                 : React.createElement('div', { style: big
-                    ? { position: 'relative', width: 'min(' + svgSize + 'px, 38vh, 60vw)', height: 'min(' + svgSize + 'px, 38vh, 60vw)', aspectRatio: '1', flexShrink: 1 }
+                    ? { position: 'relative', width: 'min(' + svgSize + 'px, 44vh, 65vw)', height: 'min(' + svgSize + 'px, 44vh, 65vw)', aspectRatio: '1', flexShrink: 1 }
                     : { position: 'relative', width: svgSize, height: svgSize, flexShrink: 0 } },
                     React.createElement('svg', { viewBox: '0 0 ' + svgSize + ' ' + svgSize, style: { transform: 'rotate(-90deg)', width: '100%', height: '100%', display: 'block' } },
                         React.createElement('circle', { cx: String(svgSize/2), cy: String(svgSize/2), r: R, fill: 'none', stroke: '#333', strokeWidth: big ? Math.round(10*scale) : 5 }),
