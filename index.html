@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.15.3</title>
+<title>VolleyCoach Club v2.15.4</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.15.3";
+const APP_VERSION = "2.15.4";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -6795,13 +6795,18 @@ function App({ session }) {
         const id = prog.id && !isNew ? prog.id : crypto.randomUUID();
         // owner_id ne doit JAMAIS être réécrit sur un programme qui n'est pas
         // le mien (cas d'un éditeur non-propriétaire modifiant un programme
-        // partagé) — sinon on volerait la propriété au vrai créateur. Pour un
-        // nouveau programme, je suis nécessairement le propriétaire.
+        // partagé) — sinon on volerait la propriété au vrai créateur. Mais il
+        // faut néanmoins TOUJOURS l'envoyer explicitement (jamais l'omettre) :
+        // un upsert Supabase peut évaluer la policy d'insertion même sur un
+        // conflit existant, qui exige owner_id = auth.uid() — l'omettre fait
+        // échouer l'upsert avec une erreur RLS 42501 pour tout non-propriétaire.
         const existing = programs.find((p) => p.id === id);
-        const ownerId = existing && existing._ownedByMe === false ? undefined : session.user.id;
+        const ownerId = existing?._ownedByMe === false && existing?._ownerId
+            ? existing._ownerId
+            : session.user.id;
         const row = {
             id,
-            ...(ownerId ? { owner_id: ownerId } : {}),
+            owner_id: ownerId,
             team_id: prog.teamId || null,
             player_id: prog.playerId || null,
             name: prog.name || "Programme",
@@ -6809,7 +6814,7 @@ function App({ session }) {
         };
         await cachePut("programs", id, row.data);
         await OfflineSyncManager.enqueue("programs", "upsert", row);
-        return { ...prog, id, _ownedByMe: existing ? existing._ownedByMe : true };
+        return { ...prog, id, _ownedByMe: existing ? existing._ownedByMe : true, _ownerId: existing?._ownerId };
     };
 
     const loadProgramsFromSupabase = async () => {
@@ -6821,10 +6826,10 @@ function App({ session }) {
             // partagés avec moi via is_shared/équipe commune ou partage
             // ciblé) — même raisonnement que pour sessions/session_history.
             // id de la ligne prioritaire sur data.id (même raison que pour templates).
-            // _ownedByMe conservé pour exclure les programmes partagés de la
-            // sauvegarde (voir persistProgram) — on ne doit jamais réécrire
-            // owner_id sur un programme qui n'est pas le mien.
-            return (data || []).map((row) => ({ ...row.data, id: row.id, _ownedByMe: row.owner_id === session.user.id }));
+            // _ownedByMe / _ownerId conservés pour un upsert RLS-valide sur un
+            // programme partagé (voir persistProgram) : owner_id doit
+            // toujours être envoyé explicitement, jamais omis ni réécrit.
+            return (data || []).map((row) => ({ ...row.data, id: row.id, _ownedByMe: row.owner_id === session.user.id, _ownerId: row.owner_id }));
         });
     };
 
