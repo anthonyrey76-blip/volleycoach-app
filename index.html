@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.15.4</title>
+<title>VolleyCoach Club v2.15.5</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.15.4";
+const APP_VERSION = "2.15.5";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -6864,7 +6864,12 @@ function App({ session }) {
                 }
                 return [...p, saved];
             });
-            if (saved.is_shared || !saved.id) await reCascadeProgramShareIfNeeded(saved);
+            // Toujours re-cascader, sans condition préalable : le programme
+            // peut être partagé uniquement via partage ciblé (program_shares,
+            // sans is_shared) — reCascadeProgramShareIfNeeded vérifie déjà les
+            // deux cas en interne, donc restreindre l'appel ici à is_shared
+            // seul faisait manquer toute re-cascade sur un partage ciblé.
+            await reCascadeProgramShareIfNeeded(saved);
         } catch {
             // Erreur déjà signalée dans persistProgram.
         }
