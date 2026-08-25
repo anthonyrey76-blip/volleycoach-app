@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.15.6</title>
+<title>VolleyCoach Club v2.15.7</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.15.6";
+const APP_VERSION = "2.15.7";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -1832,14 +1832,19 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
     const [slotDrag, setSlotDrag] = useState(null);
     const [shareProgModal, setShareProgModal] = useState(null); // programme dont la modale de partage est ouverte
     const [progDetailEx, setProgDetailEx] = useState(null); // sid of expanded session
-    const [doneSessions, setDoneSessions] = useState({}); // { progId_sid: bool }
     const [previewSess, setPreviewSess] = useState(null);
     const [form, setForm] = useState({ name: "", description: "", coach_name: "", teamId: "", playerId: "", sessionIds: [], schedule: [] });
-    const toggleDone = (progId, sid) => {
-        const key = `${progId}_${sid}`;
-        setDoneSessions(prev => ({ ...prev, [key]: !prev[key] }));
+    // Le statut "réalisé" d'une séance dans un programme est stocké directement
+    // dans les données du programme (doneSessions: { sid: bool }), au même
+    // titre que sessionIds/weekSlots — plutôt qu'un state React local, qui ne
+    // persistait jamais et se réinitialisait à chaque rechargement, sans
+    // jamais être synchronisé ni partagé avec les autres coachs.
+    const toggleDone = (prog, sid) => {
+        const done = { ...(prog.doneSessions || {}) };
+        done[sid] = !done[sid];
+        onSave({ ...prog, doneSessions: done });
     };
-    const isDone = (progId, sid) => !!doneSessions[`${progId}_${sid}`];
+    const isDone = (prog, sid) => !!prog.doneSessions?.[sid];
     const startNew = () => {
         setForm({ id: generateId(), name: `Programme ${programs.length + 1}`, description: "", sessionIds: [], schedule: [] });
         setShowNew(true);
@@ -1894,14 +1899,14 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
         const t = (teams || []).find(x => x.id === prog.teamId);
         return t ? React.createElement("span", { style: { fontSize: 10, color: C.muted, background: C.bg, borderRadius: 4, padding: '1px 7px', border: `1px solid ${C.border}` } }, "\uD83D\uDC65 ", t.name, prog.playerId ? ` · 👤 ${(t.players || []).find(p => p.id === prog.playerId)?.name || ''}` : '') : null;
     })()), prog.description && React.createElement("p", { style: { fontSize: 12, color: C.muted, margin: "4px 0 0" } }, prog.description), React.createElement("div", { style: { fontSize: 11, color: C.hint, marginTop: 4, display: "flex", gap: 8, alignItems: "center" } }, React.createElement("span", null, prog.sessionIds?.length || 0, " s\u00E9ance", (prog.sessionIds?.length || 0) > 1 ? "s" : ""), prog.durationWeeks && React.createElement("span", null, "\u00B7 ", prog.durationWeeks, " sem."), prog.sessionsPerWeek && React.createElement("span", null, "\u00B7 ", prog.sessionsPerWeek, "\u00D7/sem."), prog.sessionIds?.length > 0 && (() => {
-        const doneCount = (prog.sessionIds || []).filter(sid => isDone(prog.id, sid)).length;
+        const doneCount = (prog.sessionIds || []).filter(sid => isDone(prog, sid)).length;
         const total = prog.sessionIds.length;
         return doneCount > 0 ? (React.createElement("span", { style: { color: "#10B981", fontWeight: 600 } }, "\u2713 ", doneCount, "/", total, " r\u00E9alis\u00E9e", doneCount > 1 ? "s" : "")) : null;
     })())), React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, React.createElement(ClubBtn, { onClick: () => startEdit(prog), variant: "ghost", size: "sm" }, "✏️"), React.createElement(ShareMenu, { onShare: () => setShareProgModal(prog), onExportCoach: () => onExport(prog, "coach"), onExportPlayers: () => onExport(prog, "players") }), React.createElement(ClubBtn, { onClick: () => onDelete(prog.id), variant: "danger", size: "sm" }, "🗑"), prog.sessionIds?.length > 0 && React.createElement(ClubBtn, { onClick: () => toggleCollapse(prog.id), variant: "ghost", size: "sm", style: { marginLeft: 8 } }, collapsedProgs[prog.id] ? "▶" : "▼"))), prog.sessionIds?.length > 0 && !collapsedProgs[prog.id] && (React.createElement("div", { style: { marginTop: 10 } }, prog.durationWeeks && prog.sessionsPerWeek
         ? renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave,
         function(sess, k) { onLaunch(sess); },
-        function(k) { return !!doneSessions[prog.id + "_" + k]; },
-        function(k) { setDoneSessions(function(p) { var dk = prog.id + "_" + k; return Object.assign({}, p, { [dk]: !p[dk] }); }); },
+        function(k) { return isDone(prog, k); },
+        function(k) { toggleDone(prog, k); },
         function(sess) { setPreviewSess(sess); },
         isMobile)
         : null, !(prog.durationWeeks && prog.sessionsPerWeek)
@@ -1910,12 +1915,12 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
             const sched = prog.schedule?.find((s) => s.sessId === sid) || {};
             const isExpanded = expandedSess === sid;
             const secColor = sess?.section ? ({ volley: C.rouge, fitness: "#7C3AED", mobilite: "#3B82F6", souplesse: "#10B981" }[sess.section] || C.rouge) : C.rouge;
-            return (React.createElement("div", { key: sid, style: { background: isDone(prog.id, sid) ? "#F0FDF4" : C.bg, borderRadius: 8, overflow: "hidden", border: `1px solid ${isDone(prog.id, sid) ? "#10B981" : isExpanded ? secColor : C.border}`, opacity: isDone(prog.id, sid) ? 0.8 : 1 } }, React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "8px 10px" } }, React.createElement("button", { onClick: (e) => { e.stopPropagation(); toggleDone(prog.id, sid); }, title: isDone(prog.id, sid) ? "Marquer non réalisée" : "Marquer réalisée", style: {
+            return (React.createElement("div", { key: sid, style: { background: isDone(prog, sid) ? "#F0FDF4" : C.bg, borderRadius: 8, overflow: "hidden", border: `1px solid ${isDone(prog, sid) ? "#10B981" : isExpanded ? secColor : C.border}`, opacity: isDone(prog, sid) ? 0.8 : 1 } }, React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "8px 10px" } }, React.createElement("button", { onClick: (e) => { e.stopPropagation(); toggleDone(prog, sid); }, title: isDone(prog, sid) ? "Marquer non réalisée" : "Marquer réalisée", style: {
                     width: 22, height: 22, borderRadius: 6, flexShrink: 0, cursor: "pointer",
-                    border: `2px solid ${isDone(prog.id, sid) ? "#10B981" : "#D1D5DB"}`,
-                    background: isDone(prog.id, sid) ? "#10B981" : "transparent",
+                    border: `2px solid ${isDone(prog, sid) ? "#10B981" : "#D1D5DB"}`,
+                    background: isDone(prog, sid) ? "#10B981" : "transparent",
                     color: "#fff", fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center"
-                } }, isDone(prog.id, sid) ? "✓" : ""), React.createElement("span", { style: { fontWeight: 700, fontSize: 11, color: isDone(prog.id, sid) ? "#10B981" : secColor, minWidth: 20 } }, "J", i + 1), React.createElement("span", { style: { fontSize: 12, fontWeight: 600, flex: 1, textDecoration: isDone(prog.id, sid) ? "line-through" : "none", color: isDone(prog.id, sid) ? C.muted : C.text } }, sess?.name || `Séance supprimée (${sid})`), sess && React.createElement("span", { style: { fontSize: 10, background: secColor + "15", color: secColor, borderRadius: 99, padding: "1px 7px", fontWeight: 600 } }, sess.section), sess && React.createElement("span", { style: { fontSize: 10, color: C.hint } }, sess.items?.length || 0, " ex."), sched.date && React.createElement("span", { style: { fontSize: 10, color: "#3B82F6", flexShrink: 0 } }, "\uD83D\uDCC5 ", sched.date), sched.gapDays && React.createElement("span", { style: { fontSize: 10, color: C.muted, flexShrink: 0 } }, "+", sched.gapDays, "j"), sess && sess.items?.length > 0 && (React.createElement("button", { onClick: () => setExpandedSess(isExpanded ? null : sid), style: { background: "none", border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px", cursor: "pointer", fontSize: 11, color: C.muted, flexShrink: 0 } }, isExpanded ? "▲ Fermer" : "▼ Contenu")), sess && !isDone(prog.id, sid) && React.createElement(ClubBtn, { onClick: () => onLaunch(sess), variant: "primary", size: "sm" }, "\uD83D\uDE80 Lancer")), isExpanded && sess && (React.createElement("div", { style: { borderTop: `1px solid ${secColor}30`, background: C.surface, padding: "10px 12px" } }, sched.note && (React.createElement("div", { style: { fontSize: 11, color: C.or, background: C.orLight, borderRadius: 6, padding: "5px 10px", marginBottom: 8, borderLeft: `3px solid ${C.or}` } }, "\uD83C\uDFAF ", sched.note)), React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" } }, React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, sess.items.length, " exercice", sess.items.length > 1 ? "s" : ""), React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, "\u2248 ", Math.ceil(sessionEstimatedTime(sess.items) / 60), " min"), React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, sess.items.reduce((a, e) => a + (e.session_sets || 3), 0), " s\u00E9ries")), sess.items.map((item, j) => {
+                } }, isDone(prog, sid) ? "✓" : ""), React.createElement("span", { style: { fontWeight: 700, fontSize: 11, color: isDone(prog, sid) ? "#10B981" : secColor, minWidth: 20 } }, "J", i + 1), React.createElement("span", { style: { fontSize: 12, fontWeight: 600, flex: 1, textDecoration: isDone(prog, sid) ? "line-through" : "none", color: isDone(prog, sid) ? C.muted : C.text } }, sess?.name || `Séance supprimée (${sid})`), sess && React.createElement("span", { style: { fontSize: 10, background: secColor + "15", color: secColor, borderRadius: 99, padding: "1px 7px", fontWeight: 600 } }, sess.section), sess && React.createElement("span", { style: { fontSize: 10, color: C.hint } }, sess.items?.length || 0, " ex."), sched.date && React.createElement("span", { style: { fontSize: 10, color: "#3B82F6", flexShrink: 0 } }, "\uD83D\uDCC5 ", sched.date), sched.gapDays && React.createElement("span", { style: { fontSize: 10, color: C.muted, flexShrink: 0 } }, "+", sched.gapDays, "j"), sess && sess.items?.length > 0 && (React.createElement("button", { onClick: () => setExpandedSess(isExpanded ? null : sid), style: { background: "none", border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px", cursor: "pointer", fontSize: 11, color: C.muted, flexShrink: 0 } }, isExpanded ? "▲ Fermer" : "▼ Contenu")), sess && !isDone(prog, sid) && React.createElement(ClubBtn, { onClick: () => onLaunch(sess), variant: "primary", size: "sm" }, "\uD83D\uDE80 Lancer")), isExpanded && sess && (React.createElement("div", { style: { borderTop: `1px solid ${secColor}30`, background: C.surface, padding: "10px 12px" } }, sched.note && (React.createElement("div", { style: { fontSize: 11, color: C.or, background: C.orLight, borderRadius: 6, padding: "5px 10px", marginBottom: 8, borderLeft: `3px solid ${C.or}` } }, "\uD83C\uDFAF ", sched.note)), React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" } }, React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, sess.items.length, " exercice", sess.items.length > 1 ? "s" : ""), React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, "\u2248 ", Math.ceil(sessionEstimatedTime(sess.items) / 60), " min"), React.createElement("span", { style: { fontSize: 11, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 6, padding: "3px 8px" } }, sess.items.reduce((a, e) => a + (e.session_sets || 3), 0), " s\u00E9ries")), sess.items.map((item, j) => {
                 const itemNameBase = item.titre || item.name || "Exercice";
                 const itemName = item._variantLabel ? `${itemNameBase} — ${item._variantLabel}` : item._evolutionLabel ? `${itemNameBase} (Év.${item._evolution?.numero ?? ""})` : itemNameBase;
                 const dur = item.session_mode === 'reps' ? undefined : (item.session_duration || item.duration_seconds || item.hold_seconds);
