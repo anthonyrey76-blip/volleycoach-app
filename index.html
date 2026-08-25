@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.15.5</title>
+<title>VolleyCoach Club v2.15.6</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.15.5";
+const APP_VERSION = "2.15.6";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -6844,7 +6844,13 @@ function App({ session }) {
         try {
             const { data: shareRows } = await supabaseClient
                 .from("program_shares").select("shared_with").eq("program_id", prog.id);
-            const targetedIds = (shareRows || []).map((r) => r.shared_with);
+            const targetedIds = new Set((shareRows || []).map((r) => r.shared_with));
+            // Le propriétaire réel du programme doit aussi recevoir le partage
+            // des nouvelles séances/exercices ajoutés par un éditeur — sinon,
+            // quand l'éditeur (destinataire du partage) ajoute du contenu, la
+            // cascade ne le partagerait qu'avec les AUTRES destinataires
+            // listés dans program_shares, jamais avec le vrai propriétaire.
+            if (prog._ownerId && prog._ownerId !== session.user.id) targetedIds.add(prog._ownerId);
             if (prog.is_shared) await cascadeShareProgramIsShared(prog, true);
             for (const coachId of targetedIds) await cascadeShareProgramTargeted(prog, coachId);
         } catch (err) {
