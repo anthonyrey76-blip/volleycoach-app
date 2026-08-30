@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.16.2</title>
+<title>VolleyCoach Club v2.16.3</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.16.2";
+const APP_VERSION = "2.16.3";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -287,7 +287,18 @@ const OfflineSyncManager = (() => {
             // la connexion retombe au milieu de l'opération. payload contient
             // { teamRow, coachId, players, objectives }.
             const { teamRow, coachId, players, objectives } = payload;
-            let { error } = await supabaseClient.from("teams").upsert(teamRow);
+            // upsert() seul échoue systématiquement avec une erreur RLS sur
+            // cette table (comportement PostgREST : ON CONFLICT DO UPDATE
+            // exige d'évaluer la policy update même quand la ligne n'existe
+            // pas encore, ce qui échoue pour une équipe toute neuve avant
+            // que team_members ne soit peuplé). On contourne en tentant
+            // d'abord un insert propre, puis un update explicite si la ligne
+            // existe déjà (code Postgres 23505, violation de contrainte
+            // unique) — chaque opération n'évalue alors que sa propre policy.
+            let { error } = await supabaseClient.from("teams").insert(teamRow);
+            if (error && error.code === "23505") {
+                ({ error } = await supabaseClient.from("teams").update(teamRow).eq("id", teamRow.id));
+            }
             if (error) throw error;
 
             ({ error } = await supabaseClient.from("team_members").upsert(
