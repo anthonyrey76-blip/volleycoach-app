@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.16.3</title>
+<title>VolleyCoach Club v2.16.4</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.16.3";
+const APP_VERSION = "2.16.4";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -275,6 +275,30 @@ const OfflineSyncManager = (() => {
     // Applique un item de la queue vers Supabase. Chaque table a une forme
     // de payload légèrement différente (upsert direct vs suppression), mais
     // toutes utilisent le même schéma { table, op, payload }.
+    // ── insertOrUpdate ──
+    // Contournement générique du piège RLS rencontré sur plusieurs tables :
+    // upsert() avec ON CONFLICT DO UPDATE force PostgREST/Postgres à évaluer
+    // la policy update même quand la ligne n'existe pas encore — ce qui
+    // échoue systématiquement pour une ligne toute neuve dont la policy
+    // update dépend d'une autre ligne pas encore créée (team_members pour
+    // teams, player_teams pour players, etc.). On tente un insert propre, et
+    // seulement en cas de vrai conflit (23505) on bascule sur un update
+    // explicite — chaque opération n'évalue alors que sa propre policy.
+    // rows peut être un objet unique ou un tableau ; conflictColumns sert à
+    // construire le .eq() de l'update en cas de conflit.
+    async function insertOrUpdate(table, rows, conflictColumns) {
+        const list = Array.isArray(rows) ? rows : [rows];
+        for (const row of list) {
+            let { error } = await supabaseClient.from(table).insert(row);
+            if (error && error.code === "23505") {
+                let query = supabaseClient.from(table).update(row);
+                for (const col of conflictColumns) query = query.eq(col, row[col]);
+                ({ error } = await query);
+            }
+            if (error) throw error;
+        }
+    }
+
     async function applyQueueItem(item) {
         const { table, op, payload } = item;
         if (op === "delete") {
@@ -287,25 +311,10 @@ const OfflineSyncManager = (() => {
             // la connexion retombe au milieu de l'opération. payload contient
             // { teamRow, coachId, players, objectives }.
             const { teamRow, coachId, players, objectives } = payload;
-            // upsert() seul échoue systématiquement avec une erreur RLS sur
-            // cette table (comportement PostgREST : ON CONFLICT DO UPDATE
-            // exige d'évaluer la policy update même quand la ligne n'existe
-            // pas encore, ce qui échoue pour une équipe toute neuve avant
-            // que team_members ne soit peuplé). On contourne en tentant
-            // d'abord un insert propre, puis un update explicite si la ligne
-            // existe déjà (code Postgres 23505, violation de contrainte
-            // unique) — chaque opération n'évalue alors que sa propre policy.
-            let { error } = await supabaseClient.from("teams").insert(teamRow);
-            if (error && error.code === "23505") {
-                ({ error } = await supabaseClient.from("teams").update(teamRow).eq("id", teamRow.id));
-            }
-            if (error) throw error;
+            let error;
+            await insertOrUpdate("teams", teamRow, ["id"]);
 
-            ({ error } = await supabaseClient.from("team_members").upsert(
-                { team_id: teamRow.id, coach_id: coachId, role: "owner" },
-                { onConflict: "team_id,coach_id" }
-            ));
-            if (error) throw error;
+            await insertOrUpdate("team_members", { team_id: teamRow.id, coach_id: coachId, role: "owner" }, ["team_id", "coach_id"]);
 
             const { data: existingPlayers } = await supabaseClient
                 .from("player_teams").select("player_id").eq("team_id", teamRow.id);
@@ -317,19 +326,17 @@ const OfflineSyncManager = (() => {
                     id: p.id, first_name: p.name, last_name: "", created_by: coachId,
                     poste: p.poste, niveau: p.niveau, notes: p.notes,
                 }));
-                ({ error } = await supabaseClient.from("players").upsert(playerRows));
-                if (error) throw error;
+                await insertOrUpdate("players", playerRows, ["id"]);
 
                 const linkRows = players.map((p) => ({ player_id: p.id, team_id: teamRow.id }));
-                ({ error } = await supabaseClient.from("player_teams").upsert(linkRows, { onConflict: "player_id,team_id" }));
-                if (error) throw error;
+                await insertOrUpdate("player_teams", linkRows, ["player_id", "team_id"]);
 
                 for (const p of players) {
                     for (const sess of p.sessions || []) {
-                        await supabaseClient.from("sessions").upsert({
+                        await insertOrUpdate("sessions", {
                             id: sess.id, owner_id: coachId, team_id: teamRow.id, player_id: p.id,
                             name: sess.name || "Séance", data: sess,
-                        });
+                        }, ["id"]);
                     }
                 }
             }
@@ -340,13 +347,15 @@ const OfflineSyncManager = (() => {
 
             await supabaseClient.from("team_objectives").delete().eq("team_id", teamRow.id);
             if (objectives.length > 0) {
-                await supabaseClient.from("team_objectives").upsert(
+                // Table déjà vidée juste au-dessus pour cette équipe : un
+                // simple insert suffit, jamais de conflit possible ici.
+                const { error: objError } = await supabaseClient.from("team_objectives").insert(
                     objectives.map((o) => ({ id: o.id, team_id: teamRow.id, text: o.text, done: !!o.done }))
                 );
+                if (objError) throw objError;
             }
         } else {
-            const { error } = await supabaseClient.from(table).upsert(payload);
-            if (error) throw error;
+            await insertOrUpdate(table, payload, ["id"]);
         }
     }
 
