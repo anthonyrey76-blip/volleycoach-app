@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v2.16.4</title>
+<title>VolleyCoach Club v2.16.5</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,sans-serif;background:#F5F5F5;-webkit-text-size-adjust:100%;overflow-x:hidden}
@@ -51,7 +51,7 @@ G.ReactDOM={
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "2.16.4";
+const APP_VERSION = "2.16.5";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
 // Remplacer les deux valeurs ci-dessous par celles de ton projet Supabase
@@ -2322,6 +2322,8 @@ function TeamMembersTab({ teamId, myUserId }) {
     const [searching, setSearching] = useState(false);
     const [inviteError, setInviteError] = useState(null);
     const [inviteLoading, setInviteLoading] = useState(false);
+    const [pendingInvites, setPendingInvites] = useState([]);
+    const [loadingInvites, setLoadingInvites] = useState(true);
 
     const loadMembers = useCallback(async () => {
         setLoading(true);
@@ -2347,6 +2349,45 @@ function TeamMembersTab({ teamId, myUserId }) {
     }, [teamId]);
 
     useEffect(() => { loadMembers(); }, [loadMembers]);
+
+    // Invitations envoyées pour cette équipe, pas encore résolues — permet
+    // au coach qui invite de voir qu'une demande est en cours, et de
+    // l'annuler si besoin, plutôt que de n'avoir aucune visibilité tant que
+    // l'invité n'a pas répondu.
+    const loadPendingInvites = useCallback(async () => {
+        setLoadingInvites(true);
+        try {
+            const { data, error } = await supabaseClient
+                .from("team_join_requests")
+                .select("id, invited_coach_id")
+                .eq("team_id", teamId)
+                .eq("status", "pending");
+            if (error) throw error;
+            const rows = data || [];
+            if (rows.length > 0) {
+                const { data: names } = await supabaseClient.rpc("resolve_coach_names", { p_ids: rows.map((r) => r.invited_coach_id) });
+                const nameById = Object.fromEntries((names || []).map((n) => [n.id, n.display_name]));
+                setPendingInvites(rows.map((r) => ({ ...r, display_name: nameById[r.invited_coach_id] || "Coach" })));
+            } else {
+                setPendingInvites([]);
+            }
+        } catch (err) {
+            console.warn("Échec du chargement des invitations en attente :", err.message || err);
+        } finally {
+            setLoadingInvites(false);
+        }
+    }, [teamId]);
+
+    useEffect(() => { loadPendingInvites(); }, [loadPendingInvites]);
+
+    const handleCancelInvite = async (requestId) => {
+        try {
+            await supabaseClient.from("team_join_requests").update({ status: "denied", resolved_at: new Date().toISOString() }).eq("id", requestId);
+            await loadPendingInvites();
+        } catch (err) {
+            console.warn("Échec de l'annulation de l'invitation :", err.message || err);
+        }
+    };
 
     const myRole = members.find((m) => m.coach_id === myUserId)?.role;
     const isOwner = myRole === "owner";
@@ -2385,6 +2426,7 @@ function TeamMembersTab({ teamId, myUserId }) {
             }
             setNameQuery("");
             setSuggestions([]);
+            await loadPendingInvites();
         } catch (err) {
             setInviteError(err.message || "Une erreur est survenue.");
         } finally {
@@ -2439,6 +2481,24 @@ function TeamMembersTab({ teamId, myUserId }) {
                     }, "Retirer")
                 )
             ))
+        ),
+        pendingInvites.length > 0 && React.createElement("div", { style: { marginBottom: 14 } },
+            React.createElement("div", { style: { fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: C.muted, marginBottom: 7 } }, "Invitations en attente"),
+            React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } },
+                pendingInvites.map((inv) => React.createElement("div", {
+                    key: inv.id,
+                    style: { display: "flex", alignItems: "center", justifyContent: "space-between", background: C.bg, border: `1px dashed ${C.border}`, borderRadius: 8, padding: "8px 12px" }
+                },
+                    React.createElement("div", { style: { fontSize: 13 } },
+                        inv.display_name,
+                        React.createElement("span", { style: { color: C.hint, fontWeight: 400, marginLeft: 6, fontSize: 11 } }, "\u23F3 en attente")
+                    ),
+                    React.createElement("button", {
+                        onClick: () => handleCancelInvite(inv.id),
+                        style: { background: "none", border: "none", color: C.rouge, cursor: "pointer", fontSize: 13 },
+                    }, "Annuler")
+                ))
+            )
         ),
         React.createElement("div", { style: { fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: C.muted, marginBottom: 7 } }, "Inviter un coach"),
         React.createElement("div", { style: { position: "relative" } },
