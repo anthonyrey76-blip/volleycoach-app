@@ -1,0 +1,60 @@
+# Publie le site sur GitHub Pages :
+#   branche main -> https://anthonyrey76-blip.github.io/volleycoach-app/      (production)
+#   branche dev  -> https://anthonyrey76-blip.github.io/volleycoach-app/dev/  (test)
+# Chaque publication reconstruit les deux, quelle que soit la branche poussée.
+# Prérequis (une fois) : Settings > Pages > Source = "GitHub Actions".
+name: Publier le site (main + dev)
+
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Récupérer main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: src-main
+
+      - name: Récupérer dev
+        id: dev
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: dev
+          path: src-dev
+
+      - name: Assembler le site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' src-main/ _site/
+          if [ -d src-dev ] && [ -f src-dev/index.html ]; then
+            mkdir -p _site/dev
+            rsync -a --exclude '.git' --exclude '.github' src-dev/ _site/dev/
+          fi
+          ls -la _site _site/dev 2>/dev/null || true
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
