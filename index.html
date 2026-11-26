@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.0.0</title>
+<title>VolleyCoach Club v3.1.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -258,6 +258,164 @@ button{color:inherit}
 @keyframes vcSheet{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
 @keyframes vcSpin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* ── 3.1 : Séances et Lancer ───────────────────────────────────────── */
+.vc-sess-layout{display:grid;grid-template-columns:320px minmax(0,1fr);gap:20px;align-items:start}
+.vc-sess-aside{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:2px}
+.vc-sess-main{min-width:0}
+.vc-back{display:none}
+@media (max-width:1099px){.vc-sess-layout{grid-template-columns:280px minmax(0,1fr);gap:16px}}
+@media (max-width:767px){
+  .vc-sess-layout{display:block}
+  .vc-sess-aside{position:static;max-height:none;overflow:visible;padding:0}
+  .vc-sess-layout[data-view="list"] .vc-sess-main{display:none}
+  .vc-sess-layout[data-view="editor"] .vc-sess-aside{display:none}
+  .vc-back{display:inline-flex;align-items:center;gap:4px;height:40px;margin:-6px 0 6px -6px;padding:0 8px;border:none;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+}
+.vc-sess-browser{display:flex;flex-direction:column;gap:10px}
+.vc-seg--tabs{margin:0;grid-template-columns:repeat(3,minmax(0,1fr))}
+.vc-seg--tabs button{height:38px;font-size:13px}
+.vc-seg-count{font-size:11px;color:var(--hint);font-weight:600;margin-left:2px}
+.vc-search{display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.vc-search input{flex:1;min-width:0;border:none;background:none;outline:none;font:inherit;font-size:14px;color:var(--text)}
+.vc-chips--sm{padding:0}
+.vc-chips--sm .vc-chip{height:32px;padding:0 11px;font-size:12px}
+.vc-sess-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.vc-sess-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;text-align:left;cursor:pointer;box-sizing:border-box}
+.vc-sess-item:hover{border-color:var(--line-strong)}
+.vc-sess-item.is-active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.vc-sess-bar{width:6px;align-self:stretch;min-height:36px;border-radius:3px;flex:0 0 6px}
+.vc-sess-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.vc-sess-name{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vc-sess-meta{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vc-sess-shared{display:inline-flex;align-items:center;gap:2px;color:var(--violet-text)}
+
+.vc-sess-head{padding:18px;display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+.vc-readonly{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--tint-violet);color:var(--violet-text);font-size:13px;line-height:1.4}
+.vc-readonly strong{font-weight:700}
+.vc-sess-title-row{display:flex;align-items:flex-start;gap:10px}
+.vc-sess-title{flex:1;min-width:0;margin:0;font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.25;cursor:text}
+.vc-sess-title .vc-inline-icon{vertical-align:middle;margin-left:4px}
+.vc-title-input{flex:1;height:44px;font-size:18px;font-weight:600}
+.vc-inline-icon{border:none;background:none;color:var(--hint);cursor:pointer;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px}
+.vc-inline-icon:hover{background:var(--surface-2);color:var(--text)}
+.vc-sess-pills{display:flex;gap:8px;flex-wrap:wrap}
+.vc-pill-select,.vc-pill-btn{position:relative;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;border-radius:999px;background:var(--surface-2);border:1px solid transparent;color:var(--text);font:inherit;font-size:13px;font-weight:500;cursor:pointer}
+.vc-pill-select select{appearance:none;-webkit-appearance:none;border:none;background:transparent;color:inherit;font:inherit;padding:0 14px 0 0;cursor:pointer;outline:none;max-width:180px}
+.vc-pill-select::after{content:"";position:absolute;right:12px;top:50%;width:6px;height:6px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.vc-pill-select select:disabled{cursor:default}
+.vc-pill-btn.is-on{background:var(--accent-soft);color:var(--accent-text);border-color:var(--accent)}
+.vc-sess-stats{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.vc-sess-stats strong{color:var(--text);font-weight:700;font-size:15px}
+.vc-sess-actions{display:flex;gap:10px;flex-wrap:wrap}
+.vc-sess-actions .vc-btn--gold{flex:0 1 220px}
+@media (max-width:767px){.vc-sess-actions .vc-btn{flex:1}.vc-sess-title{font-size:21px}}
+
+/* Cartes d'exercice */
+.vc-row-wrap{display:flex;gap:4px;align-items:stretch;border-top:2px solid transparent;user-select:none}
+.vc-row-wrap.is-over{border-top-color:var(--brand)}
+.vc-grip{display:flex;align-items:center;padding:0 2px;color:var(--hint);cursor:grab}
+@media (max-width:767px){.vc-grip{display:none}}
+.vc-ex-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 14px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.vc-ex-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cat,var(--line))}
+.vc-ex-top{display:flex;align-items:flex-start;gap:10px}
+.vc-ex-num{flex:0 0 28px;height:28px;border-radius:8px;background:var(--text);color:var(--bg);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.vc-ex-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.vc-ex-name{border:none;background:none;padding:0;text-align:left;font:inherit;font-weight:600;font-size:15px;color:var(--text);cursor:pointer;line-height:1.3}
+.vc-ex-name:hover{text-decoration:underline;text-underline-offset:3px}
+.vc-ex-tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.vc-tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:var(--surface-2);font-size:12px;color:var(--muted)}
+.vc-tag--accent{background:var(--accent-soft);color:var(--accent-text);font-weight:600}
+.vc-row-tools{display:flex;gap:2px;flex:0 0 auto}
+.vc-tool{width:34px;height:34px;border-radius:9px;border:none;background:none;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-tool:hover:not(:disabled){background:var(--surface-2);color:var(--text)}
+.vc-tool:disabled{opacity:.3;cursor:default}
+.vc-tool--danger:hover:not(:disabled){color:var(--brand-text)}
+.vc-ex-params{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.vc-stepper{display:flex;flex-direction:column;gap:5px}
+.vc-stepper-label{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.vc-stepper-row{display:flex;align-items:center;height:40px;border-radius:11px;background:var(--surface-2);overflow:hidden}
+.vc-stepper-row button{width:38px;height:40px;border:none;background:none;color:var(--text);font-size:20px;font-weight:500;cursor:pointer;line-height:1}
+.vc-stepper-row button:hover:not(:disabled){background:var(--ghost-hover)}
+.vc-stepper-row button:disabled{opacity:.3;cursor:default}
+.vc-stepper-row input{width:44px;height:40px;border:none;background:none;text-align:center;font:inherit;font-weight:700;font-size:15px;color:var(--text);-moz-appearance:textfield}
+.vc-stepper-row input::-webkit-inner-spin-button,.vc-stepper-row input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.vc-stepper-suffix{font-size:12px;color:var(--muted);margin:0 2px 0 -6px}
+.vc-mini-seg{display:flex;height:40px;padding:3px;border-radius:11px;background:var(--surface-2);box-sizing:border-box;gap:2px}
+.vc-mini-seg button{border:none;background:none;border-radius:8px;padding:0 12px;font:inherit;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer}
+.vc-mini-seg button.is-active{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.vc-ex-note{flex:1 1 180px}
+.vc-ex-note .vc-field{height:40px}
+.vc-lbl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.vc-num{height:36px;width:64px;padding:0 6px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:inherit;font-size:14px;font-weight:600;text-align:center;box-sizing:border-box}
+.vc-dur{display:flex;align-items:center;gap:5px;height:40px}
+.vc-dur .vc-num{width:50px;height:40px}
+.vc-dur span{font-size:12px;color:var(--muted)}
+.vc-pause-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;border:1px dashed var(--line-strong);background:var(--surface-2);color:var(--muted)}
+.vc-pause-name{flex:1 1 120px;font-weight:600;color:var(--text);font-size:14px}
+.vc-insert{position:relative;height:18px;display:flex;align-items:center;justify-content:center}
+.vc-insert::before{content:"";position:absolute;left:28px;right:8px;top:50%;height:1px;background:transparent;transition:background .15s}
+.vc-insert:hover::before,.vc-insert.is-open::before{background:var(--line-strong)}
+.vc-insert-btn{position:relative;width:26px;height:18px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--hint);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:.6}
+.vc-insert:hover .vc-insert-btn{opacity:1;color:var(--text);border-color:var(--line-strong)}
+.vc-insert.is-open{height:auto;padding:4px 0}
+.vc-insert-menu{position:relative;display:flex;gap:6px;align-items:center;padding:4px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.vc-add-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.vc-add-btn{flex:1 1 200px;min-height:48px;border-radius:14px;border:2px dashed var(--line-strong);background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.vc-add-btn:hover{color:var(--text);border-color:var(--muted)}
+.vc-empty-card{padding:36px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--muted)}
+.vc-empty-card h3{margin:0;font-family:var(--font-display);font-size:18px;color:var(--text)}
+
+/* Lancer : plein écran */
+.vc-run{position:fixed;inset:0;z-index:3000;display:flex;flex-direction:column;background:#08080A;color:#F5F5F4;overflow:hidden;touch-action:manipulation;font-family:var(--font)}
+.vc-run-head{display:flex;align-items:center;gap:12px;padding:12px 16px calc(8px);padding-top:max(12px,env(safe-area-inset-top))}
+.vc-run-icon{width:44px;height:44px;flex:0 0 44px;border-radius:12px;border:none;background:#17171B;color:#F5F5F4;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-run-title{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.vc-run-name{font-family:var(--font-display);font-weight:700;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vc-run-sub{display:flex;align-items:center;gap:8px;font-size:13px;color:#A3A3AD}
+.vc-run-status{font-size:11px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:6px;background:#1E1E22;color:#A3A3AD;border:none;font-family:inherit}
+.vc-run-status.is-live{background:rgba(52,195,143,.16);color:#5EE0A0;cursor:pointer;font-variant-numeric:tabular-nums}
+.vc-run-progress{display:flex;gap:4px;padding:4px 16px 10px}
+.vc-run-seg{flex:1;height:5px;border-radius:3px;background:#26262C}
+.vc-run-seg.is-pause{flex:.5}
+.vc-run-seg.done{background:#34C38F}
+.vc-run-seg.cur{background:#F0A500}
+.vc-run-body{flex:1;min-height:0;display:flex}
+.vc-run-timer{flex:0 0 440px;display:flex;align-items:center;justify-content:center;background:#0C0C0F;border-right:1px solid #1E1E22;order:2}
+.vc-run-list{flex:1;min-width:0;overflow-y:auto;padding:6px 16px 24px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:767px){
+  .vc-run-body{flex-direction:column}
+  .vc-run-timer{flex:0 0 54vh;order:0;border-right:none;border-bottom:1px solid #1E1E22}
+  .vc-run-list{padding:10px 12px 16px}
+  .vc-run-foot{padding:10px 12px calc(12px + env(safe-area-inset-bottom));border-top:1px solid #1E1E22;background:#0C0C0F;display:flex}
+  .vc-run-foot .vc-btn{flex:1}
+}
+.vc-run-item{border-radius:16px;background:#141417;border:1px solid #222228;padding:12px;cursor:pointer;border-left:4px solid var(--circuit,#222228)}
+.vc-run-item.is-next{border-color:#3A3A42;border-left-color:#F0A500}
+.vc-run-item.is-timer{border-color:#F0A500;box-shadow:0 0 0 1px #F0A500 inset}
+.vc-run-item.is-done{opacity:.55}
+.vc-run-item.is-done .vc-run-ex{text-decoration:line-through;text-decoration-color:#5E5E66}
+.vc-run-item--pause{background:#101013;border-style:dashed}
+.vc-run-circuit{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--circuit,#A3A3AD);margin-bottom:8px}
+.vc-run-row{display:flex;align-items:center;gap:12px}
+.vc-run-check{flex:0 0 44px;width:44px;height:44px;border-radius:50%;border:2px solid #4A4A52;background:none;color:#08080A;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-run-check[aria-pressed="true"]{background:#34C38F;border-color:#34C38F}
+.vc-run-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.vc-run-ex{font-weight:600;font-size:16px;line-height:1.3}
+.vc-run-num{color:#8C8C96;margin-right:6px;font-weight:500}
+.vc-run-variant{font-size:12px;color:#F0A500}
+.vc-run-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vc-run-chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#1E1E22;color:#C9C9D1}
+.vc-run-chip--time{background:rgba(76,154,255,.16);color:#9CC6FF}
+.vc-run-chip--rest{background:rgba(52,195,143,.14);color:#5EE0A0}
+.vc-run-chip--pause{background:rgba(245,132,59,.15);color:#FFB27A}
+.vc-run-chip--note{background:rgba(240,165,0,.12);color:#F0C060;font-weight:500}
+.vc-run-live{font-size:12px;font-weight:700;color:#F0A500;white-space:nowrap}
+.vc-run .vc-btn--ghost{background:#1E1E22;color:#F5F5F4}
+.vc-timer-ctrls{display:flex;align-items:center;justify-content:center;gap:18px;padding-bottom:8px}
+.vc-timer-btn{width:52px;height:52px;border-radius:50%;border:none;background:#1E1E22;color:#F5F5F4;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-timer-btn--main{width:76px;height:76px;background:#F5F5F4;color:#08080A}
+.vc-timer-btn--main.is-paused{background:#34C38F;color:#08080A}
+.vc-timer-phase{display:block;margin-top:6px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -293,7 +451,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.0.0";
+const APP_VERSION = "3.1.0";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -1164,26 +1322,25 @@ function LevelBadge({ level }) {
     return React.createElement("span", { style: { background: bg, color: col, borderRadius: 99, padding: "1px 8px", fontSize: 11, fontWeight: 700 } }, level);
 }
 function LabelInput({ label, value, onChange, placeholder = "", type = "text", min, max, style: s = {} }) {
-    return (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } },
+    return (React.createElement("label", { className: "vc-lbl" },
         label,
-        React.createElement("input", { type: type || "number", value: value, min: min, max: max,
+        React.createElement("input", { type: type || "number", value: value, min: min, max: max, className: "vc-num",
             onChange: function(e) { var v = type === "text" ? e.target.value : (parseFloat(e.target.value) || 0); onChange(v); },
-            placeholder: placeholder,
-            style: { padding: "6px 8px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13,
-                fontFamily: "inherit", background: C.surface, width: 64, textAlign: "center", ...s } })));
+            placeholder: placeholder, style: s })));
 }
 function DurationInput({ valueSeconds, value, onChange, label }) {
     const vs = valueSeconds ?? value ?? 0;
     const mins = Math.floor(vs / 60);
     const secs = vs % 60;
-    return (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } },
+    return (React.createElement("label", { className: "vc-lbl", onClick: (e) => e.stopPropagation() },
         label,
-        React.createElement("div", { style: { display: "flex", gap: 4, alignItems: "center", flexWrap: "wrap" } },
-            React.createElement("input", { type: "number", min: 0, max: 99, value: mins, onChange: e => onChange((parseInt(e.target.value) || 0) * 60 + secs), style: { width: 44, padding: "6px 6px", border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 13, textAlign: "center" } }),
-            React.createElement("span", { style: { color: C.muted, fontSize: 12 } }, "min"),
-            React.createElement("input", { type: "number", min: 0, max: 59, value: secs, onChange: e => onChange(mins * 60 + (parseInt(e.target.value) || 0)), style: { width: 44, padding: "6px 6px", border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 13, textAlign: "center" } }),
-            React.createElement("span", { style: { color: C.muted, fontSize: 12 } }, "sec"))));
+        React.createElement("div", { className: "vc-dur" },
+            React.createElement("input", { type: "number", inputMode: "numeric", min: 0, max: 99, value: mins, "aria-label": (label || "Durée") + " minutes", className: "vc-num", onChange: e => onChange((parseInt(e.target.value) || 0) * 60 + secs) }),
+            React.createElement("span", null, "min"),
+            React.createElement("input", { type: "number", inputMode: "numeric", min: 0, max: 59, value: secs, "aria-label": (label || "Durée") + " secondes", className: "vc-num", onChange: e => onChange(mins * 60 + (parseInt(e.target.value) || 0)) }),
+            React.createElement("span", null, "s"))));
 }
+
 // ─── VC 3.0 : ICÔNES, THÈME, TOASTS, CONFIRMATIONS, NAVIGATION ─────────────────
 const VC_ICON_PATHS = {
     home: "M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
@@ -1418,6 +1575,184 @@ function VcTodaySummary({ name, notifications, history, onRespondInvite, compact
             pct != null && React.createElement("span", { className: "vc-pct" }, pct + " %"),
             React.createElement("span", { style: { flex: "1 1 160px", minWidth: 0 } }, last.sessionName || "Séance"),
             React.createElement("span", { className: "vc-today-date" }, new Date(last.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }))));
+}
+
+// ─── VC 3.1 : SÉANCES ET LANCER ────────────────────────────────────────────────
+Object.assign(VC_ICON_PATHS, {
+    dots: "M5 12h.01M12 12h.01M19 12h.01",
+    play: "M7 4l13 8-13 8z",
+    pause: "M7 4h3v16H7zM14 4h3v16h-3z",
+    reset: "M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5",
+    up: "M6 15l6-6 6 6",
+    down: "M6 9l6 6 6-6",
+    swap: "M7 7h13l-3-3M17 17H4l3 3",
+    trash: "M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",
+    note: "M5 4h14v16H5zM8 9h8M8 13h8M8 17h5",
+    share: "M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4",
+    print: "M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z",
+    copy: "M9 9h11v11H9zM5 15H4V4h11v1",
+    gear: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 2.9-1.2V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+    grip: "M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01",
+    search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4",
+    link: "M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1",
+    list: "M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01",
+    skip: "M5 4l10 8-10 8zM19 5v14",
+    prev: "M19 20L9 12l10-8zM5 19V5",
+    flagEnd: "M5 12l5 5 9-10",
+    pauseRow: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM10 9v6M14 9v6",
+});
+
+function vcSectionOf(sections, k) { return sections.find((s) => s.k === k) || sections[0]; }
+function vcSectionLabel(sec) { return sec ? sec.l.replace(sec.em, "").trim() : ""; }
+function vcFmtMin(sec) { const m = Math.max(1, Math.ceil((sec || 0) / 60)); return "≈ " + m + " min"; }
+
+// Menu d'actions « … » (popover sur ordinateur, feuille du bas sur mobile).
+function VcActionMenu({ items, label = "Plus d'actions", isMobile, buttonClass = "vc-icon-btn" }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+    useEffect(() => {
+        if (!open) return;
+        const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+        const k = (e) => { if (e.key === "Escape") setOpen(false); };
+        document.addEventListener("mousedown", h); document.addEventListener("keydown", k);
+        return () => { document.removeEventListener("mousedown", h); document.removeEventListener("keydown", k); };
+    }, [open]);
+    const visible = (items || []).filter((it) => it && !it.hidden);
+    return React.createElement("div", { ref, className: "vc-pop-anchor" },
+        React.createElement("button", { type: "button", className: buttonClass, "aria-label": label, "aria-expanded": open, onClick: (e) => { e.stopPropagation(); setOpen((v) => !v); } }, React.createElement(Icon, { name: "dots", stroke: 3 })),
+        open && isMobile && React.createElement("div", { className: "vc-scrim", onClick: () => setOpen(false) }),
+        open && React.createElement("div", { className: "vc-menu" + (isMobile ? " vc-menu--sheet" : ""), role: "menu", style: isMobile ? null : { width: 260 } },
+            React.createElement("div", { className: "vc-menu-section" },
+                visible.map((it, i) => it.divider
+                    ? React.createElement("div", { key: "d" + i, style: { height: 1, background: "var(--line)", margin: "6px 4px" } })
+                    : React.createElement("button", {
+                        key: it.label, type: "button", role: "menuitem", disabled: it.disabled,
+                        className: "vc-menu-item" + (it.danger ? " vc-menu-item--danger" : ""), style: it.disabled ? { opacity: .45, cursor: "not-allowed" } : null,
+                        onClick: (e) => { e.stopPropagation(); if (it.disabled) return; setOpen(false); it.onClick(); },
+                    }, React.createElement(Icon, { name: it.icon }), React.createElement("span", null, it.label, it.sub && React.createElement("span", { className: "vc-menu-sub" }, it.sub)))))));
+}
+
+// Champ numérique avec boutons − / + (cibles tactiles de 40 px).
+function VcStepper({ label, value, onChange, min = 0, max = 999, step = 1, suffix }) {
+    const v = Number.isFinite(+value) ? +value : 0;
+    const set = (n) => onChange(Math.min(max, Math.max(min, n)));
+    return React.createElement("div", { className: "vc-stepper", onClick: (e) => e.stopPropagation() },
+        React.createElement("span", { className: "vc-stepper-label" }, label),
+        React.createElement("div", { className: "vc-stepper-row" },
+            React.createElement("button", { type: "button", "aria-label": label + " : moins", onClick: () => set(v - step), disabled: v <= min }, "−"),
+            React.createElement("input", {
+                type: "number", inputMode: "numeric", value: v, min, max, "aria-label": label,
+                onChange: (e) => { const n = parseFloat(e.target.value); onChange(Number.isFinite(n) ? n : 0); },
+                onBlur: (e) => { const n = parseFloat(e.target.value); set(Number.isFinite(n) ? n : min); },
+            }),
+            suffix && React.createElement("span", { className: "vc-stepper-suffix" }, suffix),
+            React.createElement("button", { type: "button", "aria-label": label + " : plus", onClick: () => set(v + step), disabled: v >= max }, "+")));
+}
+
+// Liste des séances : onglets Mes séances / Partagées / Modèles, recherche, filtre discipline.
+function VcSessionBrowser({ sessions, sections, teams, currentId, tab, onTab, templatesCount, onSelect, onCreate }) {
+    const [q, setQ] = useState("");
+    const [sec, setSec] = useState("all");
+    const mine = sessions.filter((s) => s._ownedByMe !== false);
+    const shared = sessions.filter((s) => s._ownedByMe === false);
+    const base = tab === "shared" ? shared : mine;
+    const ql = q.trim().toLowerCase();
+    const list = base
+        .filter((s) => sec === "all" || s.section === sec)
+        .filter((s) => !ql || (s.name || "").toLowerCase().includes(ql))
+        .slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    const usedSections = sections.filter((x) => base.some((s) => s.section === x.k));
+    const teamName = (id) => (teams || []).find((t) => t.id === id)?.name;
+    return React.createElement("div", { className: "vc-sess-browser" },
+        React.createElement("div", { className: "vc-seg vc-seg--tabs", role: "tablist", "aria-label": "Type de séances" },
+            [["mine", "Mes séances", mine.length], ["shared", "Partagées", shared.length], ["templates", "Modèles", templatesCount]].map(([k, l, n]) =>
+                React.createElement("button", { key: k, type: "button", role: "tab", "aria-selected": tab === k, className: tab === k ? "is-active" : "", onClick: () => onTab(k) },
+                    l, n > 0 && React.createElement("span", { className: "vc-seg-count" }, n)))),
+        tab !== "templates" && React.createElement(React.Fragment, null,
+            React.createElement("label", { className: "vc-search" },
+                React.createElement(Icon, { name: "search", size: 18 }),
+                React.createElement("input", { type: "search", placeholder: "Rechercher une séance", value: q, onChange: (e) => setQ(e.target.value), "aria-label": "Rechercher une séance" })),
+            usedSections.length > 1 && React.createElement("div", { className: "vc-chips vc-chips--sm" },
+                React.createElement("button", { type: "button", className: "vc-chip" + (sec === "all" ? " is-active" : ""), onClick: () => setSec("all") }, "Toutes"),
+                usedSections.map((x) => React.createElement("button", { key: x.k, type: "button", className: "vc-chip" + (sec === x.k ? " is-active" : ""), onClick: () => setSec(x.k) },
+                    React.createElement("span", { className: "vc-dot", style: { background: x.color } }), vcSectionLabel(x)))),
+            list.length === 0 && React.createElement("div", { className: "vc-empty", style: { padding: "24px 8px" } },
+                base.length === 0
+                    ? (tab === "shared" ? "Aucune séance partagée avec vous pour l'instant." : "Aucune séance. Créez la première.")
+                    : "Aucune séance ne correspond.",
+                tab === "mine" && base.length === 0 && React.createElement("div", { style: { marginTop: 12 } },
+                    React.createElement("button", { className: "vc-btn vc-btn--primary vc-btn--md", onClick: onCreate }, React.createElement(Icon, { name: "plus", size: 16 }), "Nouvelle séance"))),
+            React.createElement("ul", { className: "vc-sess-list" },
+                list.map((s) => {
+                    const sx = vcSectionOf(sections, s.section);
+                    const items = s.items || [];
+                    const nEx = items.filter((it) => it._type !== "pause").length;
+                    const tn = teamName(s.teamId);
+                    return React.createElement("li", { key: s.id },
+                        React.createElement("button", { type: "button", className: "vc-sess-item" + (s.id === currentId ? " is-active" : ""), onClick: () => onSelect(s.id), "aria-current": s.id === currentId ? "true" : undefined },
+                            React.createElement("span", { className: "vc-sess-bar", style: { background: sx?.color } }),
+                            React.createElement("span", { className: "vc-sess-text" },
+                                React.createElement("span", { className: "vc-sess-name" }, s.name || "Séance"),
+                                React.createElement("span", { className: "vc-sess-meta" },
+                                    [vcSectionLabel(sx), nEx + " exercice" + (nEx > 1 ? "s" : ""), nEx ? vcFmtMin(sessionEstimatedTime(items)) : null, tn].filter(Boolean).join(" · ")),
+                                s._ownedByMe === false && React.createElement("span", { className: "vc-sess-meta vc-sess-shared" }, React.createElement(Icon, { name: "link", size: 12 }), " Partagée par " + (s._sharedByName || "un autre coach"))),
+                            React.createElement(Icon, { name: "chevron", size: 16, style: { color: "var(--hint)", flex: "0 0 auto" } })));
+                }))));
+}
+
+// En-tête d'une séance ouverte.
+function VcSessionHeader({ session, isOwn, teams, sections, isMobile, onBack, onRename, onSection, onTeam, onLaunch, onDone, onMode, modeLabel, modeActive, onNote, onShare, onPrint, onExportCoach, onExportPlayers, onDuplicate, onSaveTemplate, onDelete }) {
+    const [editing, setEditing] = useState(false);
+    const items = session.items || [];
+    const exItems = items.filter((it) => it._type !== "pause");
+    const nPause = items.length - exItems.length;
+    const sets = exItems.reduce((a, e) => a + (+(e.session_sets ?? e.sets_default ?? 3)), 0);
+    const sx = vcSectionOf(sections, session.section);
+    const empty = !items.length;
+    const muscles = collectMuscles(items) || [];
+    return React.createElement("section", { className: "vc-card vc-sess-head" },
+        isMobile && onBack && React.createElement("button", { type: "button", className: "vc-back", onClick: onBack }, React.createElement(Icon, { name: "back", size: 18 }), "Séances"),
+        !isOwn && React.createElement("div", { className: "vc-readonly" }, React.createElement(Icon, { name: "link", size: 16 }),
+            React.createElement("span", null, "Séance partagée par ", React.createElement("strong", null, session._sharedByName || "un autre coach"), " — lecture seule. Dupliquez-la pour la modifier.")),
+        React.createElement("div", { className: "vc-sess-title-row" },
+            editing && isOwn
+                ? React.createElement("input", { className: "vc-field vc-title-input", autoFocus: true, value: session.name || "", "aria-label": "Nom de la séance", onChange: (e) => onRename(e.target.value), onBlur: () => setEditing(false), onKeyDown: (e) => e.key === "Enter" && setEditing(false) })
+                : React.createElement("h2", { className: "vc-sess-title", onClick: () => isOwn && setEditing(true), title: isOwn ? "Renommer" : undefined }, React.createElement("span", null, session.name || "Séance"),
+                    isOwn && React.createElement("button", { type: "button", className: "vc-inline-icon", "aria-label": "Renommer la séance", onClick: (e) => { e.stopPropagation(); setEditing(true); } }, React.createElement(Icon, { name: "edit", size: 16 }))),
+            React.createElement(VcActionMenu, { isMobile, label: "Actions de la séance", items: [
+                { icon: "copy", label: "Dupliquer", sub: isOwn ? null : "Crée une copie privée modifiable", onClick: onDuplicate },
+                { icon: "template", label: "Enregistrer comme modèle", onClick: onSaveTemplate },
+                { icon: "note", label: "Réalisée avec une note", sub: "Enregistre la séance dans l'historique", onClick: onNote },
+                { divider: true },
+                { icon: "share", label: "Partager", onClick: onShare, hidden: !isOwn },
+                { icon: "print", label: "Imprimer", onClick: onPrint, disabled: empty },
+                { icon: "upload", label: "Export coach", sub: "Structure, ids d'exercices", onClick: onExportCoach },
+                { icon: "teams", label: "Export joueurs", sub: "Détail avec réglages du coach", onClick: onExportPlayers },
+                { divider: true, hidden: !isOwn },
+                { icon: "trash", label: "Supprimer la séance", danger: true, onClick: onDelete, hidden: !isOwn },
+            ] })),
+        React.createElement("div", { className: "vc-sess-pills" },
+            React.createElement("label", { className: "vc-pill-select" },
+                React.createElement("span", { className: "vc-dot", style: { background: sx?.color } }),
+                React.createElement("select", { value: session.section || "volley", disabled: !isOwn, "aria-label": "Discipline", onChange: (e) => onSection(e.target.value) },
+                    sections.map((s) => React.createElement("option", { key: s.k, value: s.k }, vcSectionLabel(s))))),
+            React.createElement("label", { className: "vc-pill-select" },
+                React.createElement(Icon, { name: "teams", size: 15 }),
+                React.createElement("select", { value: session.teamId || "", disabled: !isOwn, "aria-label": "Équipe", onChange: (e) => onTeam(e.target.value || null) },
+                    React.createElement("option", { value: "" }, "Sans équipe"),
+                    (teams || []).map((t) => React.createElement("option", { key: t.id, value: t.id }, t.name)))),
+            isOwn && React.createElement("button", { type: "button", className: "vc-pill-btn" + (modeActive ? " is-on" : ""), onClick: onMode }, React.createElement(Icon, { name: "gear", size: 15 }), modeLabel)),
+        React.createElement("div", { className: "vc-sess-stats" },
+            React.createElement("span", null, React.createElement("strong", null, exItems.length), " exercice" + (exItems.length > 1 ? "s" : "")),
+            React.createElement("span", null, React.createElement("strong", null, empty ? "0" : Math.ceil(sessionEstimatedTime(items) / 60)), " min"),
+            React.createElement("span", null, React.createElement("strong", null, sets), " série" + (sets > 1 ? "s" : "")),
+            nPause > 0 && React.createElement("span", null, React.createElement("strong", null, nPause), " pause" + (nPause > 1 ? "s" : ""))),
+        muscles.length > 0 && React.createElement("div", { className: "vc-ex-tags", "aria-label": "Muscles ciblés" },
+            muscles.slice(0, 8).map((m) => React.createElement("span", { key: m, className: "vc-tag" }, m)),
+            muscles.length > 8 && React.createElement("span", { className: "vc-tag" }, "+" + (muscles.length - 8))),
+        React.createElement("div", { className: "vc-sess-actions" },
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--gold vc-btn--lg", disabled: empty, onClick: onLaunch }, React.createElement(Icon, { name: "play", size: 16 }), "Lancer"),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", disabled: empty, onClick: onDone, title: "Enregistrer la séance comme réalisée sans la lancer" }, React.createElement(Icon, { name: "check", size: 16 }), "Marquer réalisée")));
 }
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
@@ -2088,42 +2423,29 @@ const TagsField = ({ label, value, onChange, placeholder }) => {
 }
 // ── SessionRow ──
 function PauseRow({ item, idx, total, onUpdate, onRemove, onMoveUp, onMoveDown }) {
-    return React.createElement("div", { style: { background: "var(--surface-2)", border: "2px dashed #D1D5DB", borderRadius: 10,
-        marginBottom: 8, padding: "8px 13px", display: "flex", alignItems: "center", gap: 10 } },
-        React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 2, flexShrink: 0 } },
-            React.createElement("button", { onClick: onMoveUp, disabled: idx === 0, style: { ...arrowBtnStyle, cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1 } }, "\u25B2"),
-            React.createElement("button", { onClick: onMoveDown, disabled: idx === total - 1, style: { ...arrowBtnStyle, cursor: idx === total - 1 ? "not-allowed" : "pointer", opacity: idx === total - 1 ? 0.3 : 1 } }, "\u25BC")),
-        React.createElement("span", { style: { fontSize: 18, marginRight: 4 } }, "\u23F8"),
-        React.createElement("span", { style: { fontSize: 13, color: "#6B7280", fontWeight: 600, flex: 1 } }, item.name || "Pause / Transition"),
+    return React.createElement("div", { className: "vc-pause-row", onClick: (e) => e.stopPropagation() },
+        React.createElement(Icon, { name: "pauseRow", size: 18 }),
+        React.createElement("span", { className: "vc-pause-name" }, item.name || "Pause / transition"),
         React.createElement(DurationInput, { value: item.pause_duration ?? 60, onChange: (v) => onUpdate({ pause_duration: v }) }),
-        React.createElement("button", { onClick: onRemove, style: { background: "none", border: "none", color: "#9CA3AF", cursor: "pointer", fontSize: 15 } }, "\u2715"));
+        React.createElement("div", { className: "vc-row-tools" },
+            React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Monter", onClick: onMoveUp, disabled: idx === 0 }, React.createElement(Icon, { name: "up", size: 16 })),
+            React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Descendre", onClick: onMoveDown, disabled: idx === total - 1 }, React.createElement(Icon, { name: "down", size: 16 })),
+            React.createElement("button", { type: "button", className: "vc-tool vc-tool--danger", "aria-label": "Retirer la pause", onClick: onRemove }, React.createElement(Icon, { name: "close", size: 16 }))));
 }
+
 
 function InsertRowButton({ onInsertExercise, onInsertPause }) {
-    const [hover, setHover] = useState(false);
     const [open, setOpen] = useState(false);
-    const active = hover || open;
-    return React.createElement('div', {
-        onMouseEnter: () => setHover(true), onMouseLeave: () => setHover(false),
-        style: { position: 'relative', height: active ? 22 : 10, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'height 0.12s', cursor: 'pointer' },
-        onClick: (e) => { e.stopPropagation(); setOpen((v) => !v); },
-    },
-        React.createElement('div', { style: { position: 'absolute', left: 0, right: 0, top: '50%', height: 1, background: active ? C.border : 'transparent', transition: 'background 0.12s' } }),
-        !active && React.createElement('div', { style: { width: 14, height: 1, background: C.border, opacity: 0.5 } }),
-        active && !open && React.createElement('div', { style: {
-            position: 'relative', width: 20, height: 20, borderRadius: '50%', background: C.surface, border: `1.5px solid ${C.border}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.hint, fontSize: 13, fontWeight: 700, lineHeight: 1,
-        } }, '+'),
-        open && React.createElement('div', {
-            onClick: (e) => e.stopPropagation(),
-            style: { position: 'relative', display: 'flex', gap: 6, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, padding: '4px 6px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', zIndex: 5 },
-        },
-            React.createElement('button', { onClick: () => { setOpen(false); onInsertExercise(); }, style: { background: 'none', border: 'none', color: C.rougeText, cursor: 'pointer', fontSize: 12, fontWeight: 600, padding: '2px 6px' } }, '+ Exercice'),
-            React.createElement('button', { onClick: () => { setOpen(false); onInsertPause(); }, style: { background: 'none', border: 'none', color: C.muted, cursor: 'pointer', fontSize: 12, fontWeight: 600, padding: '2px 6px' } }, '+ Pause'),
-            React.createElement('button', { onClick: () => setOpen(false), title: 'Annuler', style: { background: 'none', border: 'none', color: C.hint, cursor: 'pointer', fontSize: 12, padding: '2px 4px' } }, '\u2715')));
+    return React.createElement('div', { className: "vc-insert" + (open ? " is-open" : ""), onClick: (e) => e.stopPropagation() },
+        !open && React.createElement('button', { type: "button", className: "vc-insert-btn", "aria-label": "Insérer ici", onClick: () => setOpen(true) }, React.createElement(Icon, { name: "plus", size: 14, stroke: 2.6 })),
+        open && React.createElement('div', { className: "vc-insert-menu" },
+            React.createElement('button', { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", onClick: () => { setOpen(false); onInsertExercise(); } }, React.createElement(Icon, { name: "plus", size: 14 }), 'Exercice'),
+            React.createElement('button', { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", onClick: () => { setOpen(false); onInsertPause(); } }, React.createElement(Icon, { name: "pauseRow", size: 14 }), 'Pause'),
+            React.createElement('button', { type: "button", className: "vc-tool", 'aria-label': 'Annuler', onClick: () => setOpen(false) }, React.createElement(Icon, { name: "close", size: 14 }))));
 }
 
-function SessionRow({ item, idx, total, onUpdate, onRemove, onReplace, onMoveUp, onMoveDown, onShowDetail, columns }) {
+
+function SessionRow({ item, idx, total, onUpdate, onRemove, onReplace, onMoveUp, onMoveDown, onShowDetail, columns, readOnly }) {
     if (item && item._type === "pause") return React.createElement(PauseRow, { item: item, idx: idx, total: total, onUpdate: onUpdate, onRemove: onRemove, onMoveUp: onMoveUp, onMoveDown: onMoveDown });
     const hasDur = !!(item.duration_seconds || item.hold_seconds);
     const mode = item.session_mode || (hasDur ? 'time' : 'reps');
@@ -2152,46 +2474,41 @@ function SessionRow({ item, idx, total, onUpdate, onRemove, onReplace, onMoveUp,
         mobilite: "#3B82F6", souplesse: "#8B5CF6", pliometrie: "#F97316" };
     const cat = item.categorie || item.category || "";
     const cardColor = isEvolution ? C.or : (CAT_COLORS[cat] || "#6B7280");
-    return (React.createElement("div", { style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 10, marginBottom: 8, overflow: "hidden" } },
-        React.createElement("div", { style: { height: 4, background: cardColor } }),
-        React.createElement("div", { style: { padding: "10px 13px" } },
-        React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "flex-start" } },
-            React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 2, paddingTop: 2, flexShrink: 0 } },
-                React.createElement("button", { onClick: (e) => { e.stopPropagation(); onMoveUp(); }, disabled: idx === 0, style: { ...arrowBtnStyle, cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1 } }, "\u25B2"),
-                React.createElement("button", { onClick: (e) => { e.stopPropagation(); onMoveDown(); }, disabled: idx === total - 1, style: { ...arrowBtnStyle, cursor: idx === total - 1 ? "not-allowed" : "pointer", opacity: idx === total - 1 ? 0.3 : 1 } }, "\u25BC")),
-            React.createElement("div", { style: { flex: 1, minWidth: 0 } },
-                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, gap: 8 } },
-                    React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6, flex: 1, minWidth: 0, flexWrap: "wrap" } },
-                        React.createElement("span", { style: { fontWeight: 700, fontSize: 13, color: C.hint } },
-                            "#",
-                            idx + 1),
-                        React.createElement("span", { onClick: (e) => { e.stopPropagation(); onShowDetail && (markModalClosed(), onShowDetail(item)); }, style: { fontWeight: 600, fontSize: 13, color: C.text, wordBreak: "break-word", cursor: onShowDetail ? "pointer" : "default" } }, name),
-                        isEvolution && (React.createElement("span", { style: { fontSize: 11, color: C.or, fontWeight: 600, flexShrink: 0 } },
-                            "\uD83D\uDD01 ",
-                            item._evolutionLabel)),
-                        columns && columns.length > 0 && React.createElement(ColumnAssignPill, { item: item, columns: columns, onUpdate: onUpdate })),
-                    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 3, alignItems: "center" } },
-                        onReplace && React.createElement("button", { onClick: (e) => { e.stopPropagation(); onReplace(); }, title: "Remplacer cet exercice", style: { background: "none", border: "none", color: "#2563EB", cursor: "pointer", fontSize: 19, fontWeight: 700, lineHeight: 1, padding: 2 } }, "\u21c6"),
-                        React.createElement("button", { onClick: (e) => { e.stopPropagation(); onRemove(); }, title: "Supprimer cet exercice", style: { background: "none", border: "none", color: C.rougeText, cursor: "pointer", fontSize: 15, lineHeight: 1, padding: 2 } }, "\u2715"))),
-                React.createElement("div", { onClick: (e) => e.stopPropagation(), style: { display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end" } },
-                    React.createElement(LabelInput, { label: "S\u00E9ries", value: item.session_sets ?? 3, min: 1, max: 20, onChange: (v) => onUpdate({ session_sets: v }) }),
-                    React.createElement("button", { onClick: toggleMode, title: mode === 'reps' ? "Passer en mode durée" : "Passer en mode répétitions", style: {
-                            padding: "3px 8px", fontSize: 10, fontWeight: 700, borderRadius: 6, cursor: "pointer",
-                            border: `1px solid ${C.border}`, background: C.bg, color: C.muted,
-                            alignSelf: "flex-end", marginBottom: 2, flexShrink: 0
-                        } }, mode === 'reps' ? "⏱ durée" : "✕ rép."),
-                    mode === 'time'
-                        ? React.createElement(React.Fragment, null,
-                            React.createElement(DurationInput, { value: item.session_duration ?? dur ?? 30, onChange: (v) => onUpdate({ session_duration: v }) }),
-                            React.createElement(LabelInput, { label: "Repos/s\u00E9rie (s)", value: item.session_rest ?? (item.rest_seconds || 60), min: 0, max: 300, onChange: (v) => onUpdate({ session_rest: v }) }))
-                        : React.createElement(React.Fragment, null,
-                            React.createElement(LabelInput, { label: "R\u00E9p.", value: item.session_reps ?? (item.reps_default || 10), min: 1, max: 200, onChange: (v) => onUpdate({ session_reps: v }) }),
-                            React.createElement(LabelInput, { label: "Repos (s)", value: item.session_rest ?? (item.rest_seconds || 60), min: 0, max: 300, onChange: (v) => onUpdate({ session_rest: v }) })),
-                    React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 2, fontSize: 11, color: C.muted } },
-                        "Note/Charge",
-                        React.createElement("input", { type: "text", value: item.session_note || "", onChange: (e) => onUpdate({ session_note: e.target.value }), placeholder: "optionnel", style: { padding: "4px 7px", border: `1px solid ${C.border}`, borderRadius: 6, width: 100, fontSize: 12 } }))),
-)))));
+    return (React.createElement("div", { className: "vc-ex-card", style: { "--cat": cardColor } },
+        React.createElement("div", { className: "vc-ex-top" },
+            React.createElement("span", { className: "vc-ex-num" }, idx + 1),
+            React.createElement("div", { className: "vc-ex-title" },
+                React.createElement("button", { type: "button", className: "vc-ex-name", onClick: (e) => { e.stopPropagation(); onShowDetail && (markModalClosed(), onShowDetail(item)); } }, name),
+                React.createElement("div", { className: "vc-ex-tags" },
+                    cat && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: cardColor } }), cat),
+                    isEvolution && React.createElement("span", { className: "vc-tag vc-tag--accent" }, item._evolutionLabel),
+                    columns && columns.length > 0 && React.createElement(ColumnAssignPill, { item: item, columns: columns, onUpdate: onUpdate }))),
+            !readOnly && React.createElement("div", { className: "vc-row-tools", onClick: (e) => e.stopPropagation() },
+                React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Monter", onClick: onMoveUp, disabled: idx === 0 }, React.createElement(Icon, { name: "up", size: 16 })),
+                React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Descendre", onClick: onMoveDown, disabled: idx === total - 1 }, React.createElement(Icon, { name: "down", size: 16 })),
+                onReplace && React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Remplacer cet exercice", title: "Remplacer", onClick: onReplace }, React.createElement(Icon, { name: "swap", size: 16 })),
+                React.createElement("button", { type: "button", className: "vc-tool vc-tool--danger", "aria-label": "Retirer cet exercice", title: "Retirer", onClick: onRemove }, React.createElement(Icon, { name: "close", size: 16 })))),
+        readOnly && React.createElement("div", { className: "vc-ex-tags" },
+            React.createElement("span", { className: "vc-tag" }, (item.session_sets ?? 3) + " séries"),
+            mode === 'time' ? React.createElement("span", { className: "vc-tag" }, fmtTime(item.session_duration ?? dur ?? 30)) : React.createElement("span", { className: "vc-tag" }, (item.session_reps ?? (item.reps_default || 10)) + " rép."),
+            React.createElement("span", { className: "vc-tag" }, (item.session_rest ?? (item.rest_seconds || 60)) + " s repos"),
+            item.session_note && React.createElement("span", { className: "vc-tag vc-tag--accent" }, item.session_note)),
+        !readOnly && React.createElement("div", { className: "vc-ex-params", onClick: (e) => e.stopPropagation() },
+            React.createElement(VcStepper, { label: "Séries", value: item.session_sets ?? 3, min: 1, max: 20, onChange: (v) => onUpdate({ session_sets: v }) }),
+            React.createElement("div", { className: "vc-stepper" },
+                React.createElement("span", { className: "vc-stepper-label" }, "Mode"),
+                React.createElement("div", { className: "vc-mini-seg", role: "radiogroup", "aria-label": "Répétitions ou durée" },
+                    React.createElement("button", { type: "button", role: "radio", "aria-checked": mode === 'reps', className: mode === 'reps' ? "is-active" : "", onClick: (e) => { if (mode !== 'reps') toggleMode(e); } }, "Rép."),
+                    React.createElement("button", { type: "button", role: "radio", "aria-checked": mode === 'time', className: mode === 'time' ? "is-active" : "", onClick: (e) => { if (mode !== 'time') toggleMode(e); } }, "Durée"))),
+            mode === 'time'
+                ? React.createElement("div", { className: "vc-stepper" }, React.createElement("span", { className: "vc-stepper-label" }, "Durée"), React.createElement(DurationInput, { value: item.session_duration ?? dur ?? 30, onChange: (v) => onUpdate({ session_duration: v }) }))
+                : React.createElement(VcStepper, { label: "Répétitions", value: item.session_reps ?? (item.reps_default || 10), min: 1, max: 200, onChange: (v) => onUpdate({ session_reps: v }) }),
+            React.createElement(VcStepper, { label: mode === 'time' ? "Repos / série" : "Repos", value: item.session_rest ?? (item.rest_seconds || 60), min: 0, max: 300, step: 15, suffix: "s", onChange: (v) => onUpdate({ session_rest: v }) }),
+            React.createElement("label", { className: "vc-stepper vc-ex-note" },
+                React.createElement("span", { className: "vc-stepper-label" }, "Note / charge"),
+                React.createElement("input", { type: "text", className: "vc-field", value: item.session_note || "", onChange: (e) => onUpdate({ session_note: e.target.value }), placeholder: "Optionnel" })))));
 }
+
 // ── arrowBtnStyle ──
 const arrowBtnStyle = { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 4, width: 22, height: 22, fontSize: 9, color: C.muted };
 // ── SessionSummary ──
@@ -4337,19 +4654,15 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
         : isRepsWait ? ('Série ' + curSet + '/' + totalSets + ' — à vous')
         : ('Série ' + curSet + '/' + totalSets);
 
-    var ctrlBtns = React.createElement('div', { style: { display: 'flex', gap: big ? Math.round(8*scale) : 6, justifyContent: 'center', alignItems: 'center' } },
-        !isDone && (isRunning || isPaused2) && React.createElement('button', {
-            onClick: pauseResume,
-            style: { padding: big ? Math.round(5*scale)+'px '+Math.round(16*scale)+'px' : '3px 10px', borderRadius: 8, border: 'none', background: isPaused2 ? '#10B981' : '#F59E0B', color: isPaused2 ? '#fff' : '#000', cursor: 'pointer', fontSize: big ? Math.round(13*scale) : 11, fontWeight: 700 }
-        }, isPaused2 ? '▶ Reprendre' : '⏸ Pause'),
-        React.createElement('button', {
-            onClick: resetTimer,
-            style: { padding: big ? Math.round(5*scale)+'px '+Math.round(12*scale)+'px' : '3px 8px', borderRadius: 8, border: '1px solid #444', background: 'none', color: '#888', cursor: 'pointer', fontSize: big ? Math.round(13*scale) : 11 }
-        }, '↺'),
-        React.createElement('button', {
-            onClick: function(e) { e.stopPropagation(); onClose && onClose(); },
-            style: { background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: big ? Math.round(17*scale) : 13 }
-        }, '✕'));
+    var ctrlBtns = big
+        ? React.createElement('div', { className: 'vc-timer-ctrls' },
+            React.createElement('button', { type: 'button', className: 'vc-timer-btn', onClick: resetTimer, 'aria-label': 'Recommencer' }, React.createElement(Icon, { name: 'reset', size: 22 })),
+            !isDone && (isRunning || isPaused2) && React.createElement('button', { type: 'button', className: 'vc-timer-btn vc-timer-btn--main' + (isPaused2 ? ' is-paused' : ''), onClick: pauseResume, 'aria-label': isPaused2 ? 'Reprendre' : 'Pause' }, React.createElement(Icon, { name: isPaused2 ? 'play' : 'pause', size: 30 })),
+            React.createElement('button', { type: 'button', className: 'vc-timer-btn', onClick: function(e) { e.stopPropagation(); onClose && onClose(); }, 'aria-label': 'Fermer le minuteur' }, React.createElement(Icon, { name: 'close', size: 22 })))
+        : React.createElement('div', { style: { display: 'flex', gap: 6, justifyContent: 'center', alignItems: 'center' } },
+            !isDone && (isRunning || isPaused2) && React.createElement('button', { onClick: pauseResume, className: 'vc-btn vc-btn--sm ' + (isPaused2 ? 'vc-btn--success' : 'vc-btn--gold') }, isPaused2 ? 'Reprendre' : 'Pause'),
+            React.createElement('button', { onClick: resetTimer, className: 'vc-btn vc-btn--sm vc-btn--ghost', 'aria-label': 'Recommencer' }, React.createElement(Icon, { name: 'reset', size: 14 })),
+            React.createElement('button', { onClick: function(e) { e.stopPropagation(); onClose && onClose(); }, className: 'vc-btn vc-btn--sm vc-btn--ghost', 'aria-label': 'Fermer' }, React.createElement(Icon, { name: 'close', size: 14 })));
 
     var dotSize = big ? Math.round(20*scale) : 20;
     var dotFont = big ? Math.round(10*scale) : 9;
@@ -4365,7 +4678,7 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
         ? { display: 'grid', gridTemplateRows: 'auto 1fr auto', width: '100%', height: '100%', minHeight: 0, padding: '8px 4px', gap: 4 }
         : { marginTop: 10, background: '#111', borderRadius: 10, padding: '10px 14px' } },
         // Zone fixe du haut : nom de l'exercice (toujours visible, jamais compressée par le cercle).
-        big && React.createElement('div', { style: { textAlign: 'center', color: '#fff', fontWeight: 800, fontSize: nameFontSize, lineHeight: 1.15, padding: '0 10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } }, rawName),
+        big && React.createElement('div', { style: { textAlign: 'center', padding: '0 12px' } }, React.createElement('div', { style: { color: '#F5F5F4', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: nameFontSize, lineHeight: 1.15, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } }, rawName), React.createElement('span', { className: 'vc-timer-phase', style: { color: pc } }, phaseLabel)),
         !big && React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
             React.createElement('span', { style: { fontSize: 12, color: '#888' } }, phaseLabel),
             ctrlBtns),
@@ -4389,14 +4702,14 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
                     ? { position: 'relative', width: 'min(' + svgSize + 'px, 44vh, 65vw)', height: 'min(' + svgSize + 'px, 44vh, 65vw)', aspectRatio: '1', flexShrink: 1 }
                     : { position: 'relative', width: svgSize, height: svgSize, flexShrink: 0 } },
                     React.createElement('svg', { viewBox: '0 0 ' + svgSize + ' ' + svgSize, style: { transform: 'rotate(-90deg)', width: '100%', height: '100%', display: 'block' } },
-                        React.createElement('circle', { cx: String(svgSize/2), cy: String(svgSize/2), r: R, fill: 'none', stroke: '#333', strokeWidth: big ? Math.round(10*scale) : 5 }),
+                        React.createElement('circle', { cx: String(svgSize/2), cy: String(svgSize/2), r: R, fill: 'none', stroke: '#1E1E22', strokeWidth: big ? Math.round(10*scale) : 5 }),
                         React.createElement('circle', { cx: String(svgSize/2), cy: String(svgSize/2), r: R, fill: 'none', stroke: pc, strokeWidth: big ? Math.round(10*scale) : 5,
                             strokeDasharray: circ, strokeDashoffset: circ * (1 - prog), strokeLinecap: 'round',
                             style: { transition: 'stroke-dashoffset 0.9s linear' } })),
                     React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
                         isDone
                             ? React.createElement('span', { style: { fontSize: big ? Math.round(44*scale) : 22, color: '#10B981' } }, '✓')
-                            : React.createElement('span', { style: { fontSize: big ? Math.round(40*scale) : 16, fontWeight: 700, color: pc } }, fmtTime(tLeft)))),
+                            : React.createElement('span', { style: { fontSize: big ? Math.round(46*scale) : 16, fontWeight: 700, color: pc, fontFamily: 'var(--font-display)', fontVariantNumeric: 'tabular-nums' } }, fmtTime(tLeft)))),
             !isDone && !isPause && big && React.createElement('div', { style: { width: '100%', textAlign: 'center', flexShrink: 0 } },
                 isRepsMode && item.session_reps && React.createElement('div', { style: { fontSize: Math.round(14*scale), color: '#888', marginBottom: Math.round(6*scale) } }, item.session_reps + ' r\u00E9p. par s\u00E9rie'),
                 !isRepsMode && !explicitTimeMode && item.session_reps && React.createElement('div', { style: { fontSize: Math.round(14*scale), color: '#888', marginBottom: Math.round(6*scale) } }, item.session_reps + ' r\u00E9p. \u00E0 r\u00E9aliser'),
@@ -5681,141 +5994,81 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
         onClose();
     };
 
-    return React.createElement('div', { style: { position: 'fixed', inset: 0, background: '#08080A', zIndex: 3000, display: 'flex', flexDirection: 'column', overflow: 'hidden', touchAction: 'manipulation' } },
-        React.createElement('div', { style: { background: C.noir, borderBottom: '3px solid ' + C.rouge, padding: '14px 18px', flexShrink: 0 } },
-            React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: 720, margin: '0 auto' } },
-                React.createElement('div', null,
-                    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
-                        React.createElement('div', { style: { width: 8, height: 8, borderRadius: '50%', background: '#10B981', animation: 'pulse 1.5s infinite' } }),
-                        React.createElement('span', { style: { color: '#fff', fontWeight: 800, fontSize: 16 } }, session.name),
-                        sessionStarted ? React.createElement('button', {
-                            onClick: function() { setShowElapsed(function(v) { return !v; }); },
-                            title: showElapsed ? 'Voir le statut' : 'Voir le temps \u00e9coul\u00e9',
-                            style: { background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontSize: 11, fontWeight: 700, color: C.or, fontFamily: showElapsed ? 'monospace' : 'inherit' }
-                        }, showElapsed ? ('\u23F1 ' + fmtTime(elapsedSec)) : 'EN COURS') : React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: C.hint } }, '\u23F8 EN ATTENTE')),
-                    React.createElement('div', { style: { fontSize: 12, color: '#888', marginTop: 2 } }, doneCount + '/' + totalCount + ' exercices r\u00E9alis\u00E9s')),
-                React.createElement('div', { style: { display: 'flex', gap: 8, alignItems: 'center' } },
-                    !sessionStarted && React.createElement(ClubBtn, { onClick: startSession, variant: 'success' }, '\u25B6 D\u00E9marrer'),
-                    sessionStarted && doneCount === totalCount && totalCount > 0 && React.createElement(ClubBtn, { onClick: handleFinish, variant: 'success' }, '\u2713 Terminer'),
-                    sessionStarted && React.createElement(ClubBtn, { onClick: handleFinish, variant: 'gold' }, 'Terminer (' + doneCount + '/' + totalCount + ')'),
-                    React.createElement('button', { onClick: onClose, style: { background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', borderRadius: 8, width: 36, height: 36, cursor: 'pointer', fontSize: 18 } }, '\u2715'))),
-            React.createElement('div', { style: { maxWidth: 720, margin: '10px auto 0', height: 4, background: '#333', borderRadius: 2 } },
-                React.createElement('div', { style: { height: 4, background: 'linear-gradient(90deg,' + C.rouge + ',' + C.or + ')', borderRadius: 2, width: progress + '%', transition: 'width 0.3s' } }))),
-        React.createElement('div', { style: { flex: 1, minHeight: 0, display: 'flex', flexDirection: isMobile ? 'column' : 'row', maxWidth: isMobile ? 720 : 1400, margin: '0 auto', width: '100%' } },
-            activeTimerIdx !== null && items[activeTimerIdx] && React.createElement('div', { style: isMobile
-                ? { flexShrink: 0, height: '54vh', background: '#0c0c0c', borderBottom: '1px solid #2a2a2a', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }
-                : { flexShrink: 0, width: 420, background: '#0c0c0c', borderRight: '1px solid #2a2a2a', order: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
+    var nextIdx = (function() { for (var k = 0; k < items.length; k++) { if (!checkedIds.has(items[k].id + k)) return k; } return -1; })();
+    var mainAction = !sessionStarted
+        ? React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--gold vc-btn--lg', onClick: startSession }, React.createElement(Icon, { name: 'play', size: 16 }), 'Démarrer')
+        : React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--lg ' + (doneCount === totalCount && totalCount > 0 ? 'vc-btn--success' : 'vc-btn--primary'), onClick: handleFinish },
+            React.createElement(Icon, { name: 'check', size: 16 }), doneCount === totalCount && totalCount > 0 ? 'Terminer la séance' : 'Terminer (' + doneCount + '/' + totalCount + ')');
+    var chip = function(txt, kind) { return React.createElement('span', { className: 'vc-run-chip' + (kind ? ' vc-run-chip--' + kind : '') }, txt); };
+    return React.createElement('div', { className: 'vc-run', role: 'dialog', 'aria-label': 'Séance en cours : ' + session.name },
+        React.createElement('header', { className: 'vc-run-head' },
+            React.createElement('button', { type: 'button', className: 'vc-run-icon', 'aria-label': 'Quitter la séance', onClick: onClose }, React.createElement(Icon, { name: 'close' })),
+            React.createElement('div', { className: 'vc-run-title' },
+                React.createElement('span', { className: 'vc-run-name' }, session.name),
+                React.createElement('span', { className: 'vc-run-sub' },
+                    sessionStarted
+                        ? React.createElement('button', { type: 'button', className: 'vc-run-status is-live', onClick: function() { setShowElapsed(function(v) { return !v; }); }, title: showElapsed ? 'Voir le statut' : 'Voir le temps écoulé' }, showElapsed ? fmtTime(elapsedSec) : 'EN COURS')
+                        : React.createElement('span', { className: 'vc-run-status' }, 'EN ATTENTE'),
+                    doneCount + '/' + totalCount + ' réalisé' + (doneCount > 1 ? 's' : ''))),
+            !isMobile && mainAction),
+        React.createElement('div', { className: 'vc-run-progress', 'aria-hidden': 'true' },
+            items.map(function(it, k) {
+                var st = checkedIds.has(it.id + k) ? 'done' : (k === (activeTimerIdx !== null ? activeTimerIdx : nextIdx) ? 'cur' : '');
+                return React.createElement('span', { key: k, className: 'vc-run-seg ' + st + (it._type === 'pause' ? ' is-pause' : '') });
+            })),
+        React.createElement('div', { className: 'vc-run-body' + (activeTimerIdx !== null ? ' has-timer' : '') },
+            activeTimerIdx !== null && items[activeTimerIdx] && React.createElement('div', { className: 'vc-run-timer' },
                 React.createElement(ItemTimer, {
                     key: 'big-it-' + activeTimerIdx, item: items[activeTimerIdx], idx: activeTimerIdx, items: items, compact: false,
-                    size: isMobile ? 200 : 260,
+                    size: isMobile ? 210 : 280,
                     onDone: function() { markDoneAndAdvance(activeTimerIdx); },
                     onClose: function() { setActiveTimerIdx(null); }
                 })),
-            React.createElement('div', { style: { flex: 1, minWidth: 0, overflowY: 'auto', padding: '14px 18px', order: 1 } },
+            React.createElement('div', { className: 'vc-run-list' },
             items.map(function(item, idx) {
                 var itemId = item.id + idx;
                 var checked = checkedIds.has(itemId);
                 var isTimerActive = activeTimerIdx === idx;
                 var hasDur = itemHasDur(item);
+                var isNext = idx === nextIdx && !isTimerActive;
+                var cls = 'vc-run-item' + (checked ? ' is-done' : '') + (isTimerActive ? ' is-timer' : '') + (isNext ? ' is-next' : '');
+                var startTimer = function(e) { e && e.stopPropagation(); if (!sessionStarted) setSessionStarted(true); setActiveTimerIdx(idx); };
+                var check = React.createElement('button', { type: 'button', className: 'vc-run-check', 'aria-pressed': checked, 'aria-label': (checked ? 'Annuler : ' : 'Marquer comme fait : ') + (item.titre || item.name || 'exercice'), onClick: function(e) { e.stopPropagation(); toggle(idx); } }, checked ? React.createElement(Icon, { name: 'check', size: 20, stroke: 3 }) : null);
 
                 if (item._type === 'pause') {
                     var pauseDur = +(item.pause_duration || 60);
-                    var pauseCircuitColor = item._circuitColor;
-                    return React.createElement('div', { key: itemId, style: {
-                        background: checked ? '#0a1a0a' : (pauseCircuitColor ? blendWithDark(pauseCircuitColor, '#1a1a1a', 0.20) : '#1a1a1a'),
-                        border: '2px dashed ' + (checked ? '#10B981' : (pauseCircuitColor || '#444')),
-                        borderRadius: 12, padding: '12px 16px', marginBottom: 10, opacity: checked ? 0.7 : 1
-                    } },
-                        item._circuitLabel && React.createElement('div', { style: {
-                            display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 8,
-                            background: (pauseCircuitColor || C.or) + '30', color: pauseCircuitColor || C.or,
-                            borderRadius: 99, padding: '2px 10px', fontSize: 11, fontWeight: 700
-                        } }, '\uD83D\uDD01 ' + item._circuitLabel + ' — Repos entre tours'),
-                        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12 } },
-                            React.createElement('button', { onClick: function() { toggle(idx); }, style: {
-                                width: 28, height: 28, borderRadius: 8, flexShrink: 0, cursor: 'pointer',
-                                border: '2px solid ' + (checked ? '#10B981' : '#555'),
-                                background: checked ? '#10B981' : 'transparent',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16
-                            } }, checked ? '\u2713' : '\u23F8'),
-                            React.createElement('div', { style: { flex: 1 } },
-                                React.createElement('div', { style: { color: checked ? '#555' : '#888', fontWeight: 600, fontSize: 13 } }, item.name || 'Pause / Transition'),
-                                React.createElement('div', { style: { color: '#555', fontSize: 12, marginTop: 2 } }, fmtTime(pauseDur))),
-                            !checked && !isTimerActive && React.createElement('button', {
-                                onClick: function() { if (!sessionStarted) setSessionStarted(true); setActiveTimerIdx(idx); },
-                                style: { background: '#2a2a2a', border: '1px solid #444', color: '#aaa', borderRadius: 8, padding: '6px 12px', cursor: 'pointer', fontSize: 12 }
-                            }, '\u23F1 Lancer')),
-                        isTimerActive && React.createElement('div', { onClick: function(e) { e.stopPropagation(); }, style: { marginTop: 8, background: '#241a05', border: '1px solid ' + C.or, borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-                            React.createElement('span', { style: { color: C.or, fontSize: 12, fontWeight: 700 } }, '\u23F1 Minuteur actif \u2014 ' + (isMobile ? 'voir en haut' : 'voir \u00E0 droite')),
-                            React.createElement('button', { onClick: function() { setActiveTimerIdx(null); }, style: { background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 13 } }, '\u2715')));
+                    return React.createElement('div', { key: itemId, className: cls + ' vc-run-item--pause', style: item._circuitColor ? { '--circuit': item._circuitColor } : null },
+                        item._circuitLabel && React.createElement('div', { className: 'vc-run-circuit' }, item._circuitLabel + ' — repos entre tours'),
+                        React.createElement('div', { className: 'vc-run-row' }, check,
+                            React.createElement('div', { className: 'vc-run-main' },
+                                React.createElement('span', { className: 'vc-run-ex' }, item.name || 'Pause / transition'),
+                                React.createElement('span', { className: 'vc-run-chips' }, chip(fmtTime(pauseDur), 'pause'))),
+                            !checked && !isTimerActive && React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--ghost vc-btn--sm', onClick: startTimer }, React.createElement(Icon, { name: 'timer', size: 15 }), 'Minuteur'),
+                            isTimerActive && React.createElement('span', { className: 'vc-run-live' }, 'Minuteur actif')));
                 }
-
                 var rawName = item.titre || item.name || 'Exercice';
-                var name = item._variantLabel ? rawName + ' \u2014 ' + item._variantLabel : rawName;
-                var CAT_C = {
-                    "Manipulation de balle":"#3B82F6","R\u00E9ception":"#10B981","Passe":"#8B5CF6",
-                    "Attaque":C.rouge,"Bloc":C.or,"D\u00E9fense":"#06B6D4","Service":"#EC4899",
-                    "\u00C9chauffement":"#84CC16",renforcement:C.rouge,echauffement:"#84CC16",
-                    etirement:"#10B981",mobilite:"#3B82F6",souplesse:"#8B5CF6",pliometrie:"#F97316"
-                };
-                var cardColor = item._evolutionLabel ? C.or : (CAT_C[item.categorie || item.category] || C.rouge);
                 var isExplicitReps = item.session_mode === 'reps';
                 var dur = isExplicitReps ? 0 : +(item.session_duration || item.duration_seconds || item.hold_seconds || 0);
-                var circuitColor = item._circuitColor;
-
-                return React.createElement('div', { key: itemId,
-                    onClick: function() { setActiveEx(item); },
-                    style: {
-                        background: checked ? '#0a1f0a' : (circuitColor ? blendWithDark(circuitColor, '#1a1a1a', 0.22) : '#1a1a1a'),
-                        border: '1.5px solid ' + (checked ? '#10B981' : (circuitColor || '#333')),
-                        borderLeft: '5px solid ' + (checked ? '#10B981' : (circuitColor || cardColor)),
-                        borderRadius: 12, padding: '13px 16px', marginBottom: 10,
-                        opacity: checked ? 0.75 : 1, transition: 'all 0.2s', cursor: 'pointer'
-                    }
-                },
-                    item._circuitLabel && React.createElement('div', { style: {
-                        display: 'inline-flex', alignItems: 'center', gap: 5, marginBottom: 8,
-                        background: (circuitColor || C.or) + '30', color: circuitColor || C.or,
-                        borderRadius: 99, padding: '2px 10px', fontSize: 11, fontWeight: 700
-                    } }, '\uD83D\uDD01 ' + item._circuitLabel + (item._circuitTotalRounds ? ' — Tour ' + item._circuitRound + '/' + item._circuitTotalRounds : '')),
-                    React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 12 } },
-                        React.createElement('button', { onClick: function(e) { e.stopPropagation(); toggle(idx); }, style: {
-                            width: 28, height: 28, borderRadius: 8, flexShrink: 0, marginTop: 1, cursor: 'pointer',
-                            border: '2px solid ' + (checked ? '#10B981' : '#555'),
-                            background: checked ? '#10B981' : 'transparent',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16
-                        } }, checked ? '\u2713' : ''),
-                        React.createElement('div', { style: { flex: 1, minWidth: 0 } },
-                            React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 6 } },
-                                React.createElement('div', { style: { minWidth: 0, flex: '1 1 auto' } },
-                                    React.createElement('span', { style: { fontWeight: 700, fontSize: 14, color: checked ? '#666' : '#fff', wordBreak: 'break-word' } },
-                                        React.createElement('span', { style: { color: '#555', marginRight: 6 } }, '#' + (idx + 1)),
-                                        name),
-                                    item._evolutionLabel && React.createElement('div', { style: { fontSize: 11, color: C.or, marginTop: 2 } }, '\uD83D\uDD01 ', item._evolutionLabel),
-                                    item._variantLabel && React.createElement('div', { style: { fontSize: 11, color: '#F97316', marginTop: 2 } }, '\u26A1 ', item._variantLabel)),
-                                hasDur && !isTimerActive && !checked && React.createElement('button', {
-                                    onClick: function(e) { e.stopPropagation(); if (!sessionStarted) setSessionStarted(true); setActiveTimerIdx(idx); },
-                                    style: { background: '#2a2a2a', border: '1px solid #444', color: '#aaa', borderRadius: 8, padding: '4px 8px', cursor: 'pointer', fontSize: 11, flexShrink: 0 }
-                                }, '\u23F1 Timer')),
-                            React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 8, flexWrap: 'wrap' } },
-                                (item.session_sets || 3) > 0 && React.createElement('span', { style: { background: '#2a2a3a', color: '#93C5FD', borderRadius: 99, padding: '2px 8px', fontSize: 11, fontWeight: 600 } }, (item.session_sets || 3) + ' s\u00E9ries'),
-                                dur ? React.createElement('span', { style: { background: '#1a2a3a', color: '#7DD3FC', borderRadius: 99, padding: '2px 8px', fontSize: 11, fontWeight: 600 } }, fmtTime(dur)) : null,
-                                // Certains exercices (ex. CARs de mobilité) ont naturellement une durée ET
-                                // des répétitions en données (ex. "5 cercles" à réaliser dans "60s") : dans
-                                // ce cas natif, non encore arbitré par le coach, les deux infos sont utiles.
-                                // Mais dès que le coach a explicitement choisi un mode (bouton bascule
-                                // reps/durée), un seul badge doit rester affiché — afficher les deux à ce
-                                // stade créerait une ambiguïté sur ce qui pilote vraiment le minuteur.
-                                (item.session_mode !== 'time' && item.session_reps) ? React.createElement('span', { style: { background: '#2a1a3a', color: '#C4B5FD', borderRadius: 99, padding: '2px 8px', fontSize: 11, fontWeight: 600 } }, item.session_reps + ' r\u00E9p.') : null,
-                                (item.session_rest ?? item.rest_seconds ?? 0) > 0 && React.createElement('span', { style: { background: '#1a2a1a', color: '#86EFAC', borderRadius: 99, padding: '2px 8px', fontSize: 11, fontWeight: 600 } }, (item.session_rest ?? item.rest_seconds) + 's repos'),
-                                item.session_note && React.createElement('span', { style: { background: '#2a2a1a', color: '#FDE68A', borderRadius: 99, padding: '2px 8px', fontSize: 11, fontWeight: 600 } }, item.session_note)),
-                            isTimerActive && React.createElement('div', { onClick: function(e) { e.stopPropagation(); }, style: { marginTop: 8, background: '#241a05', border: '1px solid ' + C.or, borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-                                React.createElement('span', { style: { color: C.or, fontSize: 12, fontWeight: 700 } }, '\u23F1 Minuteur actif \u2014 ' + (isMobile ? 'voir en haut' : 'voir \u00E0 droite')),
-                                React.createElement('button', { onClick: function() { setActiveTimerIdx(null); }, style: { background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: 13 } }, '\u2715')))));
+                var restV = item.session_rest ?? item.rest_seconds ?? 0;
+                return React.createElement('div', { key: itemId, className: cls, onClick: function() { setActiveEx(item); }, style: item._circuitColor ? { '--circuit': item._circuitColor } : null },
+                    item._circuitLabel && React.createElement('div', { className: 'vc-run-circuit' }, item._circuitLabel + (item._circuitTotalRounds ? ' — tour ' + item._circuitRound + '/' + item._circuitTotalRounds : '')),
+                    React.createElement('div', { className: 'vc-run-row' }, check,
+                        React.createElement('div', { className: 'vc-run-main' },
+                            React.createElement('span', { className: 'vc-run-ex' }, React.createElement('span', { className: 'vc-run-num' }, (idx + 1) + '.'), rawName),
+                            (item._variantLabel || item._evolutionLabel) && React.createElement('span', { className: 'vc-run-variant' }, [item._variantLabel, item._evolutionLabel].filter(Boolean).join(' · ')),
+                            React.createElement('span', { className: 'vc-run-chips' },
+                                (item.session_sets || 3) > 0 && chip((item.session_sets || 3) + ' série' + ((item.session_sets || 3) > 1 ? 's' : '')),
+                                dur ? chip(fmtTime(dur), 'time') : null,
+                                (item.session_mode !== 'time' && item.session_reps) ? chip(item.session_reps + ' rép.') : null,
+                                restV > 0 && chip(restV + ' s repos', 'rest'),
+                                item.session_note && chip(item.session_note, 'note'))),
+                        hasDur && !isTimerActive && !checked && React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--ghost vc-btn--sm', onClick: startTimer, 'aria-label': 'Lancer le minuteur de ' + rawName }, React.createElement(Icon, { name: 'timer', size: 15 }), 'Minuteur'),
+                        isTimerActive && React.createElement('span', { className: 'vc-run-live' }, 'Minuteur actif')));
             }))),
-        activeEx && React.createElement(ExerciseModal, { ex: activeEx, section: session.section, onClose: function() { setActiveEx(null); }, onAdd: null, inSession: true }),
-        React.createElement('style', null, '@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}'));
+        isMobile && React.createElement('footer', { className: 'vc-run-foot' }, mainAction),
+        activeEx && React.createElement(ExerciseModal, { ex: activeEx, section: session.section, onClose: function() { setActiveEx(null); }, onAdd: null, inSession: true }));
 }
+
 
 // ── NotificationsMenu ──
 // Badge + panneau déroulant listant les notifications du coach (demandes de
@@ -6785,6 +7038,9 @@ function App({ session }) {
     const [newSessPickerOpen, setNewSessPickerOpen] = useState(false);
     const [themePref, setThemePref] = useThemePref();
     const [progNewSignal, setProgNewSignal] = useState(0);
+    const [sessFilter, setSessFilter] = useState("mine");
+    const [sessMobileView, setSessMobileView] = useState("list");
+    const vcPrevSessIdRef = useRef(undefined);
     const isMobile = useIsMobile();
     useEffect(() => {
         const style = document.createElement('style');
@@ -6982,6 +7238,10 @@ function App({ session }) {
     // seules les actions de consultation/exécution (Lancer, Terminé, Note,
     // export) restent pertinentes sur une séance qui n'est pas la sienne.
     const isOwnSession = curSession?._ownedByMe !== false;
+    useEffect(() => {
+        if (vcPrevSessIdRef.current !== undefined && currentSessionId && currentSessionId !== vcPrevSessIdRef.current) setSessMobileView("editor");
+        vcPrevSessIdRef.current = currentSessionId || null;
+    }, [currentSessionId]);
     const sessIds = new Set(curSession?.items?.map((e) => e.id) || []);
     // Session management
     const newSession = useCallback((preItems = [], forceSection = null) => {
@@ -7935,20 +8195,146 @@ Cela remplacera toutes vos données actuelles.`)) {
                     React.createElement(AccountMenu, { session: session, profile: profile, onProfileUpdated: setProfile, onExport: exportBackup, onImportBackup: importBackup, onImportJson: () => importJSON(handleImport), onSyncToCloud: syncBackupToServer, onRestoreFromCloud: restoreBackupFromServer, syncStatus: syncStatus, isMobile: isMobile, navItems: vcMobileNavItems, themePref: themePref, onThemeChange: setThemePref }))),
             React.createElement("div", { className: "vc-content" },
                 activeTab === "library" && React.createElement(VcDisciplineChips, { sections: SECTIONS, active: activeSection, onChange: setActiveSection }),
-                activeTab === "session" && React.createElement(VcTodaySummary, { name: profile?.display_name, notifications: notifications, history: history, compact: !!curSession && !showTemplates, onRespondInvite: async (n, ok) => { await respondTeamInvite(n, ok); if (!n.is_read) markNotificationRead(n.id); } }), importError && (React.createElement("div", { style: { background: C.rougeLight, border: `1px solid ${C.rouge}`, borderRadius: 8, padding: "10px 14px", marginBottom: 12, display: "flex", justifyContent: "space-between" } }, React.createElement("span", { style: { fontSize: 13, color: C.rougeText } }, "\u26A0\uFE0F ", importError), React.createElement("button", { onClick: () => setImportError(null), style: { background: "none", border: "none", cursor: "pointer", color: C.rougeText } }, "\u2715"))), activeTab === "session" && (React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 12 } },
-            React.createElement("button", { onClick: () => setShowTemplates(false), style: {
-                padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer",
-                border: `1px solid ${!showTemplates ? C.rouge : C.border}`,
-                background: !showTemplates ? C.rouge + "15" : "transparent",
-                color: !showTemplates ? C.rouge : C.muted,
-            } }, "\uD83D\uDCCB Mes s\u00E9ances"),
-            React.createElement("button", { onClick: () => setShowTemplates(true), style: {
-                padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer",
-                border: `1px solid ${showTemplates ? C.or : C.border}`,
-                background: showTemplates ? C.or + "15" : "transparent",
-                color: showTemplates ? C.or : C.muted,
-            } }, "\uD83D\uDDC2\uFE0F Mod\u00E8les" + (templates.length > 0 ? ` (${templates.length})` : "")))),
-        activeTab === "session" && showTemplates && React.createElement(TemplatesPanel, { templates: templates, onUse: (tpl) => setTemplateChoiceModal({ tpl }), onDelete: deleteTemplate, onToggleTemplateShared: toggleTemplateShared, sections: SECTIONS }),
+                activeTab === "session" && React.createElement(VcTodaySummary, { name: profile?.display_name, notifications: notifications, history: history, compact: !!curSession && !showTemplates, onRespondInvite: async (n, ok) => { await respondTeamInvite(n, ok); if (!n.is_read) markNotificationRead(n.id); } }), importError && (React.createElement("div", { style: { background: C.rougeLight, border: `1px solid ${C.rouge}`, borderRadius: 8, padding: "10px 14px", marginBottom: 12, display: "flex", justifyContent: "space-between" } }, React.createElement("span", { style: { fontSize: 13, color: C.rougeText } }, "\u26A0\uFE0F ", importError), React.createElement("button", { onClick: () => setImportError(null), style: { background: "none", border: "none", cursor: "pointer", color: C.rougeText } }, "\u2715"))), activeTab === "session" && React.createElement("div", { className: "vc-sess-layout", "data-view": sessMobileView },
+            React.createElement("aside", { className: "vc-sess-aside", "aria-label": "Liste des séances" },
+                React.createElement(VcSessionBrowser, { sessions: sessions, sections: SECTIONS, teams: teams, currentId: currentSessionId, tab: showTemplates ? "templates" : sessFilter, templatesCount: templates.length,
+                    onTab: (k) => { if (k === "templates") { setShowTemplates(true); setSessMobileView("editor"); } else { setShowTemplates(false); setSessFilter(k); } },
+                    onSelect: (id) => { setShowTemplates(false); setCurrentSessionId(id); setSessMobileView("editor"); },
+                    onCreate: () => setNewSessPickerOpen(true) })),
+            React.createElement("div", { className: "vc-sess-main" },
+                showTemplates && React.createElement(React.Fragment, null,
+                    isMobile && React.createElement("button", { type: "button", className: "vc-back", onClick: () => { setShowTemplates(false); setSessMobileView("list"); } }, React.createElement(Icon, { name: "back", size: 18 }), "Séances"),
+                    React.createElement(TemplatesPanel, { templates: templates, onUse: (tpl) => setTemplateChoiceModal({ tpl }), onDelete: deleteTemplate, onToggleTemplateShared: toggleTemplateShared, sections: SECTIONS })),
+                !showTemplates && (!curSession ? (React.createElement("div", { className: "vc-card vc-empty-card" }, React.createElement(Icon, { name: "sessions", size: 32 }), React.createElement("h3", null, "Aucune séance ouverte"), React.createElement("p", { style: { margin: 0 } }, "Choisissez une séance dans la liste ou créez-en une."), React.createElement("button", { className: "vc-btn vc-btn--primary vc-btn--md", onClick: () => setNewSessPickerOpen(true) }, React.createElement(Icon, { name: "plus", size: 16 }), "Nouvelle séance"))) : (React.createElement("div", null, React.createElement(VcSessionHeader, { session: curSession, isOwn: isOwnSession, teams: teams, sections: SECTIONS, isMobile: isMobile,
+            onBack: () => setSessMobileView("list"),
+            onRename: (v) => updateSession((s) => ({ ...s, name: v })),
+            onSection: (v) => updateSession((s) => ({ ...s, section: v })),
+            onTeam: (v) => updateSession((s) => ({ ...s, teamId: v })),
+            onLaunch: () => setLaunchSession(curSession),
+            onDone: () => { markDone(curSession, null, null, curSession.teamId || null); vcToast("Séance enregistrée dans l'historique.", "success"); },
+            onMode: () => setMultiPosteModal(curSession),
+            modeActive: !!(curSession?.columns || curSession?.circuits?.length),
+            modeLabel: curSession?.columns ? `Postes (${curSession.columns.length})` : curSession?.circuits?.length ? `${curSession.circuits.length} circuit${curSession.circuits.length > 1 ? "s" : ""}` : "Mode simple",
+            onNote: () => setNoteModal({ session: curSession, teamId: curSession?.teamId || null }),
+            onShare: () => setShareSessionModal(curSession),
+            onPrint: () => setPrintModal(curSession),
+            onExportCoach: () => exportJSON(curSession, (curSession?.name || "seance") + "_coach"),
+            onExportPlayers: () => exportPlayersSession(curSession),
+            onDuplicate: () => duplicateSession(curSession),
+            onSaveTemplate: () => saveAsTemplate(curSession),
+            onDelete: async () => {
+                if (await vcConfirm("Supprimer cette séance ?", { confirmLabel: "Supprimer" })) {
+                    const remaining = sessions.filter((s) => s.id !== currentSessionId);
+                    setSessions(remaining);
+                    setCurrentSessionId(remaining[0]?.id || null);
+                    setSessMobileView("list");
+                }
+            } }), !curSession.items?.length ? (React.createElement("div", { className: "vc-card vc-empty-card" }, React.createElement(Icon, { name: "library", size: 32 }), React.createElement("h3", null, "Séance vide"), React.createElement("p", { style: { margin: 0 } }, "Ajoutez un premier exercice sans quitter la séance."), isOwnSession && React.createElement("div", { className: "vc-add-row", style: { justifyContent: "center" } }, React.createElement("button", { className: "vc-btn vc-btn--primary vc-btn--md", onClick: () => setInsertExerciseModal({ atIdx: 0 }) }, React.createElement(Icon, { name: "plus", size: 16 }), "Ajouter un exercice"), React.createElement("button", { className: "vc-btn vc-btn--ghost vc-btn--md", onClick: () => setActiveTab("library") }, "Ouvrir la bibliothèque")))) : (React.createElement(React.Fragment, null, curSession?.columns ? (React.createElement(MultiPosteSessionView, { session: curSession, items: curSession?.items || [], columns: curSession?.columns || [], onUpdateItem: (i, p) => updateItem(i, p), onRemove: (i) => removeItem(i) })) : (function() {
+                        const circuits = curSession?.circuits || [];
+                        const itemsInCircuits = new Set(circuits.flatMap(c => c.itemIds || []));
+                        const allItems = curSession?.items || [];
+                        const renderedCircuitIds = new Set();
+
+                        function renderRow(item, i) {
+                            return React.createElement("div", { key: item.id || item.titre || i,
+                                onClick: () => { if (item._type !== "pause") setDetailEx({ ex: item, section: curSession?.section }); },
+                                draggable: isOwnSession, onDragStart: (e) => {
+                        e.dataTransfer.effectAllowed = "move";
+                        e.dataTransfer.setData("text/plain", String(i));
+                        window._dsi = i;
+                        e.currentTarget.style.opacity = "0.5";
+                    }, onDragEnd: (e) => {
+                        e.currentTarget.style.opacity = "1";
+                        window._dsi = null;
+                        setSessItemDragOver(null);
+                    }, onDragEnter: (e) => { e.preventDefault(); setSessItemDragOver(i); }, onDragOver: (e) => { e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = "move"; }, onDragLeave: (e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget))
+                            setSessItemDragOver(null);
+                    }, onDrop: (e) => {
+                        e.preventDefault();
+                        e.currentTarget.style.opacity = "1";
+                        const from = window._dsi;
+                        const to = i;
+                        setSessItemDragOver(null);
+                        if (from == null || from === to) {
+                            window._dsi = null;
+                            return;
+                        }
+                        const ni = [...(curSession?.items || [])];
+                        const [m] = ni.splice(from, 1);
+                        ni.splice(to, 0, m);
+                        updateSession(s => ({ ...s, items: ni }));
+                        window._dsi = null;
+                    }, className: "vc-row-wrap" + (sessItemDragOver === i ? " is-over" : "") },
+                                React.createElement("div", { className: "vc-grip", "aria-hidden": "true" }, React.createElement(Icon, { name: "grip", size: 18, stroke: 3 })),
+                                item._type !== "pause" && curSession?.multiMode === "circuit" && circuits.length > 0 && React.createElement(CircuitAssignButton, {
+                                    item: item, circuits: circuits,
+                                    onAssign: (circuitId) => updateSession(s => ({
+                                        ...s,
+                                        circuits: (s.circuits || []).map(c => {
+                                            const withoutItem = { ...c, itemIds: (c.itemIds || []).filter(id => id !== item.id) };
+                                            return c.id === circuitId ? { ...withoutItem, itemIds: [...withoutItem.itemIds, item.id] } : withoutItem;
+                                        })
+                                    }))
+                                }),
+                                React.createElement("div", { style: { flex: 1, minWidth: 0 } }, item._type === "pause"
+                                    ? React.createElement(PauseRow, { item: item, idx: i, total: allItems.length,
+                                        onUpdate: (p) => updateItem(i, p), onRemove: () => removeItem(i),
+                                        onMoveUp: () => moveItem(i, -1), onMoveDown: () => moveItem(i, 1) })
+                                    : React.createElement(SessionRow, { item: item, idx: i, total: allItems.length,
+                                        onUpdate: (p) => updateItem(i, p), onRemove: () => removeItem(i),
+                                        onReplace: () => setReplaceExerciseModal({ idx: i, item }),
+                                        onMoveUp: () => moveItem(i, -1), onMoveDown: () => moveItem(i, 1),
+                                        onShowDetail: (ex) => setDetailEx({ ex, section: curSession?.section }),
+                                        columns: curSession?.columns || null, readOnly: !isOwnSession })));
+                        }
+
+                        const rendered = allItems.map((item, i) => {
+                            if (!itemsInCircuits.has(item.id)) return { el: renderRow(item, i), afterIdx: i };
+                            const circuit = circuits.find(c => (c.itemIds || []).includes(item.id));
+                            if (renderedCircuitIds.has(circuit.id)) return null;
+                            renderedCircuitIds.add(circuit.id);
+                            const circuitIdsSet = new Set(circuit.itemIds);
+                            const memberItems = allItems.filter(it => circuitIdsSet.has(it.id));
+                            // Le point d'insertion après une carte de circuit doit se placer après son DERNIER membre
+                            // dans l'ordre réel de la séance, pas après le membre qui a déclenché le rendu de la carte.
+                            const lastMemberIdx = Math.max(...memberItems.map(it => allItems.findIndex(a => a.id === it.id)));
+                            return {
+                                afterIdx: lastMemberIdx,
+                                el: React.createElement(CircuitCard, {
+                                    key: circuit.id, circuit: circuit, memberItems: memberItems,
+                                    onUpdateCircuit: (patch) => updateSession(s => ({ ...s, circuits: (s.circuits || []).map(c => c.id === circuit.id ? { ...c, ...patch } : c) })),
+                                    onRemoveCircuit: () => updateSession(s => ({ ...s, circuits: (s.circuits || []).filter(c => c.id !== circuit.id) })),
+                                    onDropItem: () => {
+                                        const droppedIdx = window._dsi;
+                                        if (droppedIdx == null) return;
+                                        const droppedItem = allItems[droppedIdx];
+                                        if (!droppedItem || droppedItem._type === "pause") return;
+                                        updateSession(s => ({
+                                            ...s,
+                                            circuits: (s.circuits || []).map(c => {
+                                                const withoutItem = { ...c, itemIds: (c.itemIds || []).filter(id => id !== droppedItem.id) };
+                                                return c.id === circuit.id ? { ...withoutItem, itemIds: [...withoutItem.itemIds, droppedItem.id] } : withoutItem;
+                                            })
+                                        }));
+                                    },
+                                    renderMemberRow: (memberItem) => renderRow(memberItem, allItems.findIndex(it => it.id === memberItem.id)),
+                                }),
+                            };
+                        }).filter(Boolean);
+
+                        const insertPoint = (afterIdx) => !isOwnSession ? null : React.createElement(InsertRowButton, {
+                            key: 'insert-' + afterIdx,
+                            onInsertExercise: () => setInsertExerciseModal({ atIdx: afterIdx + 1 }),
+                            onInsertPause: () => insertItemAt(afterIdx + 1, { id: "pause_" + generateId(), _type: "pause", name: "Pause", pause_duration: 60 }),
+                        });
+
+                        const out = [insertPoint(-1)];
+                        rendered.forEach((r) => { out.push(r.el); out.push(insertPoint(r.afterIdx)); });
+                        return out;
+                    })(), isOwnSession && React.createElement("div", { className: "vc-add-row" },
+            React.createElement("button", { className: "vc-add-btn", onClick: () => setInsertExerciseModal({ atIdx: (curSession?.items || []).length }) }, React.createElement(Icon, { name: "plus", size: 16 }), "Ajouter un exercice"),
+            React.createElement("button", { className: "vc-add-btn", onClick: () => updateSession(s => ({ ...s, items: [...(s.items||[]), { id: "pause_" + generateId(), _type: "pause", name: "Pause", pause_duration: 60 }] })) }, React.createElement(Icon, { name: "pauseRow", size: 16 }), "Ajouter une pause"))))))))),
         templateChoiceModal && React.createElement(TemplateChoiceModal, {
             tpl: templateChoiceModal.tpl,
             onNewSession: () => { useTemplate(templateChoiceModal.tpl); setTemplateChoiceModal(null); },
@@ -7998,145 +8384,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             },
             onClose: () => setInsertExerciseModal(null),
         }),
-        activeTab === "session" && !showTemplates && sessions.length > 0 && (React.createElement("div", { style: { display: "flex", gap: 6, marginBottom: 12, overflowX: "auto", paddingBottom: 4 } }, sessions.map((s) => {
-        const sc = SECTIONS.find((x) => x.k === s.section)?.color || C.rouge;
-        return (React.createElement("button", { key: s.id, onClick: () => setCurrentSessionId(s.id), style: {
-                padding: "5px 12px", borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
-                border: `${s.id === currentSessionId ? "2" : "1"}px solid ${s.id === currentSessionId ? sc : C.border}`,
-                background: s.id === currentSessionId ? sc + "15" : C.surface,
-                color: s.id === currentSessionId ? sc : C.muted,
-            } }, SECTIONS.find((x) => x.k === s.section)?.l?.split(" ")?.[0] || "", " ", s.name));
-    }))), activeTab === "library" && (React.createElement("div", null, (activeSection === "mobilite" || activeSection === "souplesse") && (React.createElement(PresetPanel, { type: activeSection, db: currentDb, onUse: usePreset })), React.createElement(LibraryPanel, { db: currentDb, section: activeSection, sessIds: sessIds, onAdd: addToSession, onAddEvolution: addEvolutionToSession, customExercises: customExercises, onSaveCustom: saveCustom }))), activeTab === "session" && !showTemplates && (!curSession ? (React.createElement("div", { style: { textAlign: "center", paddingTop: 60 } }, React.createElement("div", { style: { fontSize: 52, marginBottom: 14 } }, "\uD83D\uDCCB"), React.createElement("p", { style: { color: C.muted, marginBottom: 18 } }, "Aucune s\u00E9ance s\u00E9lectionn\u00E9e"), React.createElement(ClubBtn, { onClick: () => newSession(), variant: "primary" }, "+ Cr\u00E9er une s\u00E9ance"))) : (React.createElement("div", null, React.createElement("div", { style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "13px 16px", marginBottom: 12 } }, React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } },
-    React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 } },
-        React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, flex: 1, minWidth: 0 } },
-            renamingSession ? (React.createElement("input", { autoFocus: true, value: curSession?.name || "", onChange: (e) => updateSession((s) => ({ ...s, name: e.target.value })), onBlur: () => setRenamingSession(false), onKeyDown: (e) => e.key === "Enter" && setRenamingSession(false), style: { fontSize: 15, fontWeight: 700, border: `2px solid ${C.rouge}`, borderRadius: 6, padding: "4px 10px", flex: 1, minWidth: 0 } })) : (React.createElement("span", { style: { fontSize: 15, fontWeight: 700, wordBreak: "break-word" } }, curSession?.name)),
-            React.createElement("button", { onClick: () => setRenamingSession((v) => !v), style: { background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: 15, flexShrink: 0 } }, "\u270F\uFE0F"),
-            React.createElement("button", { onClick: () => duplicateSession(curSession), title: "Dupliquer la séance", style: { background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: 15, flexShrink: 0 } }, "\u29C9"),
-            React.createElement("button", { onClick: () => saveAsTemplate(curSession), title: "Enregistrer comme modèle", style: { background: "none", border: "none", cursor: "pointer", color: C.muted, fontSize: 15, flexShrink: 0 } }, "\uD83D\uDDC2\uFE0F"))),
-    React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" } },
-        React.createElement("select", { value: curSession?.section || "volley", disabled: !isOwnSession, onChange: e => updateSession(s => ({ ...s, section: e.target.value })), style: { fontSize: 11, color: SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge, background: (SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge) + "15", border: `1px solid ${SECTIONS.find(x => x.k === curSession.section)?.color || C.rouge}`, borderRadius: 6, padding: "4px 8px", cursor: isOwnSession ? "pointer" : "default", fontWeight: 600 } }, SECTIONS.map(s => React.createElement("option", { key: s.k, value: s.k }, s.l))),
-        !isOwnSession && React.createElement("span", { style: { fontSize: 10, color: "var(--violet-text)", background: "var(--tint-violet)", borderRadius: 6, padding: "3px 8px", fontWeight: 600 } }, "\uD83D\uDD17 Séance partagée par ", curSession?._sharedByName || "un autre coach"),
-        React.createElement("select", { value: curSession?.teamId || "", disabled: !isOwnSession, onChange: e => updateSession(s => ({ ...s, teamId: e.target.value || null })), style: { fontSize: 11, color: C.muted, background: "transparent", border: "1px solid #ddd", borderRadius: 6, padding: "4px 8px", cursor: isOwnSession ? "pointer" : "default", flex: 1, minWidth: 0, maxWidth: 160 } }, React.createElement("option", { value: "" }, "\u00C9quipe..."), teams.map(t => React.createElement("option", { key: t.id, value: t.id }, t.name)))), React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } }, React.createElement(ClubBtn, { onClick: () => setLaunchSession(curSession), disabled: !curSession.items?.length, variant: "primary" }, "\uD83D\uDE80 Lancer"), isOwnSession && React.createElement(ClubBtn, { onClick: () => setMultiPosteModal(curSession), variant: (curSession?.columns || curSession?.circuits?.length) ? "gold" : "ghost", size: "sm" }, "\u2699\uFE0F ", curSession?.columns ? `Mode (${curSession?.columns?.length})` : curSession?.circuits?.length ? `Mode (${curSession.circuits.length} circuit${curSession.circuits.length > 1 ? "s" : ""})` : "Mode"), React.createElement(ClubBtn, { onClick: () => markDone(curSession, null, null, curSession.teamId || null), disabled: !curSession.items?.length, variant: "success" }, "\u2713 Termin\u00E9"), React.createElement(ClubBtn, { onClick: () => setNoteModal({ session: curSession, teamId: curSession?.teamId || null }), variant: "ghost", size: "sm" }, "\uD83D\uDCDD Note"), React.createElement(ShareMenu, { onShare: isOwnSession ? () => setShareSessionModal(curSession) : null, onPrint: () => setPrintModal(curSession), disablePrint: !curSession.items?.length, onExportCoach: () => exportJSON(curSession, (curSession?.name || "seance") + "_coach"), onExportPlayers: () => exportPlayersSession(curSession) }), isOwnSession && React.createElement(ClubBtn, { onClick: async () => {
-            if (await vcConfirm("Supprimer cette séance ?", { confirmLabel: "Supprimer" })) {
-                const remaining = sessions.filter((s) => s.id !== currentSessionId);
-                setSessions(remaining);
-                setCurrentSessionId(remaining[0]?.id || null);
-            }
-        }, variant: "danger", size: "sm" }, "\uD83D\uDDD1")))), (curSession?.items?.length || 0) > 0 && React.createElement(SessionSummary, { items: curSession?.items || [] }), !curSession.items?.length ? (React.createElement("div", { style: { textAlign: "center", paddingTop: 32, color: C.hint } }, React.createElement("div", { style: { fontSize: 40, marginBottom: 10 } }, "\u2795"), React.createElement("p", { style: { marginBottom: 14 } }, "Ajoutez des exercices depuis la biblioth\u00E8que"), React.createElement(ClubBtn, { onClick: () => setActiveTab("library"), variant: "outline" }, "Ouvrir la biblioth\u00E8que"))) : (React.createElement(React.Fragment, null, curSession?.columns ? (React.createElement(MultiPosteSessionView, { session: curSession, items: curSession?.items || [], columns: curSession?.columns || [], onUpdateItem: (i, p) => updateItem(i, p), onRemove: (i) => removeItem(i) })) : (function() {
-                        const circuits = curSession?.circuits || [];
-                        const itemsInCircuits = new Set(circuits.flatMap(c => c.itemIds || []));
-                        const allItems = curSession?.items || [];
-                        const renderedCircuitIds = new Set();
-
-                        function renderRow(item, i) {
-                            return React.createElement("div", { key: item.id || item.titre || i,
-                                onClick: () => { if (item._type !== "pause") setDetailEx({ ex: item, section: curSession?.section }); },
-                                draggable: true, onDragStart: (e) => {
-                        e.dataTransfer.effectAllowed = "move";
-                        e.dataTransfer.setData("text/plain", String(i));
-                        window._dsi = i;
-                        e.currentTarget.style.opacity = "0.5";
-                    }, onDragEnd: (e) => {
-                        e.currentTarget.style.opacity = "1";
-                        window._dsi = null;
-                        setSessItemDragOver(null);
-                    }, onDragEnter: (e) => { e.preventDefault(); setSessItemDragOver(i); }, onDragOver: (e) => { e.preventDefault(); e.stopPropagation(); e.dataTransfer.dropEffect = "move"; }, onDragLeave: (e) => {
-                        if (!e.currentTarget.contains(e.relatedTarget))
-                            setSessItemDragOver(null);
-                    }, onDrop: (e) => {
-                        e.preventDefault();
-                        e.currentTarget.style.opacity = "1";
-                        const from = window._dsi;
-                        const to = i;
-                        setSessItemDragOver(null);
-                        if (from == null || from === to) {
-                            window._dsi = null;
-                            return;
-                        }
-                        const ni = [...(curSession?.items || [])];
-                        const [m] = ni.splice(from, 1);
-                        ni.splice(to, 0, m);
-                        updateSession(s => ({ ...s, items: ni }));
-                        window._dsi = null;
-                    }, style: { display: "flex", gap: 4, alignItems: "flex-start", cursor: "grab", borderTop: sessItemDragOver === i ? `2px solid ${C.rouge}` : "2px solid transparent", transition: "border-color 0.1s", userSelect: "none" } },
-                                React.createElement("div", { style: { padding: "8px 5px", color: C.hint, fontSize: 16, alignSelf: "center", flexShrink: 0 } }, "\u2261"),
-                                item._type !== "pause" && curSession?.multiMode === "circuit" && circuits.length > 0 && React.createElement(CircuitAssignButton, {
-                                    item: item, circuits: circuits,
-                                    onAssign: (circuitId) => updateSession(s => ({
-                                        ...s,
-                                        circuits: (s.circuits || []).map(c => {
-                                            const withoutItem = { ...c, itemIds: (c.itemIds || []).filter(id => id !== item.id) };
-                                            return c.id === circuitId ? { ...withoutItem, itemIds: [...withoutItem.itemIds, item.id] } : withoutItem;
-                                        })
-                                    }))
-                                }),
-                                React.createElement("div", { style: { flex: 1 } }, item._type === "pause"
-                                    ? React.createElement(PauseRow, { item: item, idx: i, total: allItems.length,
-                                        onUpdate: (p) => updateItem(i, p), onRemove: () => removeItem(i),
-                                        onMoveUp: () => moveItem(i, -1), onMoveDown: () => moveItem(i, 1) })
-                                    : React.createElement(SessionRow, { item: item, idx: i, total: allItems.length,
-                                        onUpdate: (p) => updateItem(i, p), onRemove: () => removeItem(i),
-                                        onReplace: () => setReplaceExerciseModal({ idx: i, item }),
-                                        onMoveUp: () => moveItem(i, -1), onMoveDown: () => moveItem(i, 1),
-                                        onShowDetail: (ex) => setDetailEx({ ex, section: curSession?.section }),
-                                        columns: curSession?.columns || null })));
-                        }
-
-                        const rendered = allItems.map((item, i) => {
-                            if (!itemsInCircuits.has(item.id)) return { el: renderRow(item, i), afterIdx: i };
-                            const circuit = circuits.find(c => (c.itemIds || []).includes(item.id));
-                            if (renderedCircuitIds.has(circuit.id)) return null;
-                            renderedCircuitIds.add(circuit.id);
-                            const circuitIdsSet = new Set(circuit.itemIds);
-                            const memberItems = allItems.filter(it => circuitIdsSet.has(it.id));
-                            // Le point d'insertion après une carte de circuit doit se placer après son DERNIER membre
-                            // dans l'ordre réel de la séance, pas après le membre qui a déclenché le rendu de la carte.
-                            const lastMemberIdx = Math.max(...memberItems.map(it => allItems.findIndex(a => a.id === it.id)));
-                            return {
-                                afterIdx: lastMemberIdx,
-                                el: React.createElement(CircuitCard, {
-                                    key: circuit.id, circuit: circuit, memberItems: memberItems,
-                                    onUpdateCircuit: (patch) => updateSession(s => ({ ...s, circuits: (s.circuits || []).map(c => c.id === circuit.id ? { ...c, ...patch } : c) })),
-                                    onRemoveCircuit: () => updateSession(s => ({ ...s, circuits: (s.circuits || []).filter(c => c.id !== circuit.id) })),
-                                    onDropItem: () => {
-                                        const droppedIdx = window._dsi;
-                                        if (droppedIdx == null) return;
-                                        const droppedItem = allItems[droppedIdx];
-                                        if (!droppedItem || droppedItem._type === "pause") return;
-                                        updateSession(s => ({
-                                            ...s,
-                                            circuits: (s.circuits || []).map(c => {
-                                                const withoutItem = { ...c, itemIds: (c.itemIds || []).filter(id => id !== droppedItem.id) };
-                                                return c.id === circuit.id ? { ...withoutItem, itemIds: [...withoutItem.itemIds, droppedItem.id] } : withoutItem;
-                                            })
-                                        }));
-                                    },
-                                    renderMemberRow: (memberItem) => renderRow(memberItem, allItems.findIndex(it => it.id === memberItem.id)),
-                                }),
-                            };
-                        }).filter(Boolean);
-
-                        const insertPoint = (afterIdx) => React.createElement(InsertRowButton, {
-                            key: 'insert-' + afterIdx,
-                            onInsertExercise: () => setInsertExerciseModal({ atIdx: afterIdx + 1 }),
-                            onInsertPause: () => insertItemAt(afterIdx + 1, { id: "pause_" + generateId(), _type: "pause", name: "Pause", pause_duration: 60 }),
-                        });
-
-                        const out = [insertPoint(-1)];
-                        rendered.forEach((r) => { out.push(r.el); out.push(insertPoint(r.afterIdx)); });
-                        return out;
-                    })(), React.createElement("button", { onClick: () => setActiveTab("library"), style: {
-            width: "100%", marginTop: 8, padding: "10px",
-            border: `2px dashed ${C.border}`, borderRadius: 10,
-            background: "none", color: C.hint, cursor: "pointer", fontSize: 13
-        } }, "+ Ajouter un exercice depuis la biblioth\u00E8que"),
-        React.createElement("button", {
-            onClick: () => updateSession(s => ({ ...s, items: [...(s.items||[]),
-                { id: "pause_" + generateId(), _type: "pause", name: "Pause", pause_duration: 60 }] })),
-            style: { width: "100%", marginTop: 6, padding: "8px 10px",
-                border: "2px dashed #D1D5DB", borderRadius: 10,
-                background: "none", color: "#9CA3AF", cursor: "pointer", fontSize: 13 }
-        }, "\u23F8 + Ajouter une pause / transition")))))), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
+        activeTab === "library" && (React.createElement("div", null, (activeSection === "mobilite" || activeSection === "souplesse") && (React.createElement(PresetPanel, { type: activeSection, db: currentDb, onUse: usePreset })), React.createElement(LibraryPanel, { db: currentDb, section: activeSection, sessIds: sessIds, onAdd: addToSession, onAddEvolution: addEvolutionToSession, customExercises: customExercises, onSaveCustom: saveCustom }))), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
     React.createElement("div", { style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "20px", textAlign: "center" } },
         React.createElement("div", { style: { fontSize: 36, marginBottom: 10 } }, "\uD83C\uDFD0"),
         React.createElement("div", { style: { fontWeight: 700, fontSize: 15, marginBottom: 6 } }, "Scoreur de match"),
@@ -8173,7 +8421,7 @@ Cela remplacera toutes vos données actuelles.`)) {
             setHistory([]);
         });
     }, sections: SECTIONS }))))), React.createElement(VcBottomNav, { activeTab: activeTab, onTab: setActiveTab, onCreate: () => setNewSessPickerOpen(true) }),
-        newSessPickerOpen && React.createElement(VcCreateSheet, { sections: SECTIONS, onClose: () => setNewSessPickerOpen(false), onNewSession: (k) => newSession([], k), onFromTemplate: () => { setActiveTab("session"); setShowTemplates(true); }, onNewProgram: () => { setActiveTab("programs"); setProgNewSignal((x) => x + 1); }, onScorer: () => setShowScorer(true) }),
+        newSessPickerOpen && React.createElement(VcCreateSheet, { sections: SECTIONS, onClose: () => setNewSessPickerOpen(false), onNewSession: (k) => newSession([], k), onFromTemplate: () => { setActiveTab("session"); setShowTemplates(true); setSessMobileView("editor"); }, onNewProgram: () => { setActiveTab("programs"); setProgNewSignal((x) => x + 1); }, onScorer: () => setShowScorer(true) }),
         launchSession && (launchSession.columns && launchSession.columns.length > 0 ? (React.createElement(MultiPosteLaunch, { session: launchSession, onClose: () => setLaunchSession(null), onMarkDone: (sess, doneItems) => { markDone(sess, doneItems, null, sess.teamId || null); setLaunchSession(null); } })) : (React.createElement(LaunchSession, { session: launchSession.circuits?.length > 0 ? { ...launchSession, items: expandCircuitsForExecution(launchSession.items, launchSession.circuits) } : launchSession, allSessions: sessions, onClose: () => setLaunchSession(null), onMarkDone: (sess, doneItems, elapsedSec) => {
             const normalizedDoneItems = (doneItems || []).map((d) => ({ ...d, id: d.id.replace(/_circuit_round\d+$/, '') }));
             markDone(launchSession, normalizedDoneItems, null, launchSession.teamId || null, null, elapsedSec);
