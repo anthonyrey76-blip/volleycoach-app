@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.1.0</title>
+<title>VolleyCoach Club v3.2.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -416,6 +416,80 @@ button{color:inherit}
 .vc-timer-btn--main{width:76px;height:76px;background:#F5F5F4;color:#08080A}
 .vc-timer-btn--main.is-paused{background:#34C38F;color:#08080A}
 .vc-timer-phase{display:block;margin-top:6px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+/* ── 3.2 : Bibliothèque et Programmes ─────────────────────────────── */
+.vc-lib-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+.vc-lib-main{min-width:0}
+@media (max-width:1099px){.vc-lib-layout{grid-template-columns:minmax(0,1fr) 260px;gap:16px}}
+@media (max-width:767px){.vc-lib-layout{display:block}.vc-lib-layout.has-sess .vc-lib-main{padding-bottom:64px}}
+.vc-dock{position:sticky;top:84px;padding:16px;max-height:calc(100vh - 100px);overflow-y:auto;box-sizing:border-box}
+.vc-dock-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin:6px 0 2px;line-height:1.25}
+.vc-dock-list{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:2px;counter-reset:none}
+.vc-dock-list li{display:flex;align-items:center;gap:8px;min-height:36px;padding:2px 2px 2px 6px;border-radius:9px;font-size:13px}
+.vc-dock-list li:hover{background:var(--surface-2)}
+.vc-dock-list li.is-pause{color:var(--muted)}
+.vc-dock-num{flex:0 0 18px;font-size:12px;color:var(--hint);text-align:right}
+.vc-dock-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vc-dock-empty{color:var(--muted);font-size:13px;padding:8px 0}
+.vc-dock-actions{display:flex;flex-direction:column;gap:8px}
+.vc-dock-bar{position:fixed;left:8px;right:8px;bottom:calc(var(--bottom-h) + 8px + env(safe-area-inset-bottom));z-index:410;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 10px;border-radius:14px;background:var(--surface);border:1px solid var(--line-strong);box-shadow:var(--shadow)}
+.vc-dock-bar .vc-sess-text{gap:1px}
+.vc-dock-bar .vc-sess-name{font-size:14px}
+
+.vc-lib{display:flex;flex-direction:column;gap:12px}
+.vc-lib-filters{display:flex;flex-direction:column;gap:8px}
+.vc-lib-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.vc-lib-row .vc-chips{padding:0;flex:1;min-width:0}
+.vc-select{height:36px;padding:0 30px 0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:13px;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat;cursor:pointer}
+.vc-lib-count{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.vc-lib-count .vc-lib-actions{margin-left:auto;display:flex;gap:8px}
+.vc-lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:12px}
+.vc-lib-empty{grid-column:1/-1}
+.vc-excard{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:border-color .15s}
+.vc-excard:hover{border-color:var(--line-strong)}
+.vc-excard::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--cat,var(--line))}
+.vc-excard-body{padding:16px 14px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.vc-excard-name{font-weight:600;font-size:15px;line-height:1.3}
+.vc-excard-meta{font-size:12px;color:var(--muted);line-height:1.45;display:flex;flex-direction:column;gap:3px}
+.vc-excard-equip{display:inline-flex;align-items:center;gap:4px}
+.vc-excard-foot{display:flex;align-items:center;gap:2px;margin-top:auto;padding-top:4px}
+.vc-added{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 10px;border-radius:10px;background:var(--ok-soft);color:var(--ok-text);font-size:13px;font-weight:600}
+.vc-tag--ok{background:var(--ok-soft);color:var(--ok-text);font-weight:600}
+.vc-tag--brand{background:var(--brand-soft);color:var(--brand-text);font-weight:600}
+.vc-tag--violet{background:var(--tint-violet);color:var(--violet-text);font-weight:600}
+
+/* Programmes */
+.vc-progs-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.vc-progs-head h2{margin:0;font-family:var(--font-display);font-size:22px;font-weight:700;flex:1}
+.vc-prog-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.vc-prog-head{display:flex;gap:10px;align-items:flex-start}
+.vc-prog-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.vc-prog-name{font-family:var(--font-display);font-size:19px;font-weight:700;line-height:1.25}
+.vc-prog-desc{margin:0;font-size:13px;color:var(--muted)}
+.vc-prog-progress{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+.vc-prog-track{flex:0 1 220px;height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;display:block}
+.vc-prog-track span{display:block;height:100%;background:var(--ok);border-radius:4px}
+.vc-weekly{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.vc-pool{padding:12px;border-radius:14px;background:var(--surface-2);display:flex;flex-direction:column;gap:8px}
+.vc-pool-list{display:flex;flex-wrap:wrap;gap:8px}
+.vc-pool-chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:500;cursor:grab}
+.vc-pool-chip.is-picked{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset;background:var(--accent-soft)}
+.vc-pool-count{font-size:11px;color:var(--hint)}
+.vc-week{border:1px solid var(--line);border-radius:14px;padding:12px}
+.vc-week-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.vc-week-title{font-weight:700;font-size:14px}
+.vc-week-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));gap:8px}
+.vc-slot{position:relative;min-height:96px;padding:10px;border-radius:12px;border:2px dashed var(--line-strong);background:transparent;display:flex;flex-direction:column;gap:4px;box-sizing:border-box;transition:border-color .12s,background .12s}
+.vc-slot.is-filled{border:1px solid var(--line);border-left:4px solid var(--sess,var(--line));background:var(--surface-2)}
+.vc-slot.is-done{opacity:.75}
+.vc-slot.is-done .vc-slot-name{text-decoration:line-through;text-decoration-color:var(--hint)}
+.vc-slot.is-over,.vc-slot.can-place{border-color:var(--accent);background:var(--accent-soft);cursor:pointer}
+.vc-slot-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--hint)}
+.vc-slot-name{border:none;background:none;padding:0;text-align:left;font:inherit;font-weight:600;font-size:14px;color:var(--text);cursor:pointer;line-height:1.3}
+.vc-slot-empty{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;color:var(--hint)}
+.vc-slot-actions{display:flex;align-items:center;gap:6px;margin-top:auto}
+.vc-slot-check{width:32px;height:32px;border-radius:50%;border:2px solid var(--line-strong);background:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-slot-check[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+@media (max-width:767px){.vc-progs-head h2{display:none}.vc-progs-head .vc-btn{flex:1}}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -451,7 +525,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.1.0";
+const APP_VERSION = "3.2.0";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -1755,6 +1829,193 @@ function VcSessionHeader({ session, isOwn, teams, sections, isMobile, onBack, on
             React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", disabled: empty, onClick: onDone, title: "Enregistrer la séance comme réalisée sans la lancer" }, React.createElement(Icon, { name: "check", size: 16 }), "Marquer réalisée")));
 }
 
+// ─── VC 3.2 : BIBLIOTHÈQUE ET PROGRAMMES ───────────────────────────────────────
+Object.assign(VC_ICON_PATHS, {
+    tool: "M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z",
+    player: "M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c1-4 4-6 8-6s7 2 8 6",
+    filter: "M4 5h16l-6 8v6l-4-2v-4z",
+    globe: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z",
+});
+
+// En-tête d'une carte d'exercice de la bibliothèque (le reste de la carte garde ses sélecteurs).
+function VcExCardHead({ ex, name, cats, catColor, level, isCustom, muscles, equipment, isVolley, evolutions, variants, showEvo, onToggleEvo, onAdd, inSession, onEdit, onDuplicate }) {
+    const hasPick = (isVolley && evolutions.length > 0) || variants.length > 0;
+    const pickLabel = isVolley && evolutions.length > 0 ? evolutions.length + " évolution" + (evolutions.length > 1 ? "s" : "") : variants.length + " variante" + (variants.length > 1 ? "s" : "");
+    const chips = [];
+    if (ex.duration_seconds) chips.push(fmtTime(ex.duration_seconds));
+    if (ex.hold_seconds) chips.push(ex.hold_seconds + " s de maintien");
+    if (ex.sets_default && !isVolley) chips.push(ex.sets_default + " séries");
+    if (ex.reps_default && !isVolley) chips.push(ex.reps_default + " rép.");
+    if (ex.nombre_joueurs && isVolley && ex.nombre_joueurs.ideal) chips.push(ex.nombre_joueurs.ideal + " joueurs");
+    let badge = null;
+    if (isCustom) {
+        badge = ex.is_public
+            ? React.createElement("span", { className: "vc-tag vc-tag--ok" }, React.createElement(Icon, { name: "globe", size: 12 }), "Créé par " + (ex._ownedByMe !== false ? "vous" : (ex._sharedByName || "un autre coach")))
+            : ex._ownedByMe !== false
+                ? React.createElement("span", { className: "vc-tag vc-tag--brand" }, "Personnel")
+                : React.createElement("span", { className: "vc-tag vc-tag--violet" }, React.createElement(Icon, { name: "link", size: 12 }), "Partagé par " + (ex._sharedByName || "un autre coach"));
+    }
+    return React.createElement(React.Fragment, null,
+        React.createElement("div", { className: "vc-excard-name" }, name),
+        React.createElement("div", { className: "vc-ex-tags" },
+            cats && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: catColor } }), cats),
+            level && React.createElement(LevelBadge, { level }),
+            badge),
+        (muscles.length > 0 || chips.length > 0 || equipment.length > 0) && React.createElement("div", { className: "vc-excard-meta" },
+            [...muscles, ...chips].join(" · "),
+            equipment.length > 0 && React.createElement("span", { className: "vc-excard-equip" }, React.createElement(Icon, { name: "tool", size: 12 }), equipment.slice(0, 2).join(", ") + (equipment.length > 2 ? "…" : ""))),
+        React.createElement("div", { className: "vc-excard-foot", onClick: (e) => e.stopPropagation() },
+            isCustom && ex._ownedByMe !== false && React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Modifier l'exercice", title: "Modifier", onClick: () => onEdit?.(ex) }, React.createElement(Icon, { name: "edit", size: 16 })),
+            React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Dupliquer en exercice personnel", title: "Dupliquer", onClick: () => onDuplicate?.(ex) }, React.createElement(Icon, { name: "copy", size: 16 })),
+            React.createElement("span", { style: { flex: 1 } }),
+            hasPick && React.createElement("button", { type: "button", className: "vc-btn vc-btn--sm " + (showEvo ? "vc-btn--gold" : "vc-btn--ghost"), onClick: onToggleEvo, "aria-expanded": showEvo }, showEvo ? "Fermer" : pickLabel),
+            !hasPick && (inSession
+                ? React.createElement("span", { className: "vc-added" }, React.createElement(Icon, { name: "check", size: 15, stroke: 2.6 }), "Dans la séance")
+                : React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--sm", onClick: () => onAdd?.(ex) }, React.createElement(Icon, { name: "plus", size: 14, stroke: 2.6 }), "Ajouter"))));
+}
+
+// Séance en cours affichée à côté de la bibliothèque (ordinateur/tablette) ou en barre (mobile).
+function VcSessionDock({ session, sections, isMobile, onOpen, onLaunch, onRemoveItem, onNew }) {
+    if (!session) {
+        if (isMobile) return null;
+        return React.createElement("aside", { className: "vc-dock vc-card", "aria-label": "Séance en cours" },
+            React.createElement("div", { className: "vc-today-label" }, "Aucune séance ouverte"),
+            React.createElement("p", { style: { margin: "6px 0 12px", fontSize: 13, color: "var(--muted)" } }, "Le premier exercice ajouté crée une nouvelle séance."),
+            React.createElement("button", { className: "vc-btn vc-btn--ghost vc-btn--md vc-btn--block", onClick: onNew }, React.createElement(Icon, { name: "plus", size: 16 }), "Nouvelle séance"));
+    }
+    const items = session.items || [];
+    const nEx = items.filter((it) => it._type !== "pause").length;
+    const sx = vcSectionOf(sections, session.section);
+    const ro = session._ownedByMe === false;
+    if (isMobile) {
+        return React.createElement("div", { className: "vc-dock-bar", role: "region", "aria-label": "Séance en cours" },
+            React.createElement("span", { className: "vc-sess-bar", style: { background: sx?.color, minHeight: 30 } }),
+            React.createElement("div", { className: "vc-sess-text" },
+                React.createElement("span", { className: "vc-sess-name" }, session.name || "Séance"),
+                React.createElement("span", { className: "vc-sess-meta" }, ro ? "Lecture seule" : nEx + " exercice" + (nEx > 1 ? "s" : "") + (nEx ? " · " + vcFmtMin(sessionEstimatedTime(items)) : ""))),
+            React.createElement("button", { className: "vc-btn vc-btn--ghost vc-btn--sm", onClick: onOpen }, "Ouvrir"));
+    }
+    return React.createElement("aside", { className: "vc-dock vc-card", "aria-label": "Séance en cours" },
+        React.createElement("div", { className: "vc-today-label" }, "Séance en cours"),
+        React.createElement("div", { className: "vc-dock-title" }, session.name || "Séance"),
+        React.createElement("div", { className: "vc-sess-meta" }, [vcSectionLabel(sx), nEx + " exercice" + (nEx > 1 ? "s" : ""), nEx ? vcFmtMin(sessionEstimatedTime(items)) : null].filter(Boolean).join(" · ")),
+        ro && React.createElement("div", { className: "vc-readonly", style: { marginTop: 10 } }, "Séance partagée en lecture seule : les ajouts sont désactivés."),
+        React.createElement("ol", { className: "vc-dock-list" },
+            items.length === 0 && React.createElement("li", { className: "vc-dock-empty" }, "Ajoutez des exercices depuis la liste."),
+            items.map((it, i) => React.createElement("li", { key: (it.id || "x") + i, className: it._type === "pause" ? "is-pause" : "" },
+                React.createElement("span", { className: "vc-dock-num" }, it._type === "pause" ? "–" : i + 1),
+                React.createElement("span", { className: "vc-dock-name" }, it._type === "pause" ? (it.name || "Pause") + " · " + fmtTime(+(it.pause_duration || 60)) : ((it.titre || it.name || "Exercice") + (it._variantLabel ? " — " + it._variantLabel : ""))),
+                !ro && React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Retirer de la séance", onClick: () => onRemoveItem(i) }, React.createElement(Icon, { name: "close", size: 14 }))))),
+        React.createElement("div", { className: "vc-dock-actions" },
+            React.createElement("button", { className: "vc-btn vc-btn--gold vc-btn--md", disabled: !items.length, onClick: onLaunch }, React.createElement(Icon, { name: "play", size: 14 }), "Lancer"),
+            React.createElement("button", { className: "vc-btn vc-btn--ghost vc-btn--md", onClick: onOpen }, "Ouvrir la séance")));
+}
+
+// En-tête d'une carte de programme.
+function VcProgramHead({ prog, teams, isDone, collapsed, onToggle, onEdit, onShare, onExportCoach, onExportPlayers, onDelete, isMobile }) {
+    const t = (teams || []).find((x) => x.id === prog.teamId);
+    const player = t && prog.playerId ? (t.players || []).find((p) => p.id === prog.playerId) : null;
+    // Programme planifié en semaines : progression sur les créneaux remplis ; sinon sur la liste des séances.
+    const weekMode = !!(prog.durationWeeks && prog.sessionsPerWeek);
+    const filledKeys = Object.keys(prog.weekSlots || {}).filter((k) => prog.weekSlots[k]);
+    const total = weekMode ? filledKeys.length : (prog.sessionIds || []).length;
+    const done = weekMode ? filledKeys.filter((k) => !!(prog.doneSessions || {})[k]).length : (prog.sessionIds || []).filter((sid) => isDone(prog, sid)).length;
+    const nSess = (prog.sessionIds || []).length;
+    const meta = [nSess + " séance" + (nSess > 1 ? "s" : ""), prog.durationWeeks ? prog.durationWeeks + " sem." : null, prog.sessionsPerWeek ? prog.sessionsPerWeek + " / sem." : null].filter(Boolean).join(" · ");
+    return React.createElement("div", { className: "vc-prog-head" },
+        React.createElement("div", { className: "vc-prog-info" },
+            React.createElement("div", { className: "vc-prog-name" }, prog.name || "Programme"),
+            React.createElement("div", { className: "vc-ex-tags" },
+                t && React.createElement("span", { className: "vc-tag" }, React.createElement(Icon, { name: "teams", size: 12 }), t.name),
+                player && React.createElement("span", { className: "vc-tag" }, React.createElement(Icon, { name: "player", size: 12 }), player.name),
+                prog._ownedByMe === false && React.createElement("span", { className: "vc-tag vc-tag--violet" }, React.createElement(Icon, { name: "link", size: 12 }), "Partagé" + (prog._sharedByName ? " par " + prog._sharedByName : "")),
+                React.createElement("span", { className: "vc-sess-meta" }, meta)),
+            prog.description && React.createElement("p", { className: "vc-prog-desc" }, prog.description),
+            total > 0 && React.createElement("div", { className: "vc-prog-progress", "aria-label": done + " séances réalisées sur " + total + (weekMode ? " créneaux planifiés" : "") },
+                React.createElement("span", { className: "vc-prog-track" }, React.createElement("span", { style: { width: Math.round(done / total * 100) + "%" } })),
+                React.createElement("span", null, done + " / " + total + " réalisée" + (done > 1 ? "s" : "")))),
+        React.createElement("div", { className: "vc-row-tools" },
+            nSess > 0 && React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, "aria-label": collapsed ? "Déplier le programme" : "Replier le programme", "aria-expanded": !collapsed, onClick: onToggle }, React.createElement(Icon, { name: collapsed ? "down" : "up" })),
+            React.createElement(VcActionMenu, { isMobile, label: "Actions du programme", items: [
+                { icon: "edit", label: "Modifier", onClick: onEdit },
+                { icon: "share", label: "Partager", onClick: onShare },
+                { icon: "upload", label: "Export coach", onClick: onExportCoach },
+                { icon: "teams", label: "Export joueurs", onClick: onExportPlayers },
+                { divider: true, hidden: prog._ownedByMe === false },
+                { icon: "trash", label: "Supprimer le programme", danger: true, onClick: onDelete, hidden: prog._ownedByMe === false },
+            ] })));
+}
+
+// Vue semaine d'un programme : glisser-déposer (ordinateur) ou toucher pour placer (mobile).
+function renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave, onLaunchSlot, isDoneSlot, onToggleDoneSlot, onPreviewSlot, isMobile) {
+    var nW = parseInt(prog.durationWeeks) || 1;
+    var nP = parseInt(prog.sessionsPerWeek) || 1;
+    var slots = prog.weekSlots || {};
+    var SCOLS = { volley: "#C8102E", fitness: "#7C3AED", mobilite: "#3B82F6", souplesse: "#10B981", pliometrie: "#F97316", cross: "#0EA5E9" };
+    var picked = slotDrag && slotDrag.progId === prog.id ? slotDrag.picked : null;
+    var place = function(key, sid) {
+        var ns = Object.assign({}, prog.weekSlots || {}); ns[key] = sid;
+        onSave(Object.assign({}, prog, { weekSlots: ns }));
+        setSlotDrag(null);
+    };
+    var uniqueSids = [];
+    (prog.sessionIds || []).forEach(function(sid) { if (uniqueSids.indexOf(sid) < 0) uniqueSids.push(sid); });
+    var pool = uniqueSids.map(function(sid) {
+        var sess = sessions.find(function(s) { return s.id === sid; });
+        if (!sess) return null;
+        var isPicked = picked === sid;
+        return React.createElement("button", { key: sid, type: "button", draggable: true, className: "vc-pool-chip" + (isPicked ? " is-picked" : ""),
+            onDragStart: function(e) { e.dataTransfer.setData("text/plain", sid); e.currentTarget.style.opacity = "0.5"; },
+            onDragEnd: function(e) { e.currentTarget.style.opacity = "1"; },
+            onClick: function() { setSlotDrag(isPicked ? null : { progId: prog.id, picked: sid }); },
+            "aria-pressed": isPicked,
+        }, React.createElement("span", { className: "vc-dot", style: { background: SCOLS[sess.section] || "#C8102E" } }), sess.name,
+            React.createElement("span", { className: "vc-pool-count" }, ((sess.items && sess.items.length) || 0) + " ex."));
+    });
+    var weeks = [];
+    for (let w = 0; w < nW; w++) {
+        let daySlots = [];
+        let doneInWeek = 0, filledInWeek = 0;
+        for (let sl = 0; sl < nP; sl++) {
+            let key = w + "_" + sl;
+            let sid2 = slots[key];
+            let ss = sid2 ? sessions.find(function(s) { return s.id === sid2; }) : null;
+            let isOver = !!(slotDrag && slotDrag.progId === prog.id && slotDrag.key === key);
+            let done = isDoneSlot && isDoneSlot(key);
+            if (ss) filledInWeek++;
+            if (ss && done) doneInWeek++;
+            let cls = "vc-slot" + (ss ? " is-filled" : "") + (done ? " is-done" : "") + (isOver ? " is-over" : "") + (picked ? " can-place" : "");
+            daySlots.push(React.createElement("div", {
+                key: sl, "data-key": key, className: cls, style: ss ? { "--sess": SCOLS[ss.section] || "#C8102E" } : null,
+                onDragOver: function(e) { e.preventDefault(); setSlotDrag({ progId: prog.id, key: e.currentTarget.getAttribute("data-key") }); },
+                onDragLeave: function() { setSlotDrag(null); },
+                onDrop: function(e) { e.preventDefault(); var k = e.currentTarget.getAttribute("data-key"); var droppedSid = e.dataTransfer.getData("text/plain"); if (droppedSid) place(k, droppedSid); else setSlotDrag(null); },
+                onClick: function(e) { if (picked) { e.stopPropagation(); place(e.currentTarget.getAttribute("data-key"), picked); } },
+            },
+                React.createElement("div", { className: "vc-slot-label" }, "Séance " + (sl + 1)),
+                ss ? React.createElement(React.Fragment, null,
+                    React.createElement("button", { type: "button", className: "vc-slot-name", onClick: function(e) { if (picked) return; e.stopPropagation(); onPreviewSlot && onPreviewSlot(ss); } }, ss.name),
+                    React.createElement("div", { className: "vc-sess-meta" }, ((ss.items && ss.items.length) || 0) + " exercices"),
+                    React.createElement("div", { className: "vc-slot-actions" },
+                        onToggleDoneSlot && React.createElement("button", { type: "button", className: "vc-slot-check", "aria-pressed": !!done, "aria-label": done ? "Marquer non réalisée" : "Marquer réalisée", onClick: function(e) { e.stopPropagation(); onToggleDoneSlot(key); } }, done ? React.createElement(Icon, { name: "check", size: 16, stroke: 3 }) : null),
+                        onLaunchSlot && !done && React.createElement("button", { type: "button", className: "vc-btn vc-btn--gold vc-btn--sm", onClick: function(e) { e.stopPropagation(); onLaunchSlot(ss, key); } }, React.createElement(Icon, { name: "play", size: 12 }), "Lancer"),
+                        React.createElement("span", { style: { flex: 1 } }),
+                        React.createElement("button", { type: "button", className: "vc-tool", "data-key": key, "aria-label": "Vider ce créneau", onClick: function(e) { e.stopPropagation(); var k = e.currentTarget.getAttribute("data-key"); var r = Object.assign({}, prog.weekSlots || {}); delete r[k]; onSave(Object.assign({}, prog, { weekSlots: r })); } }, React.createElement(Icon, { name: "close", size: 14 }))))
+                    : React.createElement("div", { className: "vc-slot-empty" }, picked ? "Toucher pour placer ici" : (isMobile ? "Choisissez une séance au-dessus" : "Glissez une séance ici"))));
+        }
+        weeks.push(React.createElement("div", { key: w, className: "vc-week" },
+            React.createElement("div", { className: "vc-week-head" },
+                React.createElement("span", { className: "vc-week-title" }, "Semaine " + (w + 1)),
+                React.createElement("span", { className: "vc-sess-meta" }, filledInWeek > 0 ? doneInWeek + " / " + filledInWeek + " réalisée" + (doneInWeek > 1 ? "s" : "") : nP + " créneau" + (nP > 1 ? "x" : ""))),
+            React.createElement("div", { className: "vc-week-slots" }, daySlots)));
+    }
+    return React.createElement("div", { className: "vc-weekly" },
+        React.createElement("div", { className: "vc-pool" },
+            React.createElement("div", { className: "vc-today-label" }, isMobile ? "Touchez une séance puis un créneau" : "Glissez une séance sur un créneau, ou touchez-la puis touchez le créneau"),
+            React.createElement("div", { className: "vc-pool-list" }, pool)),
+        weeks);
+}
+
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null }; }
@@ -2039,35 +2300,9 @@ function ExCard({ ex, section, onAdd, onEdit, onDuplicate, inSession, onShowDeta
         setDistSelected(new Set());
         setDistSingle(null);
     };
-    return (React.createElement("div", { onClick: () => onShowDetail?.(ex), style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden", transition: "box-shadow 0.2s", cursor: "pointer" } },
-        React.createElement("div", { style: { height: 4, background: catColor } }),
-        React.createElement("div", { style: { padding: "12px 14px" } },
-            React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 8 } },
-                React.createElement("div", { style: { flex: 1, minWidth: 0 } },
-                    React.createElement("div", { style: { fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 4, lineHeight: 1.3 } }, name),
-                    React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap", alignItems: "center" } },
-                        React.createElement("span", { style: { background: catColor + "20", color: catColor, borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, cats),
-                        level && React.createElement(LevelBadge, { level: level }),
-                        isCustom && (ex.is_public
-                            ? React.createElement("span", { style: { background: "var(--tint-green)", color: "var(--tint-green-text)", borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\uD83C\uDF0D Créé par ", ex._ownedByMe !== false ? "vous" : (ex._sharedByName || "un autre coach"))
-                            : ex._ownedByMe !== false
-                                ? React.createElement("span", { style: { background: C.orLight, color: C.or, borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\u270F\uFE0F Custom")
-                                : React.createElement("span", { style: { background: "var(--tint-violet)", color: "var(--violet-text)", borderRadius: 99, padding: "1px 7px", fontSize: 10, fontWeight: 600 } }, "\uD83D\uDD17 Partagé par ", ex._sharedByName || "un autre coach")))),
-                React.createElement("div", { style: { display: "flex", gap: 4, alignItems: "center", flexShrink: 0 } },
-                (isVolley && evolutions.length > 0) || hasVariants ? React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); setShowEvo(!showEvo); }, variant: showEvo ? "gold" : "outline", size: "sm" }, showEvo ? "\u25B2" : (isVolley && evolutions.length > 0 ? `+${evolutions.length}\u00A0\u00E9vo.` : `+${variants.length}\u00A0var.`)) :
-                React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onAdd?.(ex); }, variant: inSession ? "ghost" : "primary", size: "sm", disabled: inSession }, inSession ? "\u2713" : "+ Ajouter"))),
-            muscles.length > 0 && (React.createElement("div", { style: { display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 8 } }, muscles.map(m => React.createElement("span", { key: m, style: { background: C.rougeLight, color: C.rougeText, borderRadius: 4, padding: "1px 6px", fontSize: 10, fontWeight: 600 } }, m)))),
-            React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap", marginBottom: 10 } },
-                ex.duration_seconds && React.createElement(Chip, { icon: "\u23F1", label: fmtTime(ex.duration_seconds) }),
-                ex.reps_default && !isVolley && React.createElement(Chip, { icon: "\u2715", label: `${ex.reps_default} rép.` }),
-                ex.hold_seconds && React.createElement(Chip, { icon: "\u23F1", label: `${ex.hold_seconds}s` }),
-                ex.sets_default && !isVolley && React.createElement(Chip, { icon: "\u00D7", label: `${ex.sets_default} séries` }),
-                equipment.slice(0, 2).map(e => React.createElement(Chip, { key: e, icon: "\uD83D\uDD27", label: e })),
-                ex.nombre_joueurs && isVolley && React.createElement(Chip, { icon: "\uD83D\uDC65", label: `${ex.nombre_joueurs.ideal} j.` })),
-            React.createElement("div", { style: { display: "flex", gap: 4, marginTop: 6 } },
-                isCustom && ex._ownedByMe !== false && React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onEdit?.(ex); }, variant: "ghost", size: "sm" }, "\u270F\uFE0F"),
-                React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); onDuplicate?.(ex); }, variant: "ghost", size: "sm" }, "\u29C9")),
-            
+    return (React.createElement("div", { className: "vc-excard", style: { "--cat": catColor }, onClick: () => onShowDetail?.(ex) },
+        React.createElement("div", { className: "vc-excard-body" },
+            React.createElement(VcExCardHead, { ex, name, cats, catColor, level, isCustom, muscles, equipment, isVolley, evolutions, variants, showEvo, onToggleEvo: () => setShowEvo(!showEvo), onAdd, inSession, onEdit, onDuplicate }),
             showEvo && isVolley && singlePick && (React.createElement("div", { onClick: e => e.stopPropagation(), style: { marginTop: 10, borderTop: `1px solid ${C.border}`, paddingTop: 10 } },
                 React.createElement("div", { style: { fontSize: 12, color: C.muted, marginBottom: 8 } }, "Choisir une version \u00E0 utiliser :"),
                 React.createElement("button", { onClick: () => onAdd?.(ex), style: { display: "block", width: "100%", textAlign: "left", padding: "7px 4px", cursor: "pointer", background: "none", border: "none", borderBottom: `1px solid ${C.border}`, fontSize: 13, fontWeight: 600, color: C.text } }, "Exercice de base"),
@@ -2221,36 +2456,32 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
         display: "flex", alignItems: "flex-start", justifyContent: "center",
         padding: "20px 12px", overflowY: "auto",
     };
-    return (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 10, height: "100%" } },
-        React.createElement("input", { type: "text", placeholder: "\uD83D\uDD0D Rechercher...", value: q, onChange: e => setQ(e.target.value), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 } }),
-        React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap" } },
-            React.createElement(FilterChip, { label: "Tous", active: catFilter === "tous", onClick: () => setCatFilter("tous") }),
-            cats.map(c => React.createElement(FilterChip, { key: c, label: c, active: catFilter === c, onClick: () => setCatFilter(c === catFilter ? "tous" : c) }))),
-        React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap" } },
-            React.createElement(FilterChip, { label: "Tous niveaux", active: levelFilter === "tous", onClick: () => setLevelFilter("tous") }),
-            levels.map(l => React.createElement(FilterChip, { key: l, label: l, active: levelFilter === l, onClick: () => setLevelFilter(l === levelFilter ? "tous" : l) })),
-            React.createElement(FilterChip, { label: "Sans mat\u00E9riel", active: noEquip, onClick: () => setNoEquip(v => !v) })),
-        isFitness && allMuscles.length > 0 && (React.createElement("div", null,
-            React.createElement("div", { style: { fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: C.muted, marginBottom: 4 } }, "Groupe musculaire"),
-            React.createElement("div", { style: { display: "flex", gap: 5, flexWrap: "wrap" } },
-                React.createElement(FilterChip, { label: "Tous muscles", active: muscleFilter === "tous", onClick: () => setMuscleFilter("tous") }),
-                allMuscles.map(m => React.createElement(FilterChip, { key: m, label: m, active: muscleFilter === m, onClick: () => setMuscleFilter(m === muscleFilter ? "tous" : m) }))))),
-        React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
-            React.createElement("span", { style: { fontSize: 11, color: C.hint } },
-                filtered.length,
-                " exercice",
-                filtered.length > 1 ? "s" : ""),
-            !hideCreate && React.createElement("div", { style: { display: "flex", gap: 6 } },
-                React.createElement(ClubBtn, { onClick: () => setShowNew(true), variant: "outline", size: "sm" }, "+ Nouveau"),
-                React.createElement(ClubBtn, { onClick: () => {
+    return (React.createElement("div", { className: "vc-lib" },
+        React.createElement("div", { className: "vc-lib-filters" },
+            React.createElement("label", { className: "vc-search" },
+                React.createElement(Icon, { name: "search", size: 18 }),
+                React.createElement("input", { type: "search", placeholder: "Nom, muscle, tag, description…", value: q, onChange: e => setQ(e.target.value), "aria-label": "Rechercher un exercice" })),
+            cats.length > 0 && React.createElement("div", { className: "vc-chips vc-chips--sm", role: "group", "aria-label": "Catégories" },
+                React.createElement("button", { type: "button", className: "vc-chip" + (catFilter === "tous" ? " is-active" : ""), onClick: () => setCatFilter("tous") }, "Toutes"),
+                cats.map(c => React.createElement("button", { key: c, type: "button", className: "vc-chip" + (catFilter === c ? " is-active" : ""), onClick: () => setCatFilter(c === catFilter ? "tous" : c) }, c))),
+            React.createElement("div", { className: "vc-lib-row" },
+                levels.length > 0 && React.createElement("select", { className: "vc-select", value: levelFilter, onChange: e => setLevelFilter(e.target.value), "aria-label": "Niveau" },
+                    React.createElement("option", { value: "tous" }, "Tous niveaux"),
+                    levels.map(l => React.createElement("option", { key: l, value: l }, l))),
+                isFitness && allMuscles.length > 0 && React.createElement("select", { className: "vc-select", value: muscleFilter, onChange: e => setMuscleFilter(e.target.value), "aria-label": "Groupe musculaire" },
+                    React.createElement("option", { value: "tous" }, "Tous muscles"),
+                    allMuscles.map(m => React.createElement("option", { key: m, value: m }, m))),
+                React.createElement("button", { type: "button", className: "vc-chip" + (noEquip ? " is-active" : ""), style: { height: 36 }, "aria-pressed": noEquip, onClick: () => setNoEquip(v => !v) }, "Sans matériel"))),
+        React.createElement("div", { className: "vc-lib-count" },
+            filtered.length + " exercice" + (filtered.length > 1 ? "s" : ""),
+            !hideCreate && React.createElement("div", { className: "vc-lib-actions" },
+                React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", onClick: () => setShowNew(true) }, React.createElement(Icon, { name: "plus", size: 14 }), "Créer un exercice"),
+                React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", title: "Exporter mes exercices personnels de cette discipline", onClick: () => {
                         const custom = (customExercises || []).filter(e => e._section === section);
-                        if (!custom.length) {
-                            vcToast("Aucun exercice personnalisé dans cette section.", "info");
-                            return;
-                        }
+                        if (!custom.length) { vcToast("Aucun exercice personnel dans cette discipline.", "info"); return; }
                         exportJSON(custom, `custom_exercices_${section}`);
-                    }, variant: "ghost", size: "sm" }, "\uD83D\uDCE4 Export custom"))),
-        React.createElement("div", { style: { overflowY: "auto", flex: 1, paddingRight: 2, display: "flex", flexDirection: "column", gap: 8 } },
+                    } }, React.createElement(Icon, { name: "upload", size: 14 }), "Exporter"))),
+        React.createElement("div", { className: "vc-lib-grid" },
             filtered.map(ex => (React.createElement(ExCard, { key: ex.id, ex: ex, section: section, onAdd: onAdd, onEdit: setEditingEx, singlePick: singlePick, onDuplicate: src => {
                     const duped = { ...src, id: "custom_" + generateId(), _section: section, titre: (src.titre || src.name || "Exercice") + " (copie)", name: (src.titre || src.name || "Exercice") + " (copie)" };
                     onSaveCustom({ ...duped, _section: section });
@@ -2264,7 +2495,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                         onAddEvolution?.(item);
                     }
                 } }))),
-            filtered.length === 0 && React.createElement("div", { style: { textAlign: "center", color: C.hint, marginTop: 32, fontSize: 13 } }, "Aucun r\u00E9sultat")),
+            filtered.length === 0 && React.createElement("div", { className: "vc-empty vc-lib-empty" }, "Aucun exercice ne correspond à ces filtres.")),
         showNew && (React.createElement("div", { onClick: () => setShowNew(false), style: modalStyle },
             React.createElement("div", { onClick: e => e.stopPropagation(), style: { width: "100%", maxWidth: 700 } },
                 React.createElement(ExerciseEditor, { section: section, onSave: ex => { onSaveCustom({ ...ex, _section: section }); setShowNew(false); }, onCancel: () => setShowNew(false) })))),
@@ -2526,79 +2757,7 @@ function SessionSummary({ items }) {
 
 // ─────────────────────────── PROGRAM BUILDER ───────────────────────────
 // ── ProgramBuilder ──
-function renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave, onLaunchSlot, isDoneSlot, onToggleDoneSlot, onPreviewSlot, isMobile) {
-    var nW = parseInt(prog.durationWeeks) || 1;
-    var nP = parseInt(prog.sessionsPerWeek) || 1;
-    var slots = prog.weekSlots || {};
-    var SCOLS = { volley: "#C8102E", fitness: "#7C3AED", mobilite: "#3B82F6", souplesse: "#10B981", pliometrie: "#F97316" };
-    var uniqueSids = [];
-    (prog.sessionIds || []).forEach(function(sid) { if (uniqueSids.indexOf(sid) < 0) uniqueSids.push(sid); });
-    var pool = uniqueSids.map(function(sid) {
-        var sess = sessions.find(function(s) { return s.id === sid; });
-        if (!sess) return null;
-        var sc = SCOLS[sess.section] || "#C8102E";
-        return React.createElement("div", { key: sid, draggable: true,
-            onDragStart: function(e) { e.dataTransfer.setData("text/plain", sid); e.currentTarget.style.opacity = "0.5"; },
-            onDragEnd: function(e) { e.currentTarget.style.opacity = "1"; },
-            style: { background: sc + "15", border: "1.5px solid " + sc + "40", borderRadius: 7,
-                padding: "5px 10px", cursor: "grab", fontSize: 12, fontWeight: 600, color: sc,
-                display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }
-        }, sess.name, React.createElement("span", { style: { fontSize: 10, opacity: 0.7, marginLeft: 3 } },
-            ((sess.items && sess.items.length) || 0) + "ex"));
-    });
-    var weeks = [];
-    for (let w = 0; w < nW; w++) {
-        let daySlots = [];
-        for (let sl = 0; sl < nP; sl++) {
-            let key = w + "_" + sl;
-            let sid2 = slots[key];
-            let ss = sid2 ? sessions.find(function(s) { return s.id === sid2; }) : null;
-            let sc2 = (ss && SCOLS[ss.section]) ? SCOLS[ss.section] : "#D1D5DB";
-            let isOver = !!(slotDrag && slotDrag.progId === prog.id && slotDrag.key === key);
-            let done = isDoneSlot && isDoneSlot(key);
-            daySlots.push(React.createElement("div", {
-                key: sl, "data-key": key,
-                onDragOver: function(e) { e.preventDefault(); setSlotDrag({ progId: prog.id, key: e.currentTarget.getAttribute("data-key") }); },
-                onDragLeave: function() { setSlotDrag(null); },
-                onDrop: function(e) { e.preventDefault(); var k = e.currentTarget.getAttribute("data-key"); var droppedSid = e.dataTransfer.getData("text/plain"); if (droppedSid) { var ns = Object.assign({}, prog.weekSlots || {}); ns[k] = droppedSid; onSave(Object.assign({}, prog, { weekSlots: ns })); } setSlotDrag(null); },
-                style: isMobile
-                    ? { minWidth: 200, flexShrink: 0, borderRadius: 8,
-                        border: "2px " + (isOver ? "solid" : "dashed") + " " + (isOver ? "#C8102E" : (ss ? sc2 : "#D1D5DB")),
-                        background: isOver ? "#FEF2F2" : (ss ? sc2 + "10" : "#F9FAFB"),
-                        padding: "8px 10px", position: "relative", transition: "all 0.15s" }
-                    : { minHeight: 70, borderRadius: 8,
-                        border: "2px " + (isOver ? "solid" : "dashed") + " " + (isOver ? "#C8102E" : (ss ? sc2 : "#D1D5DB")),
-                        background: isOver ? "#FEF2F2" : (ss ? sc2 + "10" : "#F9FAFB"),
-                        padding: "8px 10px", position: "relative", transition: "all 0.15s" }
-            },
-            React.createElement("div", { style: { fontSize: 10, color: "#9CA3AF", marginBottom: 4, fontWeight: 600 } },
-                "S" + (w + 1) + "\xB7J" + (sl + 1)),
-            ss ? React.createElement("div", null,
-                // Ligne nom + supprimer (en haut à droite)
-                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 4 } },
-                    React.createElement("div", { onClick: function() { onPreviewSlot && onPreviewSlot(ss); }, style: { fontSize: 12, fontWeight: 700, color: done ? "#10B981" : sc2, cursor: "pointer", textDecoration: done ? "line-through" : "none", flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis" } }, ss.name),
-                    React.createElement("button", { "data-key": key, onClick: function(e) { e.stopPropagation(); var k = e.currentTarget.getAttribute("data-key"); var r = Object.assign({}, prog.weekSlots || {}); delete r[k]; onSave(Object.assign({}, prog, { weekSlots: r })); }, style: { flexShrink: 0, padding: "1px 5px", borderRadius: 4, border: "none", background: "rgba(0,0,0,0.06)", color: "#9CA3AF", cursor: "pointer", fontSize: 11, lineHeight: 1.4 } }, "\xD7")),
-                React.createElement("div", { style: { fontSize: 10, color: "#6B7280", marginTop: 2, marginBottom: 4 } }, ((ss.items && ss.items.length) || 0) + " ex."),
-                // Ligne case à cocher + Lancer (à droite)
-                React.createElement("div", { style: { display: "flex", gap: 4, alignItems: "center" } },
-                    onToggleDoneSlot && React.createElement("button", { onClick: function(e) { e.stopPropagation(); onToggleDoneSlot(key); }, style: { width: 18, height: 18, borderRadius: 4, flexShrink: 0, cursor: "pointer", border: "2px solid " + (done ? "#10B981" : "#ccc"), background: done ? "#10B981" : "transparent", color: "#fff", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center" } }, done ? "\u2713" : ""),
-                    React.createElement("div", { style: { flex: 1 } }),
-                    onLaunchSlot && !done && React.createElement("button", { onClick: function(e) { e.stopPropagation(); onLaunchSlot(ss, key); }, style: { padding: "3px 10px", borderRadius: 5, border: "none", background: sc2, color: "#fff", cursor: "pointer", fontSize: 11, fontWeight: 700, flexShrink: 0 } }, "\uD83D\uDE80 Lancer"))
-            ) : React.createElement("div", { style: { fontSize: 11, color: "#9CA3AF", textAlign: "center", paddingTop: 8 } }, "Glissez ici")));
-        }
-        weeks.push(React.createElement("div", { key: w, style: { background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" } },
-            React.createElement("div", { style: { background: "#111", padding: "7px 12px", display: "flex", gap: 8, alignItems: "center" } },
-                React.createElement("span", { style: { color: "#F0A500", fontWeight: 700, fontSize: 13 } }, "Semaine " + (w + 1)),
-                React.createElement("span", { style: { color: "#666", fontSize: 11 } }, nP + " s\xE9ance" + (nP > 1 ? "s" : ""))),
-            isMobile
-                ? React.createElement("div", { style: { display: "flex", gap: 8, padding: 10, overflowX: "auto", WebkitOverflowScrolling: "touch" } }, daySlots)
-                : React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(" + Math.min(nP, 4) + ", 1fr)", gap: 8, padding: 10 } }, daySlots)));
-    }
-    var allElems = [React.createElement("div", { style: { background: "var(--surface-2)", borderRadius: 8, padding: "8px 10px", marginBottom: 4 } },
-        React.createElement("div", { style: { fontSize: 11, fontWeight: 700, color: "#6B7280", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6 } }, "Glissez les s\xE9ances dans les slots"),
-        React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 } }, pool))].concat(weeks);
-    return React.createElement.apply(React, ["div", { style: { display: "flex", flexDirection: "column", gap: 10, marginTop: 10 } }].concat(allElems));
-}
+
 
 
 // ── SessionPreviewModal : lecture seule, exercices + params ───────────────────
@@ -2698,7 +2857,7 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
     };
     const getSchedule = (sessId) => form.schedule?.find((s) => s.sessId === sessId) || {};
     const editing = showNew || editId;
-    return (React.createElement("div", null, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginBottom: 14 } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 15 } }, "Programmes d'entra\u00EEnement"), React.createElement(ClubBtn, { onClick: startNew, variant: "primary", size: "sm" }, "+ Nouveau programme")), editing && (React.createElement("div", { style: { background: C.surface, border: `2px solid ${C.or}`, borderRadius: 12, padding: 16, marginBottom: 14 } }, React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Nom du programme", React.createElement("input", { value: form.name, onChange: (e) => setForm((f) => ({ ...f, name: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 } })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Nom du coach (optionnel)", React.createElement("input", { value: form.coach_name || "", onChange: (e) => setForm((f) => ({ ...f, coach_name: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "Nom du coach..." })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "\u00C9quipe (optionnel)", React.createElement("select", { value: form.teamId || "", onChange: (e) => setForm((f) => ({ ...f, teamId: e.target.value, playerId: "" })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, cursor: "pointer" } }, React.createElement("option", { value: "" }, "\u2014 Aucune \u00E9quipe \u2014"), (teams || []).map(t => React.createElement("option", { key: t.id, value: t.id }, t.name)))), form.teamId && (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Joueur (programme personnel, optionnel)", React.createElement("select", { value: form.playerId || "", onChange: (e) => setForm((f) => ({ ...f, playerId: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, cursor: "pointer" } }, React.createElement("option", { value: "" }, "\u2014 Programme d'\u00E9quipe \u2014"), ((teams || []).find(t => t.id === form.teamId)?.players || []).map(p => React.createElement("option", { key: p.id, value: p.id }, "\uD83D\uDC64 ", p.name))))), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Description (optionnel)", React.createElement("input", { value: form.description, onChange: (e) => setForm((f) => ({ ...f, description: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "Objectif, dur\u00E9e totale..." })), React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Dur\u00E9e (semaines)", React.createElement("input", { type: "number", min: 1, max: 52, value: form.durationWeeks || "", onChange: e => setForm(f => ({ ...f, durationWeeks: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "ex: 8" })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "S\u00E9ances / semaine", React.createElement("input", { type: "number", min: 1, max: 14, value: form.sessionsPerWeek || "", onChange: e => setForm(f => ({ ...f, sessionsPerWeek: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "ex: 3" })))), React.createElement(SectionLabel, null, "S\u00E9ances incluses (", form.sessionIds.length, ")"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 } }, sessions.length === 0 && React.createElement("div", { style: { color: C.hint, fontSize: 12 } }, "Aucune s\u00E9ance disponible. Cr\u00E9ez d'abord des s\u00E9ances."), sessions.map((s) => {
+    return (React.createElement("div", null, React.createElement("div", { className: "vc-progs-head" }, React.createElement("h2", null, "Programmes d'entraînement"), React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", onClick: startNew }, React.createElement(Icon, { name: "plus", size: 16 }), "Nouveau programme")), editing && (React.createElement("div", { style: { background: C.surface, border: `2px solid ${C.or}`, borderRadius: 12, padding: 16, marginBottom: 14 } }, React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Nom du programme", React.createElement("input", { value: form.name, onChange: (e) => setForm((f) => ({ ...f, name: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 } })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Nom du coach (optionnel)", React.createElement("input", { value: form.coach_name || "", onChange: (e) => setForm((f) => ({ ...f, coach_name: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "Nom du coach..." })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "\u00C9quipe (optionnel)", React.createElement("select", { value: form.teamId || "", onChange: (e) => setForm((f) => ({ ...f, teamId: e.target.value, playerId: "" })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, cursor: "pointer" } }, React.createElement("option", { value: "" }, "\u2014 Aucune \u00E9quipe \u2014"), (teams || []).map(t => React.createElement("option", { key: t.id, value: t.id }, t.name)))), form.teamId && (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Joueur (programme personnel, optionnel)", React.createElement("select", { value: form.playerId || "", onChange: (e) => setForm((f) => ({ ...f, playerId: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, cursor: "pointer" } }, React.createElement("option", { value: "" }, "\u2014 Programme d'\u00E9quipe \u2014"), ((teams || []).find(t => t.id === form.teamId)?.players || []).map(p => React.createElement("option", { key: p.id, value: p.id }, "\uD83D\uDC64 ", p.name))))), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Description (optionnel)", React.createElement("input", { value: form.description, onChange: (e) => setForm((f) => ({ ...f, description: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "Objectif, dur\u00E9e totale..." })), React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "Dur\u00E9e (semaines)", React.createElement("input", { type: "number", min: 1, max: 52, value: form.durationWeeks || "", onChange: e => setForm(f => ({ ...f, durationWeeks: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "ex: 8" })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 3, fontSize: 12, color: C.muted } }, "S\u00E9ances / semaine", React.createElement("input", { type: "number", min: 1, max: 14, value: form.sessionsPerWeek || "", onChange: e => setForm(f => ({ ...f, sessionsPerWeek: e.target.value })), style: { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13 }, placeholder: "ex: 3" })))), React.createElement(SectionLabel, null, "S\u00E9ances incluses (", form.sessionIds.length, ")"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 } }, sessions.length === 0 && React.createElement("div", { style: { color: C.hint, fontSize: 12 } }, "Aucune s\u00E9ance disponible. Cr\u00E9ez d'abord des s\u00E9ances."), sessions.map((s) => {
         const count = form.sessionIds.filter(x => x === s.id).length;
         const included = count > 0;
         const sched = getSchedule(s.id);
@@ -2714,14 +2873,7 @@ function ProgramBuilder({ sessions, programs, teams, onSave, onDelete, onExport,
                     return { ...f, sessionIds: f.sessionIds.filter((_, i) => i !== idx) };
                 });
             }, style: { width: 18, height: 18, borderRadius: 4, border: `1px solid ${C.border}`, background: C.surface, cursor: "pointer", fontSize: 13, color: C.rougeText, display: "flex", alignItems: "center", justifyContent: "center" } }, "\u2212"), React.createElement("span", { style: { fontSize: 11, fontWeight: 800, color: C.rougeText, minWidth: 14, textAlign: "center" } }, count, "\u00D7"), React.createElement("button", { onClick: e => { e.preventDefault(); toggleSess(s.id); }, style: { width: 18, height: 18, borderRadius: 4, border: `1px solid ${C.border}`, background: C.surface, cursor: "pointer", fontSize: 13, color: "#10B981", display: "flex", alignItems: "center", justifyContent: "center" } }, "+"))), React.createElement("span", { style: { fontWeight: 600, fontSize: 13 } }, s.name), React.createElement("span", { style: { fontSize: 11, color: C.muted } }, s.items?.length || 0, " ex."), React.createElement("span", { style: { fontSize: 10, color: C.hint, background: C.bg, borderRadius: 4, padding: "1px 6px" } }, s.section)), included && (React.createElement("div", { style: { display: "flex", gap: 10, marginTop: 8, flexWrap: "wrap" } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 2, fontSize: 11, color: C.muted } }, "Date pr\u00E9vue (optionnel)", React.createElement("input", { type: "date", value: sched.date || "", onChange: (e) => updateSchedule(s.id, "date", e.target.value), style: { padding: "4px 8px", border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12 } })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 2, fontSize: 11, color: C.muted } }, "Espacement (jours)", React.createElement("input", { type: "number", min: 1, max: 30, value: sched.gapDays || "", onChange: (e) => updateSchedule(s.id, "gapDays", +e.target.value || null), style: { padding: "4px 8px", border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, width: 72 }, placeholder: "ex: 3" })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 2, fontSize: 11, color: C.muted } }, "Note", React.createElement("input", { type: "text", value: sched.note || "", onChange: (e) => updateSchedule(s.id, "note", e.target.value), style: { padding: "4px 8px", border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, width: 130 }, placeholder: "Focus, objectif..." }))))));
-    })), React.createElement("div", { style: { display: "flex", gap: 8 } }, React.createElement(ClubBtn, { onClick: save, variant: "primary" }, "\uD83D\uDCBE Enregistrer le programme"), React.createElement(ClubBtn, { onClick: () => { setShowNew(false); setEditId(null); }, variant: "ghost" }, "Annuler")))), programs.length === 0 && !editing && (React.createElement("div", { style: { textAlign: "center", color: C.hint, marginTop: 40, fontSize: 13 } }, React.createElement("div", { style: { fontSize: 40, marginBottom: 10 } }, "\uD83D\uDCC5"), "Aucun programme. Cr\u00E9ez-en un pour regrouper vos s\u00E9ances.")), programs.map((prog) => (React.createElement("div", { key: prog.id, style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: "14px 16px", marginBottom: 10 } }, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 } }, React.createElement("div", null, React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 14 } }, prog.name), prog.teamId && (() => {
-        const t = (teams || []).find(x => x.id === prog.teamId);
-        return t ? React.createElement("span", { style: { fontSize: 10, color: C.muted, background: C.bg, borderRadius: 4, padding: '1px 7px', border: `1px solid ${C.border}` } }, "\uD83D\uDC65 ", t.name, prog.playerId ? ` · 👤 ${(t.players || []).find(p => p.id === prog.playerId)?.name || ''}` : '') : null;
-    })()), prog.description && React.createElement("p", { style: { fontSize: 12, color: C.muted, margin: "4px 0 0" } }, prog.description), React.createElement("div", { style: { fontSize: 11, color: C.hint, marginTop: 4, display: "flex", gap: 8, alignItems: "center" } }, React.createElement("span", null, prog.sessionIds?.length || 0, " s\u00E9ance", (prog.sessionIds?.length || 0) > 1 ? "s" : ""), prog.durationWeeks && React.createElement("span", null, "\u00B7 ", prog.durationWeeks, " sem."), prog.sessionsPerWeek && React.createElement("span", null, "\u00B7 ", prog.sessionsPerWeek, "\u00D7/sem."), prog.sessionIds?.length > 0 && (() => {
-        const doneCount = (prog.sessionIds || []).filter(sid => isDone(prog, sid)).length;
-        const total = prog.sessionIds.length;
-        return doneCount > 0 ? (React.createElement("span", { style: { color: "#10B981", fontWeight: 600 } }, "\u2713 ", doneCount, "/", total, " r\u00E9alis\u00E9e", doneCount > 1 ? "s" : "")) : null;
-    })())), React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 6 } }, React.createElement(ClubBtn, { onClick: () => startEdit(prog), variant: "ghost", size: "sm" }, "✏️"), React.createElement(ShareMenu, { onShare: () => setShareProgModal(prog), onExportCoach: () => onExport(prog, "coach"), onExportPlayers: () => onExport(prog, "players") }), React.createElement(ClubBtn, { onClick: () => onDelete(prog.id), variant: "danger", size: "sm" }, "🗑"), prog.sessionIds?.length > 0 && React.createElement(ClubBtn, { onClick: () => toggleCollapse(prog.id), variant: "ghost", size: "sm", style: { marginLeft: 8 } }, collapsedProgs[prog.id] ? "▶" : "▼"))), prog.sessionIds?.length > 0 && !collapsedProgs[prog.id] && (React.createElement("div", { style: { marginTop: 10 } }, prog.durationWeeks && prog.sessionsPerWeek
+    })), React.createElement("div", { style: { display: "flex", gap: 8 } }, React.createElement(ClubBtn, { onClick: save, variant: "primary" }, "\uD83D\uDCBE Enregistrer le programme"), React.createElement(ClubBtn, { onClick: () => { setShowNew(false); setEditId(null); }, variant: "ghost" }, "Annuler")))), programs.length === 0 && !editing && (React.createElement("div", { className: "vc-card vc-empty-card" }, React.createElement(Icon, { name: "programs", size: 32 }), React.createElement("h3", null, "Aucun programme"), React.createElement("p", { style: { margin: 0 } }, "Un programme organise plusieurs séances sur des semaines."), React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", onClick: startNew }, React.createElement(Icon, { name: "plus", size: 16 }), "Créer un programme"))), programs.map((prog) => (React.createElement("div", { key: prog.id, className: "vc-prog-card" }, React.createElement(VcProgramHead, { prog, teams, isDone, isMobile, collapsed: !!collapsedProgs[prog.id], onToggle: () => toggleCollapse(prog.id), onEdit: () => startEdit(prog), onShare: () => setShareProgModal(prog), onExportCoach: () => onExport(prog, "coach"), onExportPlayers: () => onExport(prog, "players"), onDelete: () => onDelete(prog.id) }), prog.sessionIds?.length > 0 && !collapsedProgs[prog.id] && (React.createElement("div", { style: { marginTop: 10 } }, prog.durationWeeks && prog.sessionsPerWeek
         ? renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave,
         function(sess, k) { onLaunch(sess); },
         function(k) { return isDone(prog, k); },
@@ -8177,6 +8329,16 @@ Cela remplacera toutes vos données actuelles.`)) {
             React.createElement("button", { className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => window.location.reload() }, "Réessayer")
         );
     }
+    const vcLibAdd = (doAdd) => {
+        if (curSession && curSession._ownedByMe === false) {
+            vcToast("Cette séance est partagée en lecture seule. Dupliquez-la ou créez une séance pour ajouter des exercices.", "info");
+            return;
+        }
+        const created = !curSession;
+        doAdd();
+        if (created) { setActiveTab("library"); vcToast("Nouvelle séance créée avec cet exercice.", "success", 2500); }
+        else if (isMobile) vcToast("Ajouté à « " + (curSession.name || "la séance") + " ».", "success", 1800);
+    };
     const vcMobileNavItems = [
         { icon: "history", label: "Historique", onClick: () => setActiveTab("history") },
         { icon: "timer", label: "Chronomètre et outils", onClick: () => setActiveTab("outils") },
@@ -8384,7 +8546,15 @@ Cela remplacera toutes vos données actuelles.`)) {
             },
             onClose: () => setInsertExerciseModal(null),
         }),
-        activeTab === "library" && (React.createElement("div", null, (activeSection === "mobilite" || activeSection === "souplesse") && (React.createElement(PresetPanel, { type: activeSection, db: currentDb, onUse: usePreset })), React.createElement(LibraryPanel, { db: currentDb, section: activeSection, sessIds: sessIds, onAdd: addToSession, onAddEvolution: addEvolutionToSession, customExercises: customExercises, onSaveCustom: saveCustom }))), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
+        activeTab === "library" && React.createElement("div", { className: "vc-lib-layout" + (curSession ? " has-sess" : "") },
+            React.createElement("div", { className: "vc-lib-main" },
+                (activeSection === "mobilite" || activeSection === "souplesse") && (React.createElement(PresetPanel, { type: activeSection, db: currentDb, onUse: usePreset })),
+                React.createElement(LibraryPanel, { db: currentDb, section: activeSection, sessIds: sessIds, onAdd: (ex) => vcLibAdd(() => addToSession(ex)), onAddEvolution: (ex, ev) => vcLibAdd(() => addEvolutionToSession(ex, ev)), customExercises: customExercises, onSaveCustom: saveCustom })),
+            React.createElement(VcSessionDock, { session: curSession, sections: SECTIONS, isMobile: isMobile,
+                onOpen: () => { setShowTemplates(false); setActiveTab("session"); setSessMobileView("editor"); },
+                onLaunch: () => setLaunchSession(curSession),
+                onRemoveItem: (i) => removeItem(i),
+                onNew: () => setNewSessPickerOpen(true) })), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, React.createElement(GeneralTimer, null),
     React.createElement("div", { style: { background: C.surface, border: `1px solid ${C.border}`, borderRadius: 14, padding: "20px", textAlign: "center" } },
         React.createElement("div", { style: { fontSize: 36, marginBottom: 10 } }, "\uD83C\uDFD0"),
         React.createElement("div", { style: { fontWeight: 700, fontSize: 15, marginBottom: 6 } }, "Scoreur de match"),
