@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.2.0</title>
+<title>VolleyCoach Club v3.2.1</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -490,6 +490,77 @@ button{color:inherit}
 .vc-slot-check{width:32px;height:32px;border-radius:50%;border:2px solid var(--line-strong);background:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .vc-slot-check[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
 @media (max-width:767px){.vc-progs-head h2{display:none}.vc-progs-head .vc-btn{flex:1}}
+/* ── 3.2.1 : fiche exercice, éditeur, aperçu imprimable ───────────── */
+.vc-sheet-wrap{position:fixed;inset:0;z-index:3200;background:var(--scrim);display:flex;align-items:center;justify-content:center;padding:24px;animation:vcFade .15s ease}
+.vc-sheet{width:100%;max-width:680px;max-height:calc(100vh - 48px);display:flex;flex-direction:column;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;animation:vcPop .15s ease}
+.vc-sheet-head{display:flex;align-items:flex-start;gap:8px;padding:20px 16px 14px 22px;border-bottom:1px solid var(--line)}
+.vc-sheet-titles{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.vc-sheet-titles h2{margin:0;font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.2}
+.vc-sheet-goal{margin:0;font-size:14px;color:var(--accent-text);font-weight:500}
+.vc-sheet-body{flex:1;overflow-y:auto;padding:18px 22px 8px;display:flex;flex-direction:column;gap:18px}
+.vc-sheet-sec h3{margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.vc-sheet-sec p{margin:0;font-size:15px;line-height:1.55;white-space:pre-line}
+.vc-sheet-sec--tip{padding:14px 16px;border-radius:14px;background:var(--accent-soft)}
+.vc-sheet-sec--tip h3{color:var(--accent-text)}
+.vc-facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.vc-facts li{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:var(--surface-2);font-size:13px;font-weight:500}
+.vc-facts svg{color:var(--muted)}
+.vc-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.vc-steps li{display:flex;gap:12px;font-size:15px;line-height:1.5}
+.vc-step-num{flex:0 0 26px;height:26px;border-radius:8px;background:var(--text);color:var(--bg);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.vc-tips{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.5}
+.vc-evos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.vc-evos li{display:flex;gap:12px;padding:12px;border-radius:12px;background:var(--surface-2)}
+.vc-evos strong{font-size:14px}
+.vc-evos p{margin:4px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.vc-evo-num{flex:0 0 auto;height:24px;padding:0 8px;border-radius:7px;background:var(--accent-soft);color:var(--accent-text);font-size:12px;font-weight:700;display:flex;align-items:center}
+.vc-schemas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.vc-schemas figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.vc-schemas img{width:100%;border-radius:12px;display:block;background:var(--surface-2)}
+.vc-schemas figcaption{font-size:12px;color:var(--muted)}
+.vc-schema-empty{aspect-ratio:4/3;border-radius:12px;border:2px dashed var(--line-strong);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--hint)}
+.vc-sheet-foot{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;padding-bottom:calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface)}
+@media (max-width:767px){
+  .vc-sheet-wrap{padding:0;align-items:flex-end}
+  .vc-sheet{max-width:none;max-height:94vh;border-radius:22px 22px 0 0;animation:vcSheet .2s ease}
+  .vc-sheet-head{padding:16px 10px 12px 18px}
+  .vc-sheet-titles h2{font-size:21px}
+  .vc-sheet-body{padding:16px 18px 8px}
+  .vc-sheet-foot{padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+  .vc-sheet-foot .vc-btn{flex:1}
+}
+.vc-check-list{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.vc-check{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);font-size:14px;cursor:pointer}
+.vc-check.is-on{border-color:var(--brand);background:var(--brand-soft)}
+.vc-check input{width:18px;height:18px;accent-color:#C8102E}
+
+/* Éditeur d'exercice */
+.vc-editor-modal{position:fixed;inset:0;z-index:3200;background:var(--scrim);display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto}
+.vc-editor-box{width:100%;max-width:760px}
+.vc-editor{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:visible}
+.vc-editor-head{display:flex;align-items:center;gap:10px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.vc-editor-head .vc-editor-title{flex:1;font-family:var(--font-display);font-size:21px;font-weight:700}
+.vc-editor-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+.vc-editor-foot{position:sticky;bottom:0;display:flex;gap:10px;justify-content:flex-end;padding:14px 0 4px;margin-top:4px;background:var(--surface);border-top:1px solid var(--line)}
+.vc-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.vc-grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:767px){
+  .vc-editor-modal{padding:0}
+  .vc-editor{border-radius:0;border:none;min-height:100vh}
+  .vc-editor-head,.vc-editor-body{padding-left:16px;padding-right:16px}
+  .vc-grid-2{grid-template-columns:minmax(0,1fr)}
+  .vc-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vc-editor-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+  .vc-editor-foot .vc-btn{flex:1}
+}
+.vc-editor .vc-lbl{font-size:12px;font-weight:600;color:var(--muted);gap:6px}
+
+/* Aperçu imprimable intégré */
+.vc-print{position:fixed;inset:0;z-index:3800;display:flex;flex-direction:column;background:#0D0D0F}
+.vc-print-head{display:flex;align-items:center;gap:12px;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));background:#121215;color:#F5F5F4;border-bottom:1px solid #24242A}
+.vc-print-title{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vc-print-note{padding:10px 14px;background:rgba(240,165,0,.14);color:#F0C060;font-size:13px;line-height:1.4}
+.vc-print-frame{flex:1;width:100%;border:none;background:#fff}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -525,7 +596,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.2.0";
+const APP_VERSION = "3.2.1";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -1511,12 +1582,15 @@ function vcConfirm(message, opts = {}) {
 function VcOverlayHost() {
     const [toasts, setToasts] = useState([]);
     const [dialog, setDialog] = useState(null);
+    const [printDoc, setPrintDoc] = useState(null);
     const confirmRef = useRef(null);
     useEffect(() => {
         const l = (ev) => {
             if (ev.type === "toast") {
                 setToasts((t) => [...t.slice(-2), ev]);
                 setTimeout(() => setToasts((t) => t.filter((x) => x.id !== ev.id)), ev.ms);
+            } else if (ev.type === "printable") {
+                setPrintDoc(ev);
             } else if (ev.type === "confirm") {
                 setDialog((cur) => { if (cur) cur.resolve(false); return ev; });
             }
@@ -1533,6 +1607,7 @@ function VcOverlayHost() {
     }, [dialog]);
     const close = (ok) => { setDialog((d) => { if (d) d.resolve(ok); return null; }); };
     return React.createElement(React.Fragment, null,
+        printDoc && React.createElement(VcPrintOverlay, { doc: printDoc, onClose: () => setPrintDoc(null) }),
         dialog && React.createElement("div", { className: "vc-modal-wrap", role: "presentation" },
             React.createElement("div", { className: "vc-scrim", onClick: () => close(false) }),
             React.createElement("div", { className: "vc-modal", role: "alertdialog", "aria-modal": "true", "aria-label": dialog.title },
@@ -2016,6 +2091,50 @@ function renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave, onLaunc
         weeks);
 }
 
+// ─── VC 3.2.1 : IMPRESSION SÛRE (WEB ET ANDROID) ───────────────────────────────
+// Dans l'app Android (WebView Capacitor), window.open() et l'ouverture d'un
+// fichier en nouvel onglet remplacent l'écran de l'app sans moyen d'en sortir.
+// Dans l'app, on affiche donc l'aperçu dans une couche de l'application, avec
+// un bouton Fermer toujours visible.
+function vcIsNativeApp() {
+    try {
+        const cap = window.Capacitor;
+        if (!cap) return false;
+        if (typeof cap.isNativePlatform === "function") return !!cap.isNativePlatform();
+        return !!cap.platform && cap.platform !== "web";
+    } catch { return false; }
+}
+function vcOpenPrintable(html, title) {
+    if (!vcIsNativeApp()) {
+        let win = null;
+        try { win = window.open("", "_blank"); } catch { win = null; }
+        if (win) {
+            win.document.write(html);
+            win.document.close();
+            win.focus();
+            setTimeout(() => { try { win.print(); } catch { } }, 400);
+            return;
+        }
+    }
+    vcOverlayBus.emit({ type: "printable", id: ++vcOverlaySeq, html: String(html), title: title || "Aperçu" });
+}
+function VcPrintOverlay({ doc, onClose }) {
+    const frameRef = useRef(null);
+    const native = vcIsNativeApp();
+    useEffect(() => {
+        const k = (e) => { if (e.key === "Escape") onClose(); };
+        document.addEventListener("keydown", k);
+        return () => document.removeEventListener("keydown", k);
+    }, [onClose]);
+    return React.createElement("div", { className: "vc-print", role: "dialog", "aria-modal": "true", "aria-label": doc.title },
+        React.createElement("header", { className: "vc-print-head" },
+            React.createElement("button", { type: "button", className: "vc-run-icon", onClick: onClose, "aria-label": "Fermer l'aperçu" }, React.createElement(Icon, { name: "close" })),
+            React.createElement("span", { className: "vc-print-title" }, doc.title),
+            !native && React.createElement("button", { type: "button", className: "vc-btn vc-btn--gold vc-btn--md", onClick: () => { try { frameRef.current.contentWindow.focus(); frameRef.current.contentWindow.print(); } catch { vcToast("Impression impossible depuis ce navigateur.", "error"); } } }, React.createElement(Icon, { name: "print", size: 16 }), "Imprimer / PDF")),
+        native && React.createElement("div", { className: "vc-print-note" }, "L'impression et l'export PDF ne sont pas encore disponibles dans l'app Android. Pour imprimer, ouvrez VolleyCoach dans le navigateur."),
+        React.createElement("iframe", { ref: frameRef, className: "vc-print-frame", title: doc.title, srcDoc: doc.html }));
+}
+
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null }; }
@@ -2061,143 +2180,82 @@ function ExerciseModal({ ex, section, onClose, onAdd, inSession = false, myCusto
     // déterminer sans avoir besoin d'un champ owner_id sur l'objet lui-même.
     const isOwnCustomExercise = myCustomExerciseIds && myCustomExerciseIds.has(ex.id);
     const close = (e) => { e?.stopPropagation(); markModalClosed(); onClose(); };
-    return (React.createElement("div", { onClick: close, style: {
-            position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 2000,
-            display: "flex", alignItems: "flex-start", justifyContent: "center",
-            padding: "20px 12px", overflowY: "auto",
-        } },
-        React.createElement("div", { onClick: e => e.stopPropagation(), style: {
-                width: "100%", maxWidth: 680, background: C.surface, borderRadius: 16,
-                overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-            } },
-            React.createElement("div", { style: { background: C.noir, padding: "20px 24px", position: "relative" } },
-                React.createElement("div", { style: { position: "absolute", top: 0, right: 0, width: 80, height: 80, overflow: "hidden", opacity: 0.15 } },
-                    React.createElement("div", { style: { width: 80, height: 80, background: C.or, transform: "rotate(45deg) translate(20px,-20px)" } })),
-                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 } },
-                    React.createElement("div", null,
-                        isVolley ? (React.createElement("div", { style: { display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" } },
-                            React.createElement("span", { style: { background: C.rouge, color: "#fff", borderRadius: 99, padding: "2px 10px", fontSize: 11, fontWeight: 600 } }, ex.categorie),
-                            React.createElement("span", { style: { background: C.or + "30", color: C.or, borderRadius: 99, padding: "2px 10px", fontSize: 11, fontWeight: 600 } }, ex.niveau),
-                            React.createElement("span", { style: { background: "rgba(255,255,255,0.1)", color: "#ccc", borderRadius: 99, padding: "2px 10px", fontSize: 11 } }, ex.format))) : (React.createElement("div", { style: { display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" } },
-                            React.createElement("span", { style: { background: C.rouge, color: "#fff", borderRadius: 99, padding: "2px 10px", fontSize: 11, fontWeight: 600 } }, ex.category),
-                            React.createElement(LevelBadge, { level: level }),
-                            ex.mobility_type && React.createElement("span", { style: { background: "#3B82F620", color: "#93C5FD", borderRadius: 99, padding: "2px 10px", fontSize: 11 } }, ex.mobility_type),
-                            ex.stretching_type && React.createElement("span", { style: { background: "#7C3AED20", color: "#C4B5FD", borderRadius: 99, padding: "2px 10px", fontSize: 11 } }, ex.stretching_type))),
-                        React.createElement("h2", { style: { color: "#fff", fontSize: 20, fontWeight: 700, margin: 0 } }, name),
-                        isVolley && ex.action_travaillee && (React.createElement("p", { style: { color: C.or, fontSize: 13, margin: "6px 0 0", fontStyle: "italic" } },
-                            "\uD83C\uDFAF ",
-                            ex.action_travaillee))),
-                    React.createElement("button", { onClick: close, style: {
-                            background: "rgba(255,255,255,0.15)", border: "none", color: "#fff",
-                            borderRadius: 8, width: 32, height: 32, cursor: "pointer", fontSize: 16, flexShrink: 0,
-                        } }, "\u2715"))),
-            React.createElement("div", { style: { padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 } },
-                React.createElement("div", { style: { display: "flex", gap: 8, flexWrap: "wrap" } },
-                    isVolley && ex.nombre_joueurs && React.createElement(Chip, { icon: "\uD83D\uDC65", label: `${ex.nombre_joueurs.ideal} joueurs (min ${ex.nombre_joueurs.minimum})` }),
-                    isVolley && ex.duree_indicative && React.createElement(Chip, { icon: "\u23F1", label: ex.duree_indicative }),
-                    !isVolley && ex.duration_seconds && React.createElement(Chip, { icon: "\u23F1", label: fmtTime(ex.duration_seconds) }),
-                    !isVolley && ex.reps_default && React.createElement(Chip, { icon: "\u2715", label: `${ex.reps_default} rép.` }),
-                    !isVolley && isFlexy && ex.hold_seconds && React.createElement(Chip, { icon: "\u23F1", label: `${ex.hold_seconds}s tenue` }),
-                    !isVolley && ex.sets_default && React.createElement(Chip, { icon: "\u00D7", label: `${ex.sets_default} séries` }),
-                    equipment.length > 0 && React.createElement(Chip, { icon: "\uD83D\uDD27", label: equipment.join(", ") }),
-                    ex.joint && React.createElement(Chip, { icon: "\uD83E\uDDB4", label: `Articulation : ${ex.joint}` })),
-                desc && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, "Description"),
-                    React.createElement("p", { style: { fontSize: 14, color: C.text, lineHeight: 1.7, margin: 0 } }, desc))),
-                (muscles.length > 0 || musclesSec.length > 0) && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, "Muscles"),
-                    React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } },
-                        muscles.map(m => React.createElement("span", { key: m, style: { background: C.rougeLight, color: C.rougeText, borderRadius: 6, padding: "3px 8px", fontSize: 12, fontWeight: 600 } }, m)),
-                        musclesSec.map(m => React.createElement("span", { key: m, style: { background: C.bg, color: C.muted, borderRadius: 6, padding: "3px 8px", fontSize: 12 } }, m))))),
-                steps.length > 0 && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, isVolley ? "Points clés" : "Exécution"),
-                    React.createElement("ol", { style: { paddingLeft: 20, margin: 0, display: "flex", flexDirection: "column", gap: 6 } }, steps.map((s, i) => React.createElement("li", { key: i, style: { fontSize: 13, color: C.text, lineHeight: 1.6 } }, s))))),
-                isVolley && ex.mise_en_place && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, "Mise en place"),
-                    React.createElement("p", { style: { fontSize: 13, color: C.muted, lineHeight: 1.6, margin: 0, background: C.bg, padding: "10px 14px", borderRadius: 8, borderLeft: `3px solid ${C.or}` } }, ex.mise_en_place))),
-                isVolley && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, "Vues sch\u00E9matiques"),
-                    React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, [{ label: "Vue du dessus", key: "image_dessus", ph: "📐" }, { label: "Vue depuis le filet", key: "image_filet", ph: "🔲" }].map(({ label, key, ph }) => (React.createElement("div", { key: key, style: { border: `2px dashed ${C.border}`, borderRadius: 10, overflow: "hidden" } },
-                        React.createElement("div", { style: { background: C.noir, padding: "6px 10px" } },
-                            React.createElement("span", { style: { fontSize: 11, color: C.or, fontWeight: 600 } }, label)),
-                        ex[key]
-                            ? React.createElement("img", { src: ex[key], alt: label, style: { width: "100%", display: "block" } })
-                            : React.createElement("div", { style: { height: 100, display: "flex", alignItems: "center", justifyContent: "center", color: C.hint, fontSize: 12, flexDirection: "column", gap: 6 } },
-                                React.createElement("span", { style: { fontSize: 28 } }, ph),
-                                React.createElement("span", null, "Image \u00E0 ajouter")))))))),
-                tips.length > 0 && (React.createElement("div", { style: { background: C.orLight, borderRadius: 10, padding: "12px 16px", borderLeft: `4px solid ${C.or}` } },
-                    React.createElement(SectionLabel, null, "\uD83D\uDCA1 Conseils & adaptations"),
-                    React.createElement("ul", { style: { paddingLeft: 18, margin: 0, display: "flex", flexDirection: "column", gap: 4 } }, tips.map((t, i) => React.createElement("li", { key: i, style: { fontSize: 13, color: "var(--accent-text)", lineHeight: 1.5 } }, t))))),
-                isVolley && evolutions.length > 0 && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null,
-                        "\u00C9volutions (",
-                        evolutions.length,
-                        ")"),
-                    React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, evolutions.map(ev => (React.createElement("div", { key: ev.numero, style: { background: C.bg, borderRadius: 8, padding: "10px 14px", borderLeft: `3px solid ${C.rouge}` } },
-                        React.createElement("div", { style: { fontWeight: 600, fontSize: 13, color: C.rougeText, marginBottom: 4 } },
-                            "\u00C9volution ",
-                            ev.numero,
-                            " \u2014 ",
-                            ev.titre),
-                        React.createElement("p", { style: { fontSize: 12, color: C.muted, margin: 0, lineHeight: 1.5 } }, ev.description))))))),
-                !isVolley && variations.length > 0 && (React.createElement("div", null,
-                    React.createElement(SectionLabel, null, "Variantes"),
-                    React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 } }, variations.map((v, i) => React.createElement("span", { key: i, style: { background: C.bg, color: C.muted, borderRadius: 6, padding: "4px 10px", fontSize: 12 } }, v))))),
-                ex.best_timing?.length > 0 && (React.createElement("div", { style: { display: "flex", gap: 6, flexWrap: "wrap" } },
-                    React.createElement("span", { style: { fontSize: 12, color: C.hint } }, "Meilleur moment :"),
-                    ex.best_timing.map(t => React.createElement("span", { key: t, style: { background: "var(--tint-green)", color: "var(--tint-green-text)", borderRadius: 99, padding: "2px 8px", fontSize: 11 } }, t)))),
-                isOwnCustomExercise && React.createElement(ShareControls, {
+    const vcIsNative = vcIsNativeApp();
+    const levelEl = level ? React.createElement(LevelBadge, { level }) : null;
+    const facts = [];
+    if (isVolley && ex.nombre_joueurs) facts.push(["teams", ex.nombre_joueurs.ideal + " joueurs" + (ex.nombre_joueurs.minimum ? " (min. " + ex.nombre_joueurs.minimum + ")" : "")]);
+    if (isVolley && ex.duree_indicative) facts.push(["timer", ex.duree_indicative]);
+    if (isVolley && ex.format) facts.push(["score", ex.format]);
+    if (!isVolley && ex.sets_default) facts.push(["list", ex.sets_default + " séries"]);
+    if (!isVolley && ex.reps_default) facts.push(["check", ex.reps_default + " répétitions"]);
+    if (!isVolley && ex.duration_seconds) facts.push(["timer", fmtTime(ex.duration_seconds)]);
+    if (!isVolley && isFlexy && ex.hold_seconds) facts.push(["timer", ex.hold_seconds + " s de maintien"]);
+    if (!isVolley && ex.rest_seconds) facts.push(["pauseRow", ex.rest_seconds + " s de repos"]);
+    if (ex.joint) facts.push(["gear", "Articulation : " + ex.joint]);
+    if (equipment.length > 0) facts.push(["tool", equipment.join(", ")]);
+    const section_ = (title, body, extra) => React.createElement("section", { className: "vc-sheet-sec" + (extra ? " " + extra : "") }, React.createElement("h3", null, title), body);
+    const addBtn = onAdd && React.createElement("button", { type: "button", className: "vc-btn vc-btn--lg " + (inSession ? "vc-btn--ghost" : "vc-btn--primary"), disabled: inSession, onClick: (e) => { e.stopPropagation(); if (!inSession) { markModalClosed(); onAdd?.(ex); onClose(); } } },
+        React.createElement(Icon, { name: inSession ? "check" : "plus", size: 16 }), inSession ? "Déjà dans la séance" : "Ajouter à la séance");
+    return (React.createElement("div", { className: "vc-sheet-wrap", role: "presentation", onClick: close },
+        React.createElement("div", { className: "vc-sheet", role: "dialog", "aria-modal": "true", "aria-label": name, onClick: e => e.stopPropagation() },
+            React.createElement("header", { className: "vc-sheet-head" },
+                React.createElement("div", { className: "vc-sheet-titles" },
+                    React.createElement("div", { className: "vc-ex-tags" },
+                        (isVolley ? ex.categorie : ex.category) && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: "var(--brand)" } }), isVolley ? ex.categorie : ex.category),
+                        levelEl,
+                        !isVolley && ex.mobility_type && React.createElement("span", { className: "vc-tag" }, ex.mobility_type),
+                        !isVolley && ex.stretching_type && React.createElement("span", { className: "vc-tag" }, ex.stretching_type)),
+                    React.createElement("h2", null, name),
+                    isVolley && ex.action_travaillee && React.createElement("p", { className: "vc-sheet-goal" }, ex.action_travaillee)),
+                React.createElement(VcActionMenu, { label: "Plus d'actions", items: [
+                    { icon: "print", label: vcIsNative ? "Aperçu imprimable" : "Exporter en PDF", sub: vcIsNative ? "L'impression n'est pas encore disponible dans l'app Android" : "Choisir les sections à inclure", onClick: () => setShowPdfOptions(true) },
+                ] }),
+                React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, onClick: close, "aria-label": "Fermer la fiche" }, React.createElement(Icon, { name: "close" }))),
+            React.createElement("div", { className: "vc-sheet-body" },
+                facts.length > 0 && React.createElement("ul", { className: "vc-facts" }, facts.map(([ic, t], i) => React.createElement("li", { key: i }, React.createElement(Icon, { name: ic, size: 16 }), t))),
+                desc && section_("Description", React.createElement("p", null, desc)),
+                isVolley && ex.mise_en_place && section_("Mise en place", React.createElement("p", null, ex.mise_en_place)),
+                steps.length > 0 && section_(isVolley ? "Points clés" : "Exécution", React.createElement("ol", { className: "vc-steps" }, steps.map((s, i) => React.createElement("li", { key: i }, React.createElement("span", { className: "vc-step-num" }, i + 1), React.createElement("span", null, s))))),
+                (muscles.length > 0 || musclesSec.length > 0) && section_("Muscles", React.createElement("div", { className: "vc-ex-tags" },
+                    muscles.map(m => React.createElement("span", { key: "p" + m, className: "vc-tag vc-tag--brand" }, m)),
+                    musclesSec.map(m => React.createElement("span", { key: "s" + m, className: "vc-tag" }, m)))),
+                tips.length > 0 && section_("Conseils et adaptations", React.createElement("ul", { className: "vc-tips" }, tips.map((t, i) => React.createElement("li", { key: i }, t))), "vc-sheet-sec--tip"),
+                isVolley && evolutions.length > 0 && section_("Évolutions (" + evolutions.length + ")", React.createElement("ol", { className: "vc-evos" }, evolutions.map(ev => React.createElement("li", { key: ev.numero },
+                    React.createElement("span", { className: "vc-evo-num" }, "Év. " + ev.numero),
+                    React.createElement("div", null, React.createElement("strong", null, ev.titre), ev.description && React.createElement("p", null, ev.description)))))),
+                !isVolley && variations.length > 0 && section_("Variantes", React.createElement("div", { className: "vc-ex-tags" }, variations.map((v, i) => React.createElement("span", { key: i, className: "vc-tag" }, typeof v === "string" ? v : (v.label || v.name || ""))))),
+                ex.best_timing?.length > 0 && section_("Meilleur moment", React.createElement("div", { className: "vc-ex-tags" }, ex.best_timing.map(t => React.createElement("span", { key: t, className: "vc-tag" }, t)))),
+                isVolley && section_("Vues schématiques", React.createElement("div", { className: "vc-schemas" }, [{ label: "Vue du dessus", key: "image_dessus" }, { label: "Vue depuis le filet", key: "image_filet" }].map(({ label, key }) => React.createElement("figure", { key },
+                    ex[key] ? React.createElement("img", { src: ex[key], alt: label }) : React.createElement("div", { className: "vc-schema-empty" }, React.createElement(Icon, { name: "template", size: 22 }), "Image à ajouter"),
+                    React.createElement("figcaption", null, label))))),
+                isOwnCustomExercise && section_("Partage", React.createElement(ShareControls, {
                     objectId: ex.id, table: "custom_exercises", sharesTable: "custom_exercise_shares",
                     isShared: !!ex.is_shared, onToggleShared: (val) => onToggleExerciseShared?.(ex.id, val),
                     isPublic: !!ex.is_public, onTogglePublic: onTogglePublicExercise ? (val) => onTogglePublicExercise(ex.id, val) : null,
-                }),
-                React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTop: `1px solid ${C.border}`, flexWrap: "wrap", gap: 8 } },
-                    React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); if (!inSession) {
-                            markModalClosed();
-                            onAdd?.(ex);
-                            onClose();
-                        } }, variant: inSession ? "ghost" : "primary", disabled: inSession }, inSession ? "✓ Déjà dans la séance" : "+ Ajouter à la séance"),
-                    React.createElement("div", { style: { display: "flex", gap: 8 } },
-                        React.createElement(ClubBtn, { onClick: close, variant: "ghost" }, "Fermer"),
-                        React.createElement(ClubBtn, { onClick: (e) => { e.stopPropagation(); setShowPdfOptions(true); }, variant: "ghost", size: "sm" }, "\uD83D\uDDA8\uFE0F PDF"))))),
-        showPdfOptions && (React.createElement("div", { onClick: e => e.stopPropagation(), style: {
-                position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", zIndex: 3000,
-                display: "flex", alignItems: "center", justifyContent: "center", padding: 16,
-            }, onClick: () => setShowPdfOptions(false) },
-            React.createElement("div", { onClick: e => e.stopPropagation(), style: {
-                    background: C.surface, borderRadius: 14, width: "100%", maxWidth: 380, overflow: "hidden",
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-                } },
-                React.createElement("div", { style: { background: C.noir, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" } },
-                    React.createElement("span", { style: { color: "#fff", fontWeight: 700, fontSize: 14 } }, "\uD83D\uDDA8\uFE0F Exporter en PDF"),
-                    React.createElement("button", { onClick: () => setShowPdfOptions(false), style: { background: "rgba(255,255,255,0.15)", border: "none", color: "#fff", borderRadius: 6, width: 28, height: 28, cursor: "pointer" } }, "\u2715")),
-                React.createElement("div", { style: { padding: "14px 16px" } },
-                    React.createElement("div", { style: { fontSize: 12, color: C.muted, marginBottom: 10, fontWeight: 600 } }, "Sections \u00E0 inclure :"),
-                    [
-                        ["description", "📝 Description / Objectif"],
-                        ["etapes", "🔢 Étapes d'exécution"],
-                        ["conseils", "💡 Conseils & points clés"],
-                        ["muscles", "💪 Muscles ciblés"],
-                        ["variations", "🔄 Variantes & évolutions"],
-                        ["infos", "⚙️ Infos pratiques (séries, reps, matériel)"],
-                    ].map(([k, label]) => (React.createElement("label", { key: k, style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: `1px solid ${C.border}`, cursor: "pointer" } },
-                        React.createElement("input", { type: "checkbox", checked: pdfOpts[k], onChange: () => setPdfOpts(p => ({ ...p, [k]: !p[k] })), style: { accentColor: C.rouge, width: 16, height: 16, flexShrink: 0 } }),
-                        React.createElement("span", { style: { fontSize: 13 } }, label)))),
-                    React.createElement("div", { style: { display: "flex", gap: 8, marginTop: 14 } },
-                        React.createElement(ClubBtn, { onClick: () => {
-                                const isVolleyEx = section === "volley";
-                  const page = isVolleyEx ? buildPdfHtmlVolley(ex, pdfOpts) : buildPdfHtml(ex.titre || ex.name || "", ex.niveau || ex.level || "", ex.categorie || ex.category || "", ex.description || ex.action_travaillee || "", ex.execution_steps || ex.points_cles || [], Array.isArray(ex.tips) ? ex.tips : [], ex.muscles_primary || ex.muscles_targeted || [], ex.muscles_secondary || [], ex.variations || [], ex.evolutions || [], ex.equipment || ex.materiel || [], ex.sets_default, ex.reps_default, ex.duration_seconds ?? ex.hold_seconds, pdfOpts);
-                                const blob = new Blob([page], { type: "text/html;charset=utf-8" });
-                                const url = URL.createObjectURL(blob);
-                                const a = Object.assign(document.createElement("a"), { href: url, target: "_blank", rel: "noopener" });
-                                document.body.appendChild(a);
-                                a.click();
-                                document.body.removeChild(a);
-                                setTimeout(() => URL.revokeObjectURL(url), 30000);
-                                setShowPdfOptions(false);
-                            }, variant: "primary" }, "\uD83D\uDDA8\uFE0F G\u00E9n\u00E9rer PDF"),
-                        React.createElement(ClubBtn, { onClick: () => setShowPdfOptions(false), variant: "ghost" }, "Annuler"))))))));
+                }))),
+            React.createElement("footer", { className: "vc-sheet-foot" },
+                React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: close }, "Fermer"),
+                addBtn)),
+        showPdfOptions && React.createElement("div", { className: "vc-modal-wrap", onClick: (e) => { e.stopPropagation(); setShowPdfOptions(false); } },
+            React.createElement("div", { className: "vc-scrim" }),
+            React.createElement("div", { className: "vc-modal", role: "dialog", "aria-label": "Exporter la fiche", onClick: e => e.stopPropagation() },
+                React.createElement("h2", null, vcIsNative ? "Aperçu imprimable" : "Exporter en PDF"),
+                React.createElement("p", null, "Sections à inclure :"),
+                React.createElement("div", { className: "vc-check-list" },
+                    [["description", "Description et objectif"], ["etapes", "Étapes d'exécution"], ["conseils", "Conseils et points clés"], ["muscles", "Muscles ciblés"], ["variations", "Variantes et évolutions"], ["infos", "Infos pratiques (séries, répétitions, matériel)"]].map(([k, label]) =>
+                        React.createElement("label", { key: k, className: "vc-check" + (pdfOpts[k] ? " is-on" : "") },
+                            React.createElement("input", { type: "checkbox", checked: pdfOpts[k], onChange: () => setPdfOpts(p => ({ ...p, [k]: !p[k] })) }),
+                            React.createElement("span", null, label)))),
+                React.createElement("div", { className: "vc-modal-actions" },
+                    React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: () => setShowPdfOptions(false) }, "Annuler"),
+                    React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => {
+                        const isVolleyEx = section === "volley";
+                        const page = isVolleyEx ? buildPdfHtmlVolley(ex, pdfOpts) : buildPdfHtml(ex.titre || ex.name || "", ex.niveau || ex.level || "", ex.categorie || ex.category || "", ex.description || ex.action_travaillee || "", ex.execution_steps || ex.points_cles || [], Array.isArray(ex.tips) ? ex.tips : [], ex.muscles_primary || ex.muscles_targeted || [], ex.muscles_secondary || [], ex.variations || [], ex.evolutions || [], ex.equipment || ex.materiel || [], ex.sets_default, ex.reps_default, ex.duration_seconds ?? ex.hold_seconds, pdfOpts);
+                        setShowPdfOptions(false);
+                        vcOpenPrintable(page, name || "Fiche exercice");
+                    } }, React.createElement(Icon, { name: "print", size: 16 }), vcIsNative ? "Afficher" : "Générer le PDF"))))));
 }
+
 // ─── FILTER CHIP ──────────────────────────────────────────────────────────────
 function FilterChip({ label, active, onClick }) {
     return (React.createElement("button", { onClick: onClick, style: {
@@ -2496,11 +2554,11 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                     }
                 } }))),
             filtered.length === 0 && React.createElement("div", { className: "vc-empty vc-lib-empty" }, "Aucun exercice ne correspond à ces filtres.")),
-        showNew && (React.createElement("div", { onClick: () => setShowNew(false), style: modalStyle },
-            React.createElement("div", { onClick: e => e.stopPropagation(), style: { width: "100%", maxWidth: 700 } },
+        showNew && (React.createElement("div", { onClick: () => setShowNew(false), className: "vc-editor-modal" },
+            React.createElement("div", { onClick: e => e.stopPropagation(), className: "vc-editor-box" },
                 React.createElement(ExerciseEditor, { section: section, onSave: ex => { onSaveCustom({ ...ex, _section: section }); setShowNew(false); }, onCancel: () => setShowNew(false) })))),
-        editingEx && (React.createElement("div", { onClick: () => setEditingEx(null), style: modalStyle },
-            React.createElement("div", { onClick: e => e.stopPropagation(), style: { width: "100%", maxWidth: 700 } },
+        editingEx && (React.createElement("div", { onClick: () => setEditingEx(null), className: "vc-editor-modal" },
+            React.createElement("div", { onClick: e => e.stopPropagation(), className: "vc-editor-box" },
                 React.createElement(ExerciseEditor, { ex: editingEx, section: section, onSave: ex => { onSaveCustom({ ...ex, _section: section }); setEditingEx(null); }, onCancel: () => setEditingEx(null) })))),
         detailEx && (React.createElement(ExerciseModal, {
             ex: detailEx, section: section, onClose: () => setDetailEx(null), onAdd: e => { onAdd(e); }, inSession: sessIds.has(detailEx.id),
@@ -2593,8 +2651,8 @@ function ExerciseEditor({ ex, section, onSave, onCancel }) {
         set("evolutions", evos.map((e, j) => ({ ...e, numero: j + 1 })));
     };
     const updateAdapt = (key, val) => set("adaptations", { ...form.adaptations, [key]: val });
-    const iStyle = { padding: "8px 12px", border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 13, width: "100%", background: C.surface };
-    const taStyle = { ...iStyle, minHeight: 70, resize: "vertical" };
+    const iStyle = { height: 42, padding: "0 12px", border: "1px solid var(--line)", borderRadius: 10, fontSize: 14, width: "100%", background: "var(--surface-2)", color: "var(--text)", boxSizing: "border-box", fontFamily: "inherit" };
+    const taStyle = { ...iStyle, height: "auto", padding: "10px 12px", minHeight: 80, resize: "vertical", lineHeight: 1.45 };
     const handleImageUpload = (key) => {
         const inp = document.createElement("input");
         inp.type = "file";
@@ -2615,18 +2673,18 @@ function ExerciseEditor({ ex, section, onSave, onCancel }) {
             const active = vals.includes(opt);
             return (React.createElement("button", { key: opt, type: "button", onClick: () => toggleArr(valueKey, opt), style: {
                     padding: "2px 8px", borderRadius: 99, fontSize: 11, fontWeight: 600, cursor: "pointer",
-                    border: `1.5px solid ${active ? (secondary ? "#7C3AED" : C.rouge) : C.border}`,
-                    background: active ? (secondary ? "#F5F3FF" : C.rougeLight) : C.surface,
-                    color: active ? (secondary ? "#7C3AED" : C.rouge) : C.muted,
+                    border: `1.5px solid ${active ? (secondary ? "var(--violet-text)" : C.rouge) : "var(--line)"}`,
+                    background: active ? (secondary ? "var(--tint-violet)" : C.rougeLight) : "var(--surface)",
+                    color: active ? (secondary ? "var(--violet-text)" : C.rougeText) : C.muted, minHeight: 30, padding: "4px 11px", fontSize: 12,
                 } }, opt));
         })), vals.length > 0 && React.createElement("div", { style: { fontSize: 11, color: C.muted, marginTop: 3 } }, "\u2713 ", vals.join(", "))));
     };
-    const SelectField = ({ label, value, onChange, options, placeholder }) => (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, label, React.createElement("select", { value: value, onChange: e => onChange(e.target.value), style: { ...iStyle, cursor: "pointer" } }, placeholder && React.createElement("option", { value: "" }, placeholder), options.map(o => React.createElement("option", { key: o, value: o }, o)))));
+    const SelectField = ({ label, value, onChange, options, placeholder }) => (React.createElement("label", { className: "vc-lbl" }, label, React.createElement("select", { value: value, onChange: e => onChange(e.target.value), style: { ...iStyle, cursor: "pointer" } }, placeholder && React.createElement("option", { value: "" }, placeholder), options.map(o => React.createElement("option", { key: o, value: o }, o)))));
     const Fd = ({ label, children }) => (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4 } }, React.createElement("div", { style: { fontSize: 12, color: C.muted } }, label), children));
     const MultilineField = ({ label, value, onChange, placeholder, minHeight }) => {
     const [text, setText] = useState((value || []).join("\n"));
     useEffect(() => { setText((value || []).join("\n")); }, [value]);
-    return React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } },
+    return React.createElement("label", { className: "vc-lbl" },
         label,
         React.createElement("textarea", {
             value: text,
@@ -2639,7 +2697,7 @@ function ExerciseEditor({ ex, section, onSave, onCancel }) {
 const TagsField = ({ label, value, onChange, placeholder }) => {
     const [text, setText] = useState((value || []).join(", "));
     useEffect(() => { setText((value || []).join(", ")); }, [value]);
-    return React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } },
+    return React.createElement("label", { className: "vc-lbl" },
         label,
         React.createElement("input", {
             value: text,
@@ -2650,7 +2708,7 @@ const TagsField = ({ label, value, onChange, placeholder }) => {
         }));
 };
 
-    return (React.createElement("div", { style: { background: C.surface, borderRadius: 12, border: `1px solid ${C.border}`, overflow: "hidden" } }, React.createElement("div", { style: { background: C.noir, padding: "14px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, React.createElement("span", { style: { color: "#fff", fontWeight: 700, fontSize: 15 } }, ex ? "✏️ Modifier l'exercice" : "➕ Nouvel exercice"), React.createElement("span", { style: { fontSize: 11, color: C.or, fontWeight: 600, textTransform: "uppercase" } }, section)), React.createElement("div", { style: { padding: "16px 18px", display: "flex", flexDirection: "column", gap: 14 } }, React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Nom *", React.createElement("input", { value: form.titre || form.name || "", onChange: e => setName(e.target.value), style: iStyle, placeholder: "Nom de l'exercice" })), React.createElement(SelectField, { label: "Cat\u00E9gorie", value: isVolley ? form.categorie : form.category, onChange: v => set(isVolley ? "categorie" : "category", v), options: isVolley ? CATS_VOLLEY : CATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, isVolley && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.sous_categorie, onChange: v => set("sous_categorie", v), options: SOUS_CATS_VOLLEY, placeholder: "\u2014 Choisir \u2014" })), (isFitness || isMobilite) && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.subcategory, onChange: v => set("subcategory", v), options: isMobilite ? SUBCATS_MOB : SUBCATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), isSouplesse && (React.createElement(SelectField, { label: "Zone corporelle", value: form.subcategory, onChange: v => set("subcategory", v), options: SUBCATS_FLEXY, placeholder: "\u2014 Choisir \u2014" })), React.createElement(SelectField, { label: "Niveau", value: isVolley ? form.niveau : form.level, onChange: v => { set(isVolley ? "niveau" : "level", v); }, options: isVolley ? LEVELS_VOLLEY : LEVELS_FITNESS })), React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, isVolley && (React.createElement(SelectField, { label: "Format", value: form.format, onChange: v => set("format", v), options: FORMATS_VOLLEY })), isMobilite && (React.createElement(React.Fragment, null, React.createElement(SelectField, { label: "Articulation cible", value: form.joint, onChange: v => set("joint", v), options: JOINTS_LIST, placeholder: "\u2014 Choisir \u2014" }), React.createElement(SelectField, { label: "Type de mobilit\u00E9", value: form.mobility_type, onChange: v => set("mobility_type", v), options: MOB_TYPES, placeholder: "\u2014 Choisir \u2014" }))), isSouplesse && (React.createElement(SelectField, { label: "Type d'\u00E9tirement", value: form.stretching_type, onChange: v => set("stretching_type", v), options: STRETCH_TYPES, placeholder: "\u2014 Choisir \u2014" })), isFitness && (React.createElement(SelectField, { label: "Type (\u00E9tirement)", value: form.type || "", onChange: v => set("type", v), options: TYPES_FITNESS, placeholder: "\u2014 (optionnel) \u2014" }))), isVolley ? (React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Joueurs id\u00E9al", React.createElement("input", { type: "number", value: form.nombre_joueurs?.ideal || 6, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, ideal: +e.target.value }), style: iStyle })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Min. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.minimum || 4, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, minimum: +e.target.value }), style: iStyle })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Max. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.maximum || 12, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, maximum: +e.target.value }), style: iStyle })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Dur\u00E9e indicative", React.createElement("input", { value: form.duree_indicative, onChange: e => set("duree_indicative", e.target.value), style: iStyle, placeholder: "ex: 15 \u00E0 20 min" })))) : (React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, isSouplesse ? "Tenue (s)" : "Durée (s)", React.createElement("input", { type: "number", value: (isSouplesse ? form.hold_seconds : form.duration_seconds) || "", onChange: e => set(isSouplesse ? "hold_seconds" : "duration_seconds", +e.target.value || null), style: iStyle, placeholder: "ex: 60" })), isFitness && !isSouplesse && (React.createElement(React.Fragment, null, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "R\u00E9p\u00E9titions", React.createElement("input", { type: "number", value: form.reps_default || "", onChange: e => set("reps_default", +e.target.value || null), style: iStyle, placeholder: "ex: 12" })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Distance (m)", React.createElement("input", { type: "number", value: form.distance_meters || "", onChange: e => set("distance_meters", +e.target.value || null), style: iStyle, placeholder: "course" })))), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "S\u00E9ries", React.createElement("input", { type: "number", value: form.sets_default || 3, onChange: e => set("sets_default", +e.target.value), style: iStyle })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Repos (s)", React.createElement("input", { type: "number", value: form.rest_seconds || 60, onChange: e => set("rest_seconds", +e.target.value), style: iStyle })))), isVolley && (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Note sur les joueurs / variantes d'effectif", React.createElement("input", { value: form.nombre_joueurs?.note || "", onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, note: e.target.value }), style: iStyle, placeholder: "ex: Exercice individuel, toute la troupe en simultan\u00E9" }))), isVolley && (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Action travaill\u00E9e", React.createElement("input", { value: form.action_travaillee, onChange: e => set("action_travaillee", e.target.value), style: iStyle, placeholder: "ex: Touche haute, manchette, coordination balle" }))), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Description *", React.createElement("textarea", { value: form.description, onChange: e => set("description", e.target.value), style: taStyle, placeholder: "Description compl\u00E8te de l'exercice..." })), isVolley && (React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "Mise en place", React.createElement("textarea", { value: form.mise_en_place, onChange: e => set("mise_en_place", e.target.value), style: taStyle, placeholder: "Organisation spatiale, disposition des joueurs..." }))), React.createElement(MultilineField, { label: isVolley ? "Points clés (un par ligne)" : "Étapes d'exécution (un par ligne)", value: isVolley ? form.points_cles : form.execution_steps, onChange: v => set(isVolley ? "points_cles" : "execution_steps", v), placeholder: "Une instruction par ligne..." }), React.createElement(CheckGroup, { label: "Mat\u00E9riel / \u00C9quipement", options: equipList, valueKey: isVolley ? "materiel" : "equipment" }), !isVolley && (React.createElement(React.Fragment, null, React.createElement(CheckGroup, { label: "Muscles principaux", options: MUSCLES_LIST, valueKey: isSouplesse ? "muscles_targeted" : "muscles_primary" }), React.createElement(CheckGroup, { label: "Muscles secondaires", options: MUSCLES_LIST, valueKey: "muscles_secondary", secondary: true }))), React.createElement(MultilineField, { label: "Conseils (un par ligne)", value: Array.isArray(form.tips) ? form.tips : [], onChange: v => set("tips", v), minHeight: 55, placeholder: "Un conseil par ligne..." }), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Adaptations par niveau"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, ADAPT_KEYS.map(k => (React.createElement("label", { key: k, style: { display: "flex", gap: 8, alignItems: "flex-start", fontSize: 12, color: C.muted } }, React.createElement("span", { style: { minWidth: 90, paddingTop: 7, fontWeight: 600, textTransform: "capitalize", color: C.text } }, k), React.createElement("input", { value: form.adaptations?.[k] || "", onChange: e => updateAdapt(k, e.target.value), style: { ...iStyle, flex: 1 }, placeholder: `Adaptation pour le niveau ${k}...` }))))))), React.createElement(MultilineField, { label: "Variantes (une par ligne)", value: form.variations, onChange: v => set("variations", v), minHeight: 55, placeholder: "Une variante par ligne..." }), isSouplesse && (React.createElement(MultilineField, { label: "Indicateurs de progr\u00E8s (un par ligne)", value: form.progress_indicators, onChange: v => set("progress_indicators", v), minHeight: 50, placeholder: "ex: Distance entre l'avant-bras et le sol" })), (isSouplesse || (isFitness && form.category === "etirement")) && (React.createElement(CheckGroup, { label: "Meilleur moment", options: bestTimingList, valueKey: "best_timing" })), !isVolley && (React.createElement(MultilineField, { label: "Contre-indications (une par ligne)", value: form.contraindications, onChange: v => set("contraindications", v), minHeight: 50, placeholder: "ex: lombalgie, douleur_genou_anterieure..." })), React.createElement(TagsField, { label: "Tags (s\u00E9par\u00E9s par virgule)", value: form.tags, onChange: v => set("tags", v), placeholder: "ex: gainage, force, sans_materiel, HIIT..." }), isVolley && (React.createElement("div", null, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } }, React.createElement(SectionLabel, null, "\u00C9volutions (", (form.evolutions || []).length, ")"), React.createElement(ClubBtn, { onClick: addEvo, variant: "outline", size: "sm" }, "+ Ajouter une \u00E9volution")), (form.evolutions || []).length === 0 && (React.createElement("div", { style: { fontSize: 12, color: C.hint, background: C.bg, borderRadius: 8, padding: "10px 14px", textAlign: "center" } }, "Aucune \u00E9volution \u2014 cliquez sur \"+ Ajouter\" pour enrichir l'exercice")), (form.evolutions || []).map((ev, i) => (React.createElement("div", { key: i, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8 } }, React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 8, alignItems: "center" } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 12, color: C.rougeText, minWidth: 70 } }, "\u00C9volution ", i + 1), React.createElement("input", { value: ev.titre, onChange: e => updateEvo(i, "titre", e.target.value), style: { ...iStyle, flex: 1 }, placeholder: "Titre de l'\u00E9volution..." }), React.createElement("button", { onClick: () => removeEvo(i), style: { background: "none", border: "none", color: C.rougeText, cursor: "pointer", fontSize: 16, flexShrink: 0 } }, "\u2715")), React.createElement("textarea", { value: ev.description, onChange: e => updateEvo(i, "description", e.target.value), style: { ...taStyle, minHeight: 60 }, placeholder: "Description d\u00E9taill\u00E9e de cette \u00E9volution..." })))))), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Images sch\u00E9matiques"), React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, [["image_dessus", "Vue du dessus"], ["image_filet", "Vue depuis le filet"]].map(([key, label]) => (React.createElement("div", { key: key, style: { border: `2px dashed ${C.border}`, borderRadius: 8, overflow: "hidden" } }, React.createElement("div", { style: { background: C.bg, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, React.createElement("span", { style: { fontSize: 11, color: C.muted } }, label), React.createElement(ClubBtn, { onClick: () => handleImageUpload(key), variant: "outline", size: "sm" }, "\uD83D\uDCCE Charger")), form[key] ? (React.createElement("div", { style: { position: "relative" } }, React.createElement("img", { src: form[key], alt: label, style: { width: "100%", display: "block", maxHeight: 120, objectFit: "cover" } }), React.createElement("button", { onClick: () => set(key, null), style: { position: "absolute", top: 4, right: 4, background: C.rouge, color: "#fff", border: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", fontSize: 12 } }, "\u2715"))) : (React.createElement("div", { style: { height: 55, display: "flex", alignItems: "center", justifyContent: "center", color: C.hint, fontSize: 12 } }, "Aucune image")))))))), !isVolley && (React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 } }, React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "URL image", React.createElement("input", { value: form.image_url || "", onChange: e => set("image_url", e.target.value || null), style: iStyle, placeholder: "https://..." })), React.createElement("label", { style: { display: "flex", flexDirection: "column", gap: 4, fontSize: 12, color: C.muted } }, "URL vid\u00E9o", React.createElement("input", { value: form.video_url || "", onChange: e => set("video_url", e.target.value || null), style: iStyle, placeholder: "https://..." })))), React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.text, cursor: "pointer", background: form.is_public ? "#ECFDF5" : C.bg, border: `1px solid ${form.is_public ? "#10B981" : C.border}`, borderRadius: 8, padding: "10px 14px" } }, React.createElement("input", { type: "checkbox", checked: !!form.is_public, onChange: e => set("is_public", e.target.checked) }), React.createElement("span", null, "\uD83C\uDF0D Rendre disponible pour tous les coachs (visible en lecture seule par tous)")), React.createElement("div", { style: { display: "flex", gap: 8, paddingTop: 4 } }, React.createElement(ClubBtn, { onClick: () => onSave(form), variant: "primary" }, "\uD83D\uDCBE Enregistrer"), React.createElement(ClubBtn, { onClick: onCancel, variant: "ghost" }, "Annuler")))));
+    return (React.createElement("div", { className: "vc-editor" }, React.createElement("div", { className: "vc-editor-head" }, React.createElement("span", { className: "vc-editor-title" }, ex ? "Modifier l'exercice" : "Nouvel exercice"), React.createElement("span", { className: "vc-tag" }, section), React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, onClick: onCancel, "aria-label": "Fermer" }, React.createElement(Icon, { name: "close" }))), React.createElement("div", { className: "vc-editor-body" }, React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "Nom *", React.createElement("input", { value: form.titre || form.name || "", onChange: e => setName(e.target.value), style: iStyle, placeholder: "Nom de l'exercice" })), React.createElement(SelectField, { label: "Cat\u00E9gorie", value: isVolley ? form.categorie : form.category, onChange: v => set(isVolley ? "categorie" : "category", v), options: isVolley ? CATS_VOLLEY : CATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.sous_categorie, onChange: v => set("sous_categorie", v), options: SOUS_CATS_VOLLEY, placeholder: "\u2014 Choisir \u2014" })), (isFitness || isMobilite) && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.subcategory, onChange: v => set("subcategory", v), options: isMobilite ? SUBCATS_MOB : SUBCATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), isSouplesse && (React.createElement(SelectField, { label: "Zone corporelle", value: form.subcategory, onChange: v => set("subcategory", v), options: SUBCATS_FLEXY, placeholder: "\u2014 Choisir \u2014" })), React.createElement(SelectField, { label: "Niveau", value: isVolley ? form.niveau : form.level, onChange: v => { set(isVolley ? "niveau" : "level", v); }, options: isVolley ? LEVELS_VOLLEY : LEVELS_FITNESS })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Format", value: form.format, onChange: v => set("format", v), options: FORMATS_VOLLEY })), isMobilite && (React.createElement(React.Fragment, null, React.createElement(SelectField, { label: "Articulation cible", value: form.joint, onChange: v => set("joint", v), options: JOINTS_LIST, placeholder: "\u2014 Choisir \u2014" }), React.createElement(SelectField, { label: "Type de mobilit\u00E9", value: form.mobility_type, onChange: v => set("mobility_type", v), options: MOB_TYPES, placeholder: "\u2014 Choisir \u2014" }))), isSouplesse && (React.createElement(SelectField, { label: "Type d'\u00E9tirement", value: form.stretching_type, onChange: v => set("stretching_type", v), options: STRETCH_TYPES, placeholder: "\u2014 Choisir \u2014" })), isFitness && (React.createElement(SelectField, { label: "Type (\u00E9tirement)", value: form.type || "", onChange: v => set("type", v), options: TYPES_FITNESS, placeholder: "\u2014 (optionnel) \u2014" }))), isVolley ? (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, "Joueurs id\u00E9al", React.createElement("input", { type: "number", value: form.nombre_joueurs?.ideal || 6, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, ideal: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Min. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.minimum || 4, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, minimum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Max. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.maximum || 12, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, maximum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Dur\u00E9e indicative", React.createElement("input", { value: form.duree_indicative, onChange: e => set("duree_indicative", e.target.value), style: iStyle, placeholder: "ex: 15 \u00E0 20 min" })))) : (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, isSouplesse ? "Tenue (s)" : "Durée (s)", React.createElement("input", { type: "number", value: (isSouplesse ? form.hold_seconds : form.duration_seconds) || "", onChange: e => set(isSouplesse ? "hold_seconds" : "duration_seconds", +e.target.value || null), style: iStyle, placeholder: "ex: 60" })), isFitness && !isSouplesse && (React.createElement(React.Fragment, null, React.createElement("label", { className: "vc-lbl" }, "R\u00E9p\u00E9titions", React.createElement("input", { type: "number", value: form.reps_default || "", onChange: e => set("reps_default", +e.target.value || null), style: iStyle, placeholder: "ex: 12" })), React.createElement("label", { className: "vc-lbl" }, "Distance (m)", React.createElement("input", { type: "number", value: form.distance_meters || "", onChange: e => set("distance_meters", +e.target.value || null), style: iStyle, placeholder: "course" })))), React.createElement("label", { className: "vc-lbl" }, "S\u00E9ries", React.createElement("input", { type: "number", value: form.sets_default || 3, onChange: e => set("sets_default", +e.target.value), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Repos (s)", React.createElement("input", { type: "number", value: form.rest_seconds || 60, onChange: e => set("rest_seconds", +e.target.value), style: iStyle })))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Note sur les joueurs / variantes d'effectif", React.createElement("input", { value: form.nombre_joueurs?.note || "", onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, note: e.target.value }), style: iStyle, placeholder: "ex: Exercice individuel, toute la troupe en simultan\u00E9" }))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Action travaill\u00E9e", React.createElement("input", { value: form.action_travaillee, onChange: e => set("action_travaillee", e.target.value), style: iStyle, placeholder: "ex: Touche haute, manchette, coordination balle" }))), React.createElement("label", { className: "vc-lbl" }, "Description *", React.createElement("textarea", { value: form.description, onChange: e => set("description", e.target.value), style: taStyle, placeholder: "Description compl\u00E8te de l'exercice..." })), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Mise en place", React.createElement("textarea", { value: form.mise_en_place, onChange: e => set("mise_en_place", e.target.value), style: taStyle, placeholder: "Organisation spatiale, disposition des joueurs..." }))), React.createElement(MultilineField, { label: isVolley ? "Points clés (un par ligne)" : "Étapes d'exécution (un par ligne)", value: isVolley ? form.points_cles : form.execution_steps, onChange: v => set(isVolley ? "points_cles" : "execution_steps", v), placeholder: "Une instruction par ligne..." }), React.createElement(CheckGroup, { label: "Mat\u00E9riel / \u00C9quipement", options: equipList, valueKey: isVolley ? "materiel" : "equipment" }), !isVolley && (React.createElement(React.Fragment, null, React.createElement(CheckGroup, { label: "Muscles principaux", options: MUSCLES_LIST, valueKey: isSouplesse ? "muscles_targeted" : "muscles_primary" }), React.createElement(CheckGroup, { label: "Muscles secondaires", options: MUSCLES_LIST, valueKey: "muscles_secondary", secondary: true }))), React.createElement(MultilineField, { label: "Conseils (un par ligne)", value: Array.isArray(form.tips) ? form.tips : [], onChange: v => set("tips", v), minHeight: 55, placeholder: "Un conseil par ligne..." }), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Adaptations par niveau"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, ADAPT_KEYS.map(k => (React.createElement("label", { key: k, style: { display: "flex", gap: 8, alignItems: "flex-start", fontSize: 12, color: C.muted } }, React.createElement("span", { style: { minWidth: 90, paddingTop: 7, fontWeight: 600, textTransform: "capitalize", color: C.text } }, k), React.createElement("input", { value: form.adaptations?.[k] || "", onChange: e => updateAdapt(k, e.target.value), style: { ...iStyle, flex: 1 }, placeholder: `Adaptation pour le niveau ${k}...` }))))))), React.createElement(MultilineField, { label: "Variantes (une par ligne)", value: form.variations, onChange: v => set("variations", v), minHeight: 55, placeholder: "Une variante par ligne..." }), isSouplesse && (React.createElement(MultilineField, { label: "Indicateurs de progr\u00E8s (un par ligne)", value: form.progress_indicators, onChange: v => set("progress_indicators", v), minHeight: 50, placeholder: "ex: Distance entre l'avant-bras et le sol" })), (isSouplesse || (isFitness && form.category === "etirement")) && (React.createElement(CheckGroup, { label: "Meilleur moment", options: bestTimingList, valueKey: "best_timing" })), !isVolley && (React.createElement(MultilineField, { label: "Contre-indications (une par ligne)", value: form.contraindications, onChange: v => set("contraindications", v), minHeight: 50, placeholder: "ex: lombalgie, douleur_genou_anterieure..." })), React.createElement(TagsField, { label: "Tags (s\u00E9par\u00E9s par virgule)", value: form.tags, onChange: v => set("tags", v), placeholder: "ex: gainage, force, sans_materiel, HIIT..." }), isVolley && (React.createElement("div", null, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } }, React.createElement(SectionLabel, null, "\u00C9volutions (", (form.evolutions || []).length, ")"), React.createElement(ClubBtn, { onClick: addEvo, variant: "outline", size: "sm" }, "+ Ajouter une \u00E9volution")), (form.evolutions || []).length === 0 && (React.createElement("div", { style: { fontSize: 12, color: C.hint, background: C.bg, borderRadius: 8, padding: "10px 14px", textAlign: "center" } }, "Aucune \u00E9volution \u2014 cliquez sur \"+ Ajouter\" pour enrichir l'exercice")), (form.evolutions || []).map((ev, i) => (React.createElement("div", { key: i, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8 } }, React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 8, alignItems: "center" } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 12, color: C.rougeText, minWidth: 70 } }, "\u00C9volution ", i + 1), React.createElement("input", { value: ev.titre, onChange: e => updateEvo(i, "titre", e.target.value), style: { ...iStyle, flex: 1 }, placeholder: "Titre de l'\u00E9volution..." }), React.createElement("button", { onClick: () => removeEvo(i), style: { background: "none", border: "none", color: C.rougeText, cursor: "pointer", fontSize: 16, flexShrink: 0 } }, "\u2715")), React.createElement("textarea", { value: ev.description, onChange: e => updateEvo(i, "description", e.target.value), style: { ...taStyle, minHeight: 60 }, placeholder: "Description d\u00E9taill\u00E9e de cette \u00E9volution..." })))))), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Images sch\u00E9matiques"), React.createElement("div", { className: "vc-grid-2" }, [["image_dessus", "Vue du dessus"], ["image_filet", "Vue depuis le filet"]].map(([key, label]) => (React.createElement("div", { key: key, style: { border: `2px dashed ${C.border}`, borderRadius: 8, overflow: "hidden" } }, React.createElement("div", { style: { background: C.bg, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, React.createElement("span", { style: { fontSize: 11, color: C.muted } }, label), React.createElement(ClubBtn, { onClick: () => handleImageUpload(key), variant: "outline", size: "sm" }, "\uD83D\uDCCE Charger")), form[key] ? (React.createElement("div", { style: { position: "relative" } }, React.createElement("img", { src: form[key], alt: label, style: { width: "100%", display: "block", maxHeight: 120, objectFit: "cover" } }), React.createElement("button", { onClick: () => set(key, null), style: { position: "absolute", top: 4, right: 4, background: C.rouge, color: "#fff", border: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", fontSize: 12 } }, "\u2715"))) : (React.createElement("div", { style: { height: 55, display: "flex", alignItems: "center", justifyContent: "center", color: C.hint, fontSize: 12 } }, "Aucune image")))))))), !isVolley && (React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "URL image", React.createElement("input", { value: form.image_url || "", onChange: e => set("image_url", e.target.value || null), style: iStyle, placeholder: "https://..." })), React.createElement("label", { className: "vc-lbl" }, "URL vid\u00E9o", React.createElement("input", { value: form.video_url || "", onChange: e => set("video_url", e.target.value || null), style: iStyle, placeholder: "https://..." })))), React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.text, cursor: "pointer", background: form.is_public ? "var(--tint-green)" : "var(--surface-2)", border: `1px solid ${form.is_public ? "var(--ok)" : "var(--line)"}`, borderRadius: 12, padding: "12px 14px" } }, React.createElement("input", { type: "checkbox", checked: !!form.is_public, onChange: e => set("is_public", e.target.checked) }), React.createElement("span", null, "Rendre disponible pour tous les coachs (lecture seule)")), React.createElement("div", { className: "vc-editor-foot" }, React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: onCancel }, "Annuler"), React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => { if (!(form.titre || form.name || "").trim()) { vcToast("Donnez un nom à l'exercice.", "error"); return; } onSave(form); } }, React.createElement(Icon, { name: "check", size: 16 }), "Enregistrer")))));
 }
 // ── SessionRow ──
 function PauseRow({ item, idx, total, onUpdate, onRemove, onMoveUp, onMoveDown }) {
@@ -3732,11 +3790,7 @@ function PrintModal({ session, onClose }) {
       </table>
       <div class="footer">VolleyCoach Club — généré le ${new Date().toLocaleString('fr-FR')}</div>
     </body></html>`;
-        const win = window.open('', '_blank');
-        win.document.write(html);
-        win.document.close();
-        win.focus();
-        setTimeout(() => { win.print(); }, 400);
+        vcOpenPrintable(html, "Impression — " + (session?.name || "séance"));
     };
     return (React.createElement("div", { onClick: onClose, style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 2500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 } }, React.createElement("div", { onClick: e => e.stopPropagation(), style: { background: C.surface, borderRadius: 14, overflow: 'hidden', width: '100%', maxWidth: 420 } }, React.createElement("div", { style: { background: C.noir, padding: '14px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }, React.createElement("span", { style: { color: '#fff', fontWeight: 700, fontSize: 15 } }, "\uD83D\uDDA8\uFE0F Imprimer la s\u00E9ance"), React.createElement("button", { onClick: onClose, style: { background: 'rgba(255,255,255,0.15)', border: 'none', color: '#fff', borderRadius: 7, width: 30, height: 30, cursor: 'pointer', fontSize: 15 } }, "\u2715")), React.createElement("div", { style: { padding: '16px 18px' } }, React.createElement("p", { style: { fontSize: 13, color: C.muted, marginBottom: 14 } }, "Choisissez les informations \u00E0 inclure en plus de la liste des exercices :"), React.createElement("div", { style: { display: 'flex', flexDirection: 'column', gap: 10 } }, [
         ['description', '📝 Description de l\'exercice'],
