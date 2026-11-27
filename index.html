@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.2.1</title>
+<title>VolleyCoach Club v3.3.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -561,6 +561,10 @@ button{color:inherit}
 .vc-print-title{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .vc-print-note{padding:10px 14px;background:rgba(240,165,0,.14);color:#F0C060;font-size:13px;line-height:1.4}
 .vc-print-frame{flex:1;width:100%;border:none;background:#fff}
+/* ── 3.3.0 : consigne courte, précautions ── */
+.vc-consigne{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:var(--tint-amber);color:var(--text);font-weight:600;line-height:1.4;margin:0 0 14px}
+.vc-consigne svg{flex:none;margin-top:2px;color:var(--accent-text)}
+.vc-tag--warn{background:var(--tint-orange);color:var(--tint-orange-text)}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -596,7 +600,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.2.1";
+const APP_VERSION = "3.3.0";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -638,6 +642,7 @@ let MOBILITY_DB_RAW = [];
 let FLEXY_DB_RAW = [];
 let PLYO_DB_RAW = [];
 let CROSS_DB_RAW = [];
+let PREVENTION_DB_RAW = [];
 const ALL_DB_BY_ID = {};
 
 // Correspondance section (app) <-> section (table catalog_exercises), et
@@ -649,6 +654,7 @@ const CATALOG_SECTION_TARGETS = {
     souplesse: (rows) => { FLEXY_DB_RAW = rows; },
     pliometrie: (rows) => { PLYO_DB_RAW = rows; },
     cross: (rows) => { CROSS_DB_RAW = rows; },
+    prevention: (rows) => { PREVENTION_DB_RAW = rows; },
 };
 
 // ============================================================================
@@ -1062,7 +1068,7 @@ async function loadCatalogFromSupabase() {
 // reconstruit ALL_DB_BY_ID, exactement comme le faisait le bloc statique
 // window._SPORT_DB auparavant.
 function applyCatalogRows(rows) {
-    const bySection = { volley: [], fitness: [], mobilite: [], souplesse: [], pliometrie: [], cross: [] };
+    const bySection = { volley: [], fitness: [], mobilite: [], souplesse: [], pliometrie: [], cross: [], prevention: [] };
     (rows || []).forEach((row) => {
         if (bySection[row.section]) bySection[row.section].push(row.data);
     });
@@ -1070,7 +1076,7 @@ function applyCatalogRows(rows) {
         CATALOG_SECTION_TARGETS[section]?.(list);
     });
     Object.keys(ALL_DB_BY_ID).forEach((k) => delete ALL_DB_BY_ID[k]);
-    [VOLLEY_DB_RAW, FITNESS_DB_RAW, MOBILITY_DB_RAW, FLEXY_DB_RAW, PLYO_DB_RAW, CROSS_DB_RAW].forEach((db) => {
+    [VOLLEY_DB_RAW, FITNESS_DB_RAW, MOBILITY_DB_RAW, FLEXY_DB_RAW, PLYO_DB_RAW, CROSS_DB_RAW, PREVENTION_DB_RAW].forEach((db) => {
         (db || []).forEach((ex) => { if (ex && ex.id) ALL_DB_BY_ID[ex.id] = ex; });
     });
 }
@@ -1200,18 +1206,18 @@ async function migrateBackupToTables() {
 // DEFAULT_TEMPLATES retiré du code — les templates par défaut vivent désormais dans la table Supabase "templates" (is_default = true), chargés via loadTemplatesFromSupabase.
 const PRESET_SESSIONS = {
     mobilite: [
-        { id: "pre_mob_epaule", name: "Mobilité épaules", zone: "epaule", description: "Routine complète épaules : CARs + PAILs/RAILs", exerciseIds: ["mob_007", "mob_008", "mob_009", "mob_010"], duration: "20 min" },
-        { id: "pre_mob_hanche", name: "Mobilité hanches", zone: "hanche", description: "Ouverture hanche profonde, rotation interne/externe", exerciseIds: ["mob_011", "mob_012", "mob_013"], duration: "20 min" },
-        { id: "pre_mob_cheville", name: "Mobilité chevilles", zone: "cheville", description: "Dorsiflexion, rotation, renforcement tobillo", exerciseIds: ["mob_001", "mob_002"], duration: "12 min" },
-        { id: "pre_mob_thoracique", name: "Mobilité thoracique", zone: "thoracique", description: "Rotation et extension thoracique pour le smash", exerciseIds: ["mob_018", "mob_019", "mob_020"], duration: "15 min" },
-        { id: "pre_mob_full", name: "Full mobilité matin", zone: "tous", description: "Routine complète corps entier au réveil", exerciseIds: ["mob_001", "mob_007", "mob_011", "mob_018", "mob_022", "mob_025"], duration: "35 min" },
+        { id: "pre_mob_epaule", name: "Mobilité épaules", zone: "epaule", description: "Rotations contrôlées, rotation externe, suspension, ouverture thoracique", exerciseIds: ["mob_008", "mob_013", "mob_014", "mob_010"], duration: "20 min" },
+        { id: "pre_mob_hanche", name: "Mobilité hanches", zone: "hanche", description: "Rotations contrôlées, 90/90, PAILs/RAILs, squat cosaque", exerciseIds: ["mob_003", "mob_004", "mob_007", "mob_006"], duration: "20 min" },
+        { id: "pre_mob_cheville", name: "Mobilité chevilles", zone: "cheville", description: "Rotations contrôlées et dorsiflexion en fente", exerciseIds: ["mob_001", "mob_002"], duration: "12 min" },
+        { id: "pre_mob_thoracique", name: "Mobilité thoracique", zone: "thoracique", description: "Rotation et extension thoracique pour l'attaque", exerciseIds: ["mob_009", "mob_010", "mob_011", "mob_012"], duration: "15 min" },
+        { id: "pre_mob_full", name: "Mobilité complète du matin", zone: "tous", description: "Routine corps entier au réveil", exerciseIds: ["mob_001", "mob_003", "mob_008", "mob_009", "mob_019", "mob_024"], duration: "30 min" },
     ],
     souplesse: [
-        { id: "pre_flex_ischio", name: "Souplesse ischios", zone: "membres_inferieurs", description: "Étirements profonds ischio-jambiers", exerciseIds: ["flexy_001", "flexy_002", "flexy_003"], duration: "20 min" },
-        { id: "pre_flex_hanche", name: "Souplesse hanches", zone: "hanche", description: "Ouverture hanche PNF et passif", exerciseIds: ["flexy_004", "flexy_005", "flexy_006", "flexy_007"], duration: "25 min" },
-        { id: "pre_flex_epaule", name: "Souplesse épaules", zone: "haut_du_corps", description: "Rotation interne/externe + pecto", exerciseIds: ["flexy_011", "flexy_012", "flexy_013"], duration: "20 min" },
-        { id: "pre_flex_dos", name: "Souplesse dos complet", zone: "dos", description: "Lombaires, thoracique, cervicale", exerciseIds: ["flexy_008", "flexy_009", "flexy_010"], duration: "20 min" },
-        { id: "pre_flex_full", name: "Séance souplesse soir", zone: "tous", description: "Routine souplesse complète post-entraînement", exerciseIds: ["flexy_001", "flexy_004", "flexy_008", "flexy_011", "flexy_016", "flexy_020"], duration: "40 min" },
+        { id: "pre_flex_ischio", name: "Souplesse ischio-jambiers", zone: "membres_inferieurs", description: "Sangle, PNF et étirement debout", exerciseIds: ["flexy_001", "flexy_002", "stretch_001"], duration: "15 min" },
+        { id: "pre_flex_hanche", name: "Souplesse hanches", zone: "hanche", description: "Adducteurs, psoas et fessiers", exerciseIds: ["flexy_004", "flexy_007", "flexy_008", "flexy_015"], duration: "25 min" },
+        { id: "pre_flex_epaule", name: "Souplesse épaules", zone: "haut_du_corps", description: "Pectoraux, capsule postérieure, rotation externe", exerciseIds: ["flexy_010", "flexy_011", "flexy_012", "stretch_007"], duration: "20 min" },
+        { id: "pre_flex_dos", name: "Souplesse dos", zone: "dos", description: "Posture de l'enfant, torsions, déroulé de colonne", exerciseIds: ["flexy_013", "flexy_014", "flexy_020", "stretch_019"], duration: "20 min" },
+        { id: "pre_flex_full", name: "Souplesse du soir", zone: "tous", description: "Routine complète après l'entraînement", exerciseIds: ["flexy_001", "flexy_004", "flexy_007", "flexy_011", "flexy_014", "flexy_013"], duration: "35 min" },
     ],
 };
 // ─── UTILS ────────────────────────────────────────────────────────────────────
@@ -1462,9 +1468,11 @@ function Pill({ label, color = C.muted, bg = C.bg }) {
     return (React.createElement("span", { style: { background: bg, color, borderRadius: 99, padding: "2px 8px", fontSize: 11, fontWeight: 600 } }, label));
 }
 function LevelBadge({ level }) {
-    const map = { Débutant: ["var(--ok-text)", "var(--tint-green)"], Intermédiaire: ["var(--accent-text)", "var(--tint-amber)"], Avancé: [C.rougeText, C.rougeLight], Expert: [C.text, "var(--surface-2)"] };
-    const [col, bg] = map[level] || [C.muted, C.bg];
-    return React.createElement("span", { style: { background: bg, color: col, borderRadius: 99, padding: "1px 8px", fontSize: 11, fontWeight: 700 } }, level);
+    const lab = vcLabel(level);
+    const first = lab.split(" ")[0];
+    const map = { Débutant: ["var(--ok-text)", "var(--tint-green)"], Intermédiaire: ["var(--accent-text)", "var(--tint-amber)"], Avancé: [C.rougeText, C.rougeLight], Élite: [C.rougeText, C.rougeLight], Compétition: [C.rougeText, C.rougeLight] };
+    const [col, bg] = map[first] || [C.muted, "var(--surface-2)"];
+    return React.createElement("span", { style: { background: bg, color: col, borderRadius: 99, padding: "1px 8px", fontSize: 11, fontWeight: 700 } }, lab);
 }
 function LabelInput({ label, value, onChange, placeholder = "", type = "text", min, max, style: s = {} }) {
     return (React.createElement("label", { className: "vc-lbl" },
@@ -1897,7 +1905,7 @@ function VcSessionHeader({ session, isOwn, teams, sections, isMobile, onBack, on
             React.createElement("span", null, React.createElement("strong", null, sets), " série" + (sets > 1 ? "s" : "")),
             nPause > 0 && React.createElement("span", null, React.createElement("strong", null, nPause), " pause" + (nPause > 1 ? "s" : ""))),
         muscles.length > 0 && React.createElement("div", { className: "vc-ex-tags", "aria-label": "Muscles ciblés" },
-            muscles.slice(0, 8).map((m) => React.createElement("span", { key: m, className: "vc-tag" }, m)),
+            muscles.slice(0, 8).map((m) => React.createElement("span", { key: m, className: "vc-tag" }, vcLabel(m))),
             muscles.length > 8 && React.createElement("span", { className: "vc-tag" }, "+" + (muscles.length - 8))),
         React.createElement("div", { className: "vc-sess-actions" },
             React.createElement("button", { type: "button", className: "vc-btn vc-btn--gold vc-btn--lg", disabled: empty, onClick: onLaunch }, React.createElement(Icon, { name: "play", size: 16 }), "Lancer"),
@@ -1933,12 +1941,12 @@ function VcExCardHead({ ex, name, cats, catColor, level, isCustom, muscles, equi
     return React.createElement(React.Fragment, null,
         React.createElement("div", { className: "vc-excard-name" }, name),
         React.createElement("div", { className: "vc-ex-tags" },
-            cats && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: catColor } }), cats),
+            cats && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: catColor } }), vcLabel(cats)),
             level && React.createElement(LevelBadge, { level }),
             badge),
         (muscles.length > 0 || chips.length > 0 || equipment.length > 0) && React.createElement("div", { className: "vc-excard-meta" },
-            [...muscles, ...chips].join(" · "),
-            equipment.length > 0 && React.createElement("span", { className: "vc-excard-equip" }, React.createElement(Icon, { name: "tool", size: 12 }), equipment.slice(0, 2).join(", ") + (equipment.length > 2 ? "…" : ""))),
+            [...muscles.map(vcLabel), ...chips].join(" · "),
+            equipment.length > 0 && React.createElement("span", { className: "vc-excard-equip" }, React.createElement(Icon, { name: "tool", size: 12 }), equipment.slice(0, 2).map(vcLabel).join(", ") + (equipment.length > 2 ? "…" : ""))),
         React.createElement("div", { className: "vc-excard-foot", onClick: (e) => e.stopPropagation() },
             isCustom && ex._ownedByMe !== false && React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Modifier l'exercice", title: "Modifier", onClick: () => onEdit?.(ex) }, React.createElement(Icon, { name: "edit", size: 16 })),
             React.createElement("button", { type: "button", className: "vc-tool", "aria-label": "Dupliquer en exercice personnel", title: "Dupliquer", onClick: () => onDuplicate?.(ex) }, React.createElement(Icon, { name: "copy", size: 16 })),
@@ -2026,7 +2034,7 @@ function renderWeeklyView(prog, sessions, slotDrag, setSlotDrag, onSave, onLaunc
     var nW = parseInt(prog.durationWeeks) || 1;
     var nP = parseInt(prog.sessionsPerWeek) || 1;
     var slots = prog.weekSlots || {};
-    var SCOLS = { volley: "#C8102E", fitness: "#7C3AED", mobilite: "#3B82F6", souplesse: "#10B981", pliometrie: "#F97316", cross: "#0EA5E9" };
+    var SCOLS = { volley: "#C8102E", fitness: "#7C3AED", mobilite: "#3B82F6", souplesse: "#10B981", pliometrie: "#F97316", cross: "#0EA5E9", prevention: "#14B8A6" };
     var picked = slotDrag && slotDrag.progId === prog.id ? slotDrag.picked : null;
     var place = function(key, sid) {
         var ns = Object.assign({}, prog.weekSlots || {}); ns[key] = sid;
@@ -2135,6 +2143,88 @@ function VcPrintOverlay({ doc, onClose }) {
         React.createElement("iframe", { ref: frameRef, className: "vc-print-frame", title: doc.title, srcDoc: doc.html }));
 }
 
+
+// ─── LIBELLÉS (3.3.0) ─────────────────────────────────────────────────────────
+// Le catalogue stocke des codes (debutant, halteres, ischio_jambiers…). L'app
+// les affiche toujours via vcLabel() : libellé exact s'il existe, sinon mots
+// remis au propre (accents, espaces, majuscule). Un texte déjà rédigé
+// (« Débutant à Intermédiaire », « 1 ballon par joueur ») est rendu tel quel.
+const VC_LABELS = {
+    // Niveaux
+    debutant: "Débutant", intermediaire: "Intermédiaire", avance: "Avancé", elite: "Élite", competition: "Compétition",
+    // Disciplines et catégories
+    prevention: "Prévention", athletisme_vitesse: "Athlétisme et vitesse", fitness_boxing: "Boxe", natation_dry: "Natation à sec",
+    natation_wet: "Natation en bassin", yoga_athletique: "Yoga", course_a_pied: "Course à pied", renforcement: "Renforcement",
+    echauffement: "Échauffement", etirement: "Étirement", proprioception: "Proprioception", reception_saut: "Réception de saut",
+    hanche_ischios: "Hanche et adducteurs", ischio_jambiers: "Ischio-jambiers", tendons: "Tendons", epaule: "Épaule",
+    sauts_verticaux: "Sauts verticaux", sauts_horizontaux: "Sauts horizontaux", reactivite: "Réactivité",
+    pliometrie_membres_superieurs: "Haut du corps", combinaisons: "Combinaisons", calisthenics_sport: "Callisthénie",
+    // Sous-catégories fréquentes
+    calisthenie: "Callisthénie", seance: "Séance", specifique_volleyball: "Spécifique volley", combinaisons_volleyball: "Combinaisons volley",
+    kick_dry: "Battements à sec", shadow_boxing: "Boxe dans le vide", footwork: "Jeu de jambes", depart_plonge: "Départ plongé",
+    eaux_libres: "Eaux libres", respiration_pranayama: "Respiration (pranayama)", vinyasa_flux: "Vinyasa", coiffe_rotateurs: "Coiffe des rotateurs",
+    corps_entier: "Corps entier", haut_du_corps: "Haut du corps", membres_inferieurs: "Membres inférieurs", tronc: "Tronc",
+    // Muscles
+    abdominaux: "Abdominaux", abducteurs: "Abducteurs", adducteurs: "Adducteurs", avant_bras: "Avant-bras", biceps: "Biceps",
+    cervicales: "Cervicales", deltoides: "Deltoïdes", deltoides_posterieurs: "Deltoïdes postérieurs", diaphragme: "Diaphragme",
+    dorsaux: "Dorsaux", epaules: "Épaules", erecteurs_rachis: "Érecteurs du rachis", fessiers: "Fessiers", intercostaux: "Intercostaux",
+    jambes: "Jambes", lombaires: "Lombaires", mollets: "Mollets", obliques: "Obliques", pectoraux: "Pectoraux", piriformis: "Piriforme",
+    psoas: "Psoas", quadriceps: "Quadriceps", rhomboides: "Rhomboïdes", soleaires: "Soléaires", "soléaires": "Soléaires",
+    tibial_anterieur: "Tibial antérieur", tibialis: "Tibial antérieur", tibialis_anterieur: "Tibial antérieur", trapezes: "Trapèzes",
+    trapeze: "Trapèzes", triceps: "Triceps", rotateurs_epaule: "Coiffe des rotateurs", grand_dorsal: "Grand dorsal",
+    // Matériel
+    aucun: "Sans matériel", halteres: "Haltères", barre: "Barre", banc: "Banc", tapis: "Tapis", elastique: "Élastique",
+    kettlebell: "Kettlebell", medecine_ball: "Médecine-ball", corde_a_sauter: "Corde à sauter", barre_de_traction: "Barre de traction",
+    anneau_de_gymnastique: "Anneaux", box_pliometrique: "Caisse de pliométrie", bosu: "Demi-ballon (BOSU)", balance_board: "Plateau instable",
+    coussin_proprioceptif: "Coussin proprioceptif", echelle_de_vitesse: "Échelle de rythme", haies_basses: "Haies basses",
+    haies_pliometriques: "Haies de pliométrie", plan_incline: "Plan incliné", rouleau_de_massage: "Rouleau de massage",
+    sac_de_frappe: "Sac de frappe", gants_boxe: "Gants de boxe", sangle_etirement: "Sangle", sangle_yoga: "Sangle", bloc_yoga: "Bloc de yoga",
+    pull_buoy: "Pull-buoy", planche_natation: "Planche", chaussettes_nage: "Chaussettes de nage", elastique_piscine: "Élastique de piscine",
+    // Moments, types
+    apres_seance: "Après la séance", avant_sommeil: "Avant de dormir", seance_dediee: "Séance dédiée", reveil: "Au réveil",
+    avant_seance_non_recommande: "Pas avant la séance", statique_passif: "Statique passif", statique_actif: "Statique actif",
+    yin_yoga: "Yin yoga", PAILs_RAILs: "PAILs / RAILs", mobilisation_active: "Mobilisation active", mobilisation_passive: "Mobilisation passive",
+    dry: "À sec", pool: "En bassin",
+};
+const VC_WORDS = {
+    a: "à", aigue: "aiguë", aigu: "aigu", anterieur: "antérieur", anterieure: "antérieure", anterieurs: "antérieurs",
+    apres: "après", arriere: "arrière", articulaire: "articulaire", athletisme: "athlétisme", cardiaque: "cardiaque",
+    cervicale: "cervicale", controle: "contrôlé", defense: "défense", deltoide: "deltoïde", depart: "départ", debut: "début",
+    debutant: "débutant", educatifs: "éducatifs", elastique: "élastique", entorse: "entorse", epaule: "épaule", epaules: "épaules",
+    equilibre: "équilibre", etirement: "étirement", fragilisee: "fragilisée", genou: "genou", genoux: "genoux", gonfle: "gonflé",
+    hanche: "hanche", inferieurs: "inférieurs", ischio: "ischio", lesion: "lésion", lateral: "latéral", laterale: "latérale",
+    medial: "médial", mediale: "médiale", maitrise: "maîtrise", mobilite: "mobilité", nageur: "nageur", non: "non",
+    osteoporose: "ostéoporose", pliometrie: "pliométrie", posterieur: "postérieur", posterieure: "postérieure", probleme: "problème",
+    prothese: "prothèse", reactif: "réactif", reactivite: "réactivité", recente: "récente", recent: "récent", rotule: "rotule",
+    seance: "séance", severe: "sévère", severes: "sévères", superieurs: "supérieurs", symptomes: "symptômes", tendinite: "tendinite",
+    thoracique: "thoracique", tibial: "tibial", unilaterale: "unilatérale", unipodal: "unipodal", vertebrale: "vertébrale",
+    vestibulaire: "vestibulaire", ac: "acromio-claviculaire", achilleenne: "achilléenne", acromial: "acromial", sous: "sous",
+    leger: "léger", activation: "activation", agilite: "agilité", acceleration: "accélération", eau: "eau", oreilles: "oreilles",
+    severement: "sévèrement", ilio: "ilio", epicondylite: "épicondylite", gonalgie: "gonalgie", gonarthrose: "gonarthrose",
+    hernie: "hernie", inguinale: "inguinale", fracture: "fracture", plafond: "plafond", varices: "varices", menstruation: "menstruation",
+    pubalgie: "pubalgie", fascite: "fasciite", plantaire: "plantaire", coiffe: "coiffe", blessee: "blessée", conflit: "conflit",
+    chondromalacie: "chondromalacie", echauffe: "échauffé", echauffement: "échauffement", insuffisant: "insuffisant", defectueux: "défectueux",
+    proprioception: "proprioception", vitesse: "vitesse", precision: "précision", nage: "nage", jambes: "jambes", jambiers: "jambiers",
+    pectoraux: "pectoraux", rachis: "rachis",
+};
+function vcLabel(code) {
+    if (code == null) return "";
+    if (typeof code !== "string") return String(code);
+    if (Object.prototype.hasOwnProperty.call(VC_LABELS, code)) return VC_LABELS[code];
+    // Déjà un libellé rédigé : espaces, majuscules ou ponctuation, et pas de « _ »
+    if (code.indexOf("_") < 0 && (/[\s,()]/.test(code) || code !== code.toLowerCase())) return code;
+    const parts = code.split("_").map((w) => (Object.prototype.hasOwnProperty.call(VC_WORDS, w) ? VC_WORDS[w] : w));
+    let out = parts.join(" ").replace(/\bischio jambiers\b/g, "ischio-jambiers").replace(/\bavant bras\b/g, "avant-bras");
+    return out.charAt(0).toUpperCase() + out.slice(1);
+}
+const VC_LEVEL_ORDER = ["debutant", "Débutant", "Débutant à Intermédiaire", "intermediaire", "Intermédiaire", "Intermédiaire à Avancé", "avance", "Avancé", "Avancé à Compétition", "elite", "Tous niveaux"];
+function vcSortLevels(list) {
+    return [...list].sort((a, b) => {
+        const ia = VC_LEVEL_ORDER.indexOf(a), ib = VC_LEVEL_ORDER.indexOf(b);
+        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+}
+
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null }; }
@@ -2191,8 +2281,8 @@ function ExerciseModal({ ex, section, onClose, onAdd, inSession = false, myCusto
     if (!isVolley && ex.duration_seconds) facts.push(["timer", fmtTime(ex.duration_seconds)]);
     if (!isVolley && isFlexy && ex.hold_seconds) facts.push(["timer", ex.hold_seconds + " s de maintien"]);
     if (!isVolley && ex.rest_seconds) facts.push(["pauseRow", ex.rest_seconds + " s de repos"]);
-    if (ex.joint) facts.push(["gear", "Articulation : " + ex.joint]);
-    if (equipment.length > 0) facts.push(["tool", equipment.join(", ")]);
+    if (ex.joint) facts.push(["gear", "Articulation : " + vcLabel(ex.joint).toLowerCase()]);
+    if (equipment.length > 0) facts.push(["tool", equipment.map(vcLabel).join(", ")]);
     const section_ = (title, body, extra) => React.createElement("section", { className: "vc-sheet-sec" + (extra ? " " + extra : "") }, React.createElement("h3", null, title), body);
     const addBtn = onAdd && React.createElement("button", { type: "button", className: "vc-btn vc-btn--lg " + (inSession ? "vc-btn--ghost" : "vc-btn--primary"), disabled: inSession, onClick: (e) => { e.stopPropagation(); if (!inSession) { markModalClosed(); onAdd?.(ex); onClose(); } } },
         React.createElement(Icon, { name: inSession ? "check" : "plus", size: 16 }), inSession ? "Déjà dans la séance" : "Ajouter à la séance");
@@ -2201,10 +2291,10 @@ function ExerciseModal({ ex, section, onClose, onAdd, inSession = false, myCusto
             React.createElement("header", { className: "vc-sheet-head" },
                 React.createElement("div", { className: "vc-sheet-titles" },
                     React.createElement("div", { className: "vc-ex-tags" },
-                        (isVolley ? ex.categorie : ex.category) && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: "var(--brand)" } }), isVolley ? ex.categorie : ex.category),
+                        (isVolley ? ex.categorie : ex.category) && React.createElement("span", { className: "vc-tag" }, React.createElement("span", { className: "vc-dot", style: { background: "var(--brand)" } }), vcLabel(isVolley ? ex.categorie : ex.category)),
                         levelEl,
-                        !isVolley && ex.mobility_type && React.createElement("span", { className: "vc-tag" }, ex.mobility_type),
-                        !isVolley && ex.stretching_type && React.createElement("span", { className: "vc-tag" }, ex.stretching_type)),
+                        !isVolley && ex.mobility_type && React.createElement("span", { className: "vc-tag" }, vcLabel(ex.mobility_type)),
+                        !isVolley && ex.stretching_type && React.createElement("span", { className: "vc-tag" }, vcLabel(ex.stretching_type))),
                     React.createElement("h2", null, name),
                     isVolley && ex.action_travaillee && React.createElement("p", { className: "vc-sheet-goal" }, ex.action_travaillee)),
                 React.createElement(VcActionMenu, { label: "Plus d'actions", items: [
@@ -2212,19 +2302,22 @@ function ExerciseModal({ ex, section, onClose, onAdd, inSession = false, myCusto
                 ] }),
                 React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, onClick: close, "aria-label": "Fermer la fiche" }, React.createElement(Icon, { name: "close" }))),
             React.createElement("div", { className: "vc-sheet-body" },
+                ex.consigne_courte && React.createElement("p", { className: "vc-consigne" }, React.createElement(Icon, { name: "play", size: 16 }), ex.consigne_courte),
                 facts.length > 0 && React.createElement("ul", { className: "vc-facts" }, facts.map(([ic, t], i) => React.createElement("li", { key: i }, React.createElement(Icon, { name: ic, size: 16 }), t))),
                 desc && section_("Description", React.createElement("p", null, desc)),
                 isVolley && ex.mise_en_place && section_("Mise en place", React.createElement("p", null, ex.mise_en_place)),
                 steps.length > 0 && section_(isVolley ? "Points clés" : "Exécution", React.createElement("ol", { className: "vc-steps" }, steps.map((s, i) => React.createElement("li", { key: i }, React.createElement("span", { className: "vc-step-num" }, i + 1), React.createElement("span", null, s))))),
                 (muscles.length > 0 || musclesSec.length > 0) && section_("Muscles", React.createElement("div", { className: "vc-ex-tags" },
-                    muscles.map(m => React.createElement("span", { key: "p" + m, className: "vc-tag vc-tag--brand" }, m)),
-                    musclesSec.map(m => React.createElement("span", { key: "s" + m, className: "vc-tag" }, m)))),
+                    muscles.map(m => React.createElement("span", { key: "p" + m, className: "vc-tag vc-tag--brand" }, vcLabel(m))),
+                    musclesSec.map(m => React.createElement("span", { key: "s" + m, className: "vc-tag" }, vcLabel(m))))),
+                !isVolley && (ex.contraindications || []).length > 0 && section_("Précautions", React.createElement("div", { className: "vc-ex-tags" },
+                    ex.contraindications.map(c => React.createElement("span", { key: c, className: "vc-tag vc-tag--warn" }, vcLabel(c))))),
                 tips.length > 0 && section_("Conseils et adaptations", React.createElement("ul", { className: "vc-tips" }, tips.map((t, i) => React.createElement("li", { key: i }, t))), "vc-sheet-sec--tip"),
                 isVolley && evolutions.length > 0 && section_("Évolutions (" + evolutions.length + ")", React.createElement("ol", { className: "vc-evos" }, evolutions.map(ev => React.createElement("li", { key: ev.numero },
                     React.createElement("span", { className: "vc-evo-num" }, "Év. " + ev.numero),
                     React.createElement("div", null, React.createElement("strong", null, ev.titre), ev.description && React.createElement("p", null, ev.description)))))),
                 !isVolley && variations.length > 0 && section_("Variantes", React.createElement("div", { className: "vc-ex-tags" }, variations.map((v, i) => React.createElement("span", { key: i, className: "vc-tag" }, typeof v === "string" ? v : (v.label || v.name || ""))))),
-                ex.best_timing?.length > 0 && section_("Meilleur moment", React.createElement("div", { className: "vc-ex-tags" }, ex.best_timing.map(t => React.createElement("span", { key: t, className: "vc-tag" }, t)))),
+                ex.best_timing?.length > 0 && section_("Meilleur moment", React.createElement("div", { className: "vc-ex-tags" }, ex.best_timing.map(t => React.createElement("span", { key: t, className: "vc-tag" }, vcLabel(t))))),
                 isVolley && section_("Vues schématiques", React.createElement("div", { className: "vc-schemas" }, [{ label: "Vue du dessus", key: "image_dessus" }, { label: "Vue depuis le filet", key: "image_filet" }].map(({ label, key }) => React.createElement("figure", { key },
                     ex[key] ? React.createElement("img", { src: ex[key], alt: label }) : React.createElement("div", { className: "vc-schema-empty" }, React.createElement(Icon, { name: "template", size: 22 }), "Image à ajouter"),
                     React.createElement("figcaption", null, label))))),
@@ -2250,7 +2343,7 @@ function ExerciseModal({ ex, section, onClose, onAdd, inSession = false, myCusto
                     React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: () => setShowPdfOptions(false) }, "Annuler"),
                     React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => {
                         const isVolleyEx = section === "volley";
-                        const page = isVolleyEx ? buildPdfHtmlVolley(ex, pdfOpts) : buildPdfHtml(ex.titre || ex.name || "", ex.niveau || ex.level || "", ex.categorie || ex.category || "", ex.description || ex.action_travaillee || "", ex.execution_steps || ex.points_cles || [], Array.isArray(ex.tips) ? ex.tips : [], ex.muscles_primary || ex.muscles_targeted || [], ex.muscles_secondary || [], ex.variations || [], ex.evolutions || [], ex.equipment || ex.materiel || [], ex.sets_default, ex.reps_default, ex.duration_seconds ?? ex.hold_seconds, pdfOpts);
+                        const page = isVolleyEx ? buildPdfHtmlVolley(ex, pdfOpts) : buildPdfHtml(ex.titre || ex.name || "", vcLabel(ex.niveau || ex.level || ""), vcLabel(ex.categorie || ex.category || ""), ex.description || ex.action_travaillee || "", ex.execution_steps || ex.points_cles || [], Array.isArray(ex.tips) ? ex.tips : [], (ex.muscles_primary || ex.muscles_targeted || []).map(vcLabel), (ex.muscles_secondary || []).map(vcLabel), ex.variations || [], ex.evolutions || [], (ex.equipment || ex.materiel || []).map(vcLabel), ex.sets_default, ex.reps_default, ex.duration_seconds ?? ex.hold_seconds, pdfOpts);
                         setShowPdfOptions(false);
                         vcOpenPrintable(page, name || "Fiche exercice");
                     } }, React.createElement(Icon, { name: "print", size: 16 }), vcIsNative ? "Afficher" : "Générer le PDF"))))));
@@ -2467,22 +2560,22 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
     const [editingEx, setEditingEx] = useState(null);
     const [showNew, setShowNew] = useState(false);
     const isVolley = section === "volley";
-    const isFitness = section === "fitness" || section === "cross";
+    const isFitness = !isVolley;
     const allExercises = useMemo(() => {
         const custom = (customExercises || []).filter(e => e._section === section);
         return [...db, ...custom];
     }, [db, customExercises, section]);
     const cats = useMemo(() => [...new Set(allExercises.map(e => e.categorie || e.category))].filter(Boolean), [allExercises]);
-    const levels = useMemo(() => [...new Set(allExercises.map(e => e.niveau || e.level))].filter(Boolean), [allExercises]);
+    const levels = useMemo(() => vcSortLevels([...new Set(allExercises.map(e => e.niveau || e.level))].filter(Boolean)), [allExercises]);
     const allMuscles = useMemo(() => {
         if (!isFitness)
             return [];
         const s = new Set();
         allExercises.forEach(e => {
-            (e.muscles_primary || []).forEach(m => s.add(m));
+            (e.muscles_primary || e.muscles_targeted || []).forEach(m => s.add(m));
             (e.muscles_secondary || []).forEach(m => s.add(m));
         });
-        return [...s].sort();
+        return [...s].sort((a, b) => vcLabel(a).localeCompare(vcLabel(b), "fr"));
     }, [allExercises, isFitness]);
     const filtered = useMemo(() => allExercises.filter(ex => {
         const cat = ex.categorie || ex.category;
@@ -2492,7 +2585,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
         if (levelFilter !== "tous" && lv !== levelFilter)
             return false;
         if (muscleFilter !== "tous") {
-            const exM = [...(ex.muscles_primary || []), ...(ex.muscles_secondary || [])];
+            const exM = [...(ex.muscles_primary || ex.muscles_targeted || []), ...(ex.muscles_secondary || [])];
             if (!exM.includes(muscleFilter))
                 return false;
         }
@@ -2501,7 +2594,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
         if (q) {
             const ql = q.toLowerCase();
             const n = (ex.titre || ex.name || "").toLowerCase();
-            const m = [...(ex.muscles_primary || ex.muscles_targeted || []), ...(ex.muscles_secondary || [])].join(" ").toLowerCase();
+            const m = [...(ex.muscles_primary || ex.muscles_targeted || []), ...(ex.muscles_secondary || []), ...(ex.equipment || [])].map(vcLabel).join(" ").toLowerCase();
             const tags = (ex.tags || []).join(" ").toLowerCase();
             const d = (ex.description || "").toLowerCase();
             if (!n.includes(ql) && !m.includes(ql) && !tags.includes(ql) && !d.includes(ql))
@@ -2521,14 +2614,14 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 React.createElement("input", { type: "search", placeholder: "Nom, muscle, tag, description…", value: q, onChange: e => setQ(e.target.value), "aria-label": "Rechercher un exercice" })),
             cats.length > 0 && React.createElement("div", { className: "vc-chips vc-chips--sm", role: "group", "aria-label": "Catégories" },
                 React.createElement("button", { type: "button", className: "vc-chip" + (catFilter === "tous" ? " is-active" : ""), onClick: () => setCatFilter("tous") }, "Toutes"),
-                cats.map(c => React.createElement("button", { key: c, type: "button", className: "vc-chip" + (catFilter === c ? " is-active" : ""), onClick: () => setCatFilter(c === catFilter ? "tous" : c) }, c))),
+                cats.map(c => React.createElement("button", { key: c, type: "button", className: "vc-chip" + (catFilter === c ? " is-active" : ""), onClick: () => setCatFilter(c === catFilter ? "tous" : c) }, vcLabel(c)))),
             React.createElement("div", { className: "vc-lib-row" },
                 levels.length > 0 && React.createElement("select", { className: "vc-select", value: levelFilter, onChange: e => setLevelFilter(e.target.value), "aria-label": "Niveau" },
                     React.createElement("option", { value: "tous" }, "Tous niveaux"),
-                    levels.map(l => React.createElement("option", { key: l, value: l }, l))),
+                    levels.map(l => React.createElement("option", { key: l, value: l }, vcLabel(l)))),
                 isFitness && allMuscles.length > 0 && React.createElement("select", { className: "vc-select", value: muscleFilter, onChange: e => setMuscleFilter(e.target.value), "aria-label": "Groupe musculaire" },
                     React.createElement("option", { value: "tous" }, "Tous muscles"),
-                    allMuscles.map(m => React.createElement("option", { key: m, value: m }, m))),
+                    allMuscles.map(m => React.createElement("option", { key: m, value: m }, vcLabel(m)))),
                 React.createElement("button", { type: "button", className: "vc-chip" + (noEquip ? " is-active" : ""), style: { height: 36 }, "aria-pressed": noEquip, onClick: () => setNoEquip(v => !v) }, "Sans matériel"))),
         React.createElement("div", { className: "vc-lib-count" },
             filtered.length + " exercice" + (filtered.length > 1 ? "s" : ""),
@@ -2582,14 +2675,14 @@ function ExerciseEditor({ ex, section, onSave, onCancel }) {
     const isMobilite = section === "mobilite";
     const isSouplesse = section === "souplesse";
     // ── Fixed option lists from actual DB values ──
-    const MUSCLES_LIST = ["pectoraux", "dorsaux", "epaules", "biceps", "triceps", "avant_bras", "abdominaux", "obliques", "lombaires", "fessiers", "quadriceps", "ischio_jambiers", "adducteurs", "abducteurs", "mollets", "tibialis", "trapeze", "rhomboides", "rotateurs_epaule", "psoas", "soléaires"];
+    const MUSCLES_LIST = ["pectoraux", "dorsaux", "epaules", "biceps", "triceps", "avant_bras", "abdominaux", "obliques", "lombaires", "fessiers", "quadriceps", "ischio_jambiers", "adducteurs", "abducteurs", "mollets", "tibial_anterieur", "trapezes", "rhomboides", "coiffe_rotateurs", "psoas", "soleaires"];
     const EQUIPMENT_FITNESS = ["aucun", "tapis", "halteres", "barre", "elastique", "chaise", "banc", "barre_de_traction", "kettlebell", "corde_a_sauter", "ballon_swiss", "rouleau_de_massage", "anneau_de_gymnastique", "TRX"];
     const EQUIPMENT_VOLLEY = ["ballon", "1 ballon par joueur", "1 ballon pour 2 joueurs", "2 à 4 ballons", "4 à 6 ballons", "filet", "filet ou élastique", "plots", "plots cibles", "chronomètre", "sifflet", "tableau blanc", "terrain réduit", "tapis optionnel"];
     const EQUIPMENT_MOB = ["aucun", "tapis", "elastique", "chaise", "banc", "barre_de_traction", "ballon_swiss", "rouleau_de_massage", "anneau_de_gymnastique", "TRX", "parallettes"];
     const EQUIPMENT_FLEXY = ["aucun", "tapis", "elastique", "chaise", "banc", "sangle_etirement", "ballon_swiss", "barre_danse", "mur", "coussin"];
-    const CATS_VOLLEY = ["Manipulation de balle", "Réception", "Passe", "Attaque", "Défense", "Bloc", "Service", "Enchaînement", "Organisation collective", "Communication", "Opposition et jeu en formation", "Échauffement", "Libéro", "Mental et gestion de match"];
+    const CATS_VOLLEY = ["Manipulation de balle", "Réception", "Passe", "Attaque", "Défense", "Bloc", "Service", "Enchaînement", "Organisation collective", "Communication", "Opposition et jeu en formation", "Échauffement", "Déplacements", "Libéro", "Mental et gestion de match"];
     const SOUS_CATS_VOLLEY = ["Gamme", "Technique individuelle", "Technique avancée", "Technique tactique", "Coups spéciaux", "Réception intensive", "Exercice fondamental", "Exercice collectif", "Enchaînement de tâches", "Série", "Circuit", "Systèmes de jeu", "Tactique collective", "Tactique de service", "Communication verbale", "Communication tactique", "Organisation collective", "Jeu en formation réduite", "Jeu complet", "Jeu complet avec contraintes", "Situations de jeu spécifiques", "Transition et contre-attaque", "Attaque rapide", "Couverture", "Beach volley", "Préparation mentale", "Activation physique et technique"];
-    const CATS_FITNESS = ["renforcement", "echauffement", "etirement", "course_a_pied"];
+    const CATS_FITNESS = section === "prevention" ? ["proprioception", "epaule", "reception_saut", "hanche_ischios", "ischio_jambiers", "tendons"] : ["renforcement", "echauffement"];
     const SUBCATS_FITNESS = ["haut_du_corps", "membres_inferieurs", "corps_entier", "dos", "abdominaux", "calisthenie", "mobilite_articulaire", "cardio_leger", "activation_musculaire", "seance", "intervalles", "endurance"];
     const LEVELS_VOLLEY = ["Débutant", "Débutant à Intermédiaire", "Intermédiaire", "Intermédiaire à Avancé", "Avancé", "Avancé à Compétition", "Tous niveaux"];
     const LEVELS_FITNESS = ["debutant", "intermediaire", "avance"];
@@ -2679,7 +2772,7 @@ function ExerciseEditor({ ex, section, onSave, onCancel }) {
                 } }, opt));
         })), vals.length > 0 && React.createElement("div", { style: { fontSize: 11, color: C.muted, marginTop: 3 } }, "\u2713 ", vals.join(", "))));
     };
-    const SelectField = ({ label, value, onChange, options, placeholder }) => (React.createElement("label", { className: "vc-lbl" }, label, React.createElement("select", { value: value, onChange: e => onChange(e.target.value), style: { ...iStyle, cursor: "pointer" } }, placeholder && React.createElement("option", { value: "" }, placeholder), options.map(o => React.createElement("option", { key: o, value: o }, o)))));
+    const SelectField = ({ label, value, onChange, options, placeholder }) => (React.createElement("label", { className: "vc-lbl" }, label, React.createElement("select", { value: value, onChange: e => onChange(e.target.value), style: { ...iStyle, cursor: "pointer" } }, placeholder && React.createElement("option", { value: "" }, placeholder), options.map(o => React.createElement("option", { key: o, value: o }, vcLabel(o))))));
     const Fd = ({ label, children }) => (React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 4 } }, React.createElement("div", { style: { fontSize: 12, color: C.muted } }, label), children));
     const MultilineField = ({ label, value, onChange, placeholder, minHeight }) => {
     const [text, setText] = useState((value || []).join("\n"));
@@ -2708,7 +2801,7 @@ const TagsField = ({ label, value, onChange, placeholder }) => {
         }));
 };
 
-    return (React.createElement("div", { className: "vc-editor" }, React.createElement("div", { className: "vc-editor-head" }, React.createElement("span", { className: "vc-editor-title" }, ex ? "Modifier l'exercice" : "Nouvel exercice"), React.createElement("span", { className: "vc-tag" }, section), React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, onClick: onCancel, "aria-label": "Fermer" }, React.createElement(Icon, { name: "close" }))), React.createElement("div", { className: "vc-editor-body" }, React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "Nom *", React.createElement("input", { value: form.titre || form.name || "", onChange: e => setName(e.target.value), style: iStyle, placeholder: "Nom de l'exercice" })), React.createElement(SelectField, { label: "Cat\u00E9gorie", value: isVolley ? form.categorie : form.category, onChange: v => set(isVolley ? "categorie" : "category", v), options: isVolley ? CATS_VOLLEY : CATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.sous_categorie, onChange: v => set("sous_categorie", v), options: SOUS_CATS_VOLLEY, placeholder: "\u2014 Choisir \u2014" })), (isFitness || isMobilite) && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.subcategory, onChange: v => set("subcategory", v), options: isMobilite ? SUBCATS_MOB : SUBCATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), isSouplesse && (React.createElement(SelectField, { label: "Zone corporelle", value: form.subcategory, onChange: v => set("subcategory", v), options: SUBCATS_FLEXY, placeholder: "\u2014 Choisir \u2014" })), React.createElement(SelectField, { label: "Niveau", value: isVolley ? form.niveau : form.level, onChange: v => { set(isVolley ? "niveau" : "level", v); }, options: isVolley ? LEVELS_VOLLEY : LEVELS_FITNESS })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Format", value: form.format, onChange: v => set("format", v), options: FORMATS_VOLLEY })), isMobilite && (React.createElement(React.Fragment, null, React.createElement(SelectField, { label: "Articulation cible", value: form.joint, onChange: v => set("joint", v), options: JOINTS_LIST, placeholder: "\u2014 Choisir \u2014" }), React.createElement(SelectField, { label: "Type de mobilit\u00E9", value: form.mobility_type, onChange: v => set("mobility_type", v), options: MOB_TYPES, placeholder: "\u2014 Choisir \u2014" }))), isSouplesse && (React.createElement(SelectField, { label: "Type d'\u00E9tirement", value: form.stretching_type, onChange: v => set("stretching_type", v), options: STRETCH_TYPES, placeholder: "\u2014 Choisir \u2014" })), isFitness && (React.createElement(SelectField, { label: "Type (\u00E9tirement)", value: form.type || "", onChange: v => set("type", v), options: TYPES_FITNESS, placeholder: "\u2014 (optionnel) \u2014" }))), isVolley ? (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, "Joueurs id\u00E9al", React.createElement("input", { type: "number", value: form.nombre_joueurs?.ideal || 6, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, ideal: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Min. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.minimum || 4, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, minimum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Max. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.maximum || 12, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, maximum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Dur\u00E9e indicative", React.createElement("input", { value: form.duree_indicative, onChange: e => set("duree_indicative", e.target.value), style: iStyle, placeholder: "ex: 15 \u00E0 20 min" })))) : (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, isSouplesse ? "Tenue (s)" : "Durée (s)", React.createElement("input", { type: "number", value: (isSouplesse ? form.hold_seconds : form.duration_seconds) || "", onChange: e => set(isSouplesse ? "hold_seconds" : "duration_seconds", +e.target.value || null), style: iStyle, placeholder: "ex: 60" })), isFitness && !isSouplesse && (React.createElement(React.Fragment, null, React.createElement("label", { className: "vc-lbl" }, "R\u00E9p\u00E9titions", React.createElement("input", { type: "number", value: form.reps_default || "", onChange: e => set("reps_default", +e.target.value || null), style: iStyle, placeholder: "ex: 12" })), React.createElement("label", { className: "vc-lbl" }, "Distance (m)", React.createElement("input", { type: "number", value: form.distance_meters || "", onChange: e => set("distance_meters", +e.target.value || null), style: iStyle, placeholder: "course" })))), React.createElement("label", { className: "vc-lbl" }, "S\u00E9ries", React.createElement("input", { type: "number", value: form.sets_default || 3, onChange: e => set("sets_default", +e.target.value), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Repos (s)", React.createElement("input", { type: "number", value: form.rest_seconds || 60, onChange: e => set("rest_seconds", +e.target.value), style: iStyle })))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Note sur les joueurs / variantes d'effectif", React.createElement("input", { value: form.nombre_joueurs?.note || "", onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, note: e.target.value }), style: iStyle, placeholder: "ex: Exercice individuel, toute la troupe en simultan\u00E9" }))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Action travaill\u00E9e", React.createElement("input", { value: form.action_travaillee, onChange: e => set("action_travaillee", e.target.value), style: iStyle, placeholder: "ex: Touche haute, manchette, coordination balle" }))), React.createElement("label", { className: "vc-lbl" }, "Description *", React.createElement("textarea", { value: form.description, onChange: e => set("description", e.target.value), style: taStyle, placeholder: "Description compl\u00E8te de l'exercice..." })), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Mise en place", React.createElement("textarea", { value: form.mise_en_place, onChange: e => set("mise_en_place", e.target.value), style: taStyle, placeholder: "Organisation spatiale, disposition des joueurs..." }))), React.createElement(MultilineField, { label: isVolley ? "Points clés (un par ligne)" : "Étapes d'exécution (un par ligne)", value: isVolley ? form.points_cles : form.execution_steps, onChange: v => set(isVolley ? "points_cles" : "execution_steps", v), placeholder: "Une instruction par ligne..." }), React.createElement(CheckGroup, { label: "Mat\u00E9riel / \u00C9quipement", options: equipList, valueKey: isVolley ? "materiel" : "equipment" }), !isVolley && (React.createElement(React.Fragment, null, React.createElement(CheckGroup, { label: "Muscles principaux", options: MUSCLES_LIST, valueKey: isSouplesse ? "muscles_targeted" : "muscles_primary" }), React.createElement(CheckGroup, { label: "Muscles secondaires", options: MUSCLES_LIST, valueKey: "muscles_secondary", secondary: true }))), React.createElement(MultilineField, { label: "Conseils (un par ligne)", value: Array.isArray(form.tips) ? form.tips : [], onChange: v => set("tips", v), minHeight: 55, placeholder: "Un conseil par ligne..." }), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Adaptations par niveau"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, ADAPT_KEYS.map(k => (React.createElement("label", { key: k, style: { display: "flex", gap: 8, alignItems: "flex-start", fontSize: 12, color: C.muted } }, React.createElement("span", { style: { minWidth: 90, paddingTop: 7, fontWeight: 600, textTransform: "capitalize", color: C.text } }, k), React.createElement("input", { value: form.adaptations?.[k] || "", onChange: e => updateAdapt(k, e.target.value), style: { ...iStyle, flex: 1 }, placeholder: `Adaptation pour le niveau ${k}...` }))))))), React.createElement(MultilineField, { label: "Variantes (une par ligne)", value: form.variations, onChange: v => set("variations", v), minHeight: 55, placeholder: "Une variante par ligne..." }), isSouplesse && (React.createElement(MultilineField, { label: "Indicateurs de progr\u00E8s (un par ligne)", value: form.progress_indicators, onChange: v => set("progress_indicators", v), minHeight: 50, placeholder: "ex: Distance entre l'avant-bras et le sol" })), (isSouplesse || (isFitness && form.category === "etirement")) && (React.createElement(CheckGroup, { label: "Meilleur moment", options: bestTimingList, valueKey: "best_timing" })), !isVolley && (React.createElement(MultilineField, { label: "Contre-indications (une par ligne)", value: form.contraindications, onChange: v => set("contraindications", v), minHeight: 50, placeholder: "ex: lombalgie, douleur_genou_anterieure..." })), React.createElement(TagsField, { label: "Tags (s\u00E9par\u00E9s par virgule)", value: form.tags, onChange: v => set("tags", v), placeholder: "ex: gainage, force, sans_materiel, HIIT..." }), isVolley && (React.createElement("div", null, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } }, React.createElement(SectionLabel, null, "\u00C9volutions (", (form.evolutions || []).length, ")"), React.createElement(ClubBtn, { onClick: addEvo, variant: "outline", size: "sm" }, "+ Ajouter une \u00E9volution")), (form.evolutions || []).length === 0 && (React.createElement("div", { style: { fontSize: 12, color: C.hint, background: C.bg, borderRadius: 8, padding: "10px 14px", textAlign: "center" } }, "Aucune \u00E9volution \u2014 cliquez sur \"+ Ajouter\" pour enrichir l'exercice")), (form.evolutions || []).map((ev, i) => (React.createElement("div", { key: i, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8 } }, React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 8, alignItems: "center" } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 12, color: C.rougeText, minWidth: 70 } }, "\u00C9volution ", i + 1), React.createElement("input", { value: ev.titre, onChange: e => updateEvo(i, "titre", e.target.value), style: { ...iStyle, flex: 1 }, placeholder: "Titre de l'\u00E9volution..." }), React.createElement("button", { onClick: () => removeEvo(i), style: { background: "none", border: "none", color: C.rougeText, cursor: "pointer", fontSize: 16, flexShrink: 0 } }, "\u2715")), React.createElement("textarea", { value: ev.description, onChange: e => updateEvo(i, "description", e.target.value), style: { ...taStyle, minHeight: 60 }, placeholder: "Description d\u00E9taill\u00E9e de cette \u00E9volution..." })))))), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Images sch\u00E9matiques"), React.createElement("div", { className: "vc-grid-2" }, [["image_dessus", "Vue du dessus"], ["image_filet", "Vue depuis le filet"]].map(([key, label]) => (React.createElement("div", { key: key, style: { border: `2px dashed ${C.border}`, borderRadius: 8, overflow: "hidden" } }, React.createElement("div", { style: { background: C.bg, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, React.createElement("span", { style: { fontSize: 11, color: C.muted } }, label), React.createElement(ClubBtn, { onClick: () => handleImageUpload(key), variant: "outline", size: "sm" }, "\uD83D\uDCCE Charger")), form[key] ? (React.createElement("div", { style: { position: "relative" } }, React.createElement("img", { src: form[key], alt: label, style: { width: "100%", display: "block", maxHeight: 120, objectFit: "cover" } }), React.createElement("button", { onClick: () => set(key, null), style: { position: "absolute", top: 4, right: 4, background: C.rouge, color: "#fff", border: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", fontSize: 12 } }, "\u2715"))) : (React.createElement("div", { style: { height: 55, display: "flex", alignItems: "center", justifyContent: "center", color: C.hint, fontSize: 12 } }, "Aucune image")))))))), !isVolley && (React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "URL image", React.createElement("input", { value: form.image_url || "", onChange: e => set("image_url", e.target.value || null), style: iStyle, placeholder: "https://..." })), React.createElement("label", { className: "vc-lbl" }, "URL vid\u00E9o", React.createElement("input", { value: form.video_url || "", onChange: e => set("video_url", e.target.value || null), style: iStyle, placeholder: "https://..." })))), React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.text, cursor: "pointer", background: form.is_public ? "var(--tint-green)" : "var(--surface-2)", border: `1px solid ${form.is_public ? "var(--ok)" : "var(--line)"}`, borderRadius: 12, padding: "12px 14px" } }, React.createElement("input", { type: "checkbox", checked: !!form.is_public, onChange: e => set("is_public", e.target.checked) }), React.createElement("span", null, "Rendre disponible pour tous les coachs (lecture seule)")), React.createElement("div", { className: "vc-editor-foot" }, React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: onCancel }, "Annuler"), React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => { if (!(form.titre || form.name || "").trim()) { vcToast("Donnez un nom à l'exercice.", "error"); return; } onSave(form); } }, React.createElement(Icon, { name: "check", size: 16 }), "Enregistrer")))));
+    return (React.createElement("div", { className: "vc-editor" }, React.createElement("div", { className: "vc-editor-head" }, React.createElement("span", { className: "vc-editor-title" }, ex ? "Modifier l'exercice" : "Nouvel exercice"), React.createElement("span", { className: "vc-tag" }, section), React.createElement("button", { type: "button", className: "vc-icon-btn", style: { border: "none" }, onClick: onCancel, "aria-label": "Fermer" }, React.createElement(Icon, { name: "close" }))), React.createElement("div", { className: "vc-editor-body" }, React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "Nom *", React.createElement("input", { value: form.titre || form.name || "", onChange: e => setName(e.target.value), style: iStyle, placeholder: "Nom de l'exercice" })), React.createElement(SelectField, { label: "Cat\u00E9gorie", value: isVolley ? form.categorie : form.category, onChange: v => set(isVolley ? "categorie" : "category", v), options: isVolley ? CATS_VOLLEY : CATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.sous_categorie, onChange: v => set("sous_categorie", v), options: SOUS_CATS_VOLLEY, placeholder: "\u2014 Choisir \u2014" })), (isFitness || isMobilite) && (React.createElement(SelectField, { label: "Sous-cat\u00E9gorie", value: form.subcategory, onChange: v => set("subcategory", v), options: isMobilite ? SUBCATS_MOB : SUBCATS_FITNESS, placeholder: "\u2014 Choisir \u2014" })), isSouplesse && (React.createElement(SelectField, { label: "Zone corporelle", value: form.subcategory, onChange: v => set("subcategory", v), options: SUBCATS_FLEXY, placeholder: "\u2014 Choisir \u2014" })), React.createElement(SelectField, { label: "Niveau", value: isVolley ? form.niveau : form.level, onChange: v => { set(isVolley ? "niveau" : "level", v); }, options: isVolley ? LEVELS_VOLLEY : LEVELS_FITNESS })), React.createElement("div", { className: "vc-grid-2" }, isVolley && (React.createElement(SelectField, { label: "Format", value: form.format, onChange: v => set("format", v), options: FORMATS_VOLLEY })), isMobilite && (React.createElement(React.Fragment, null, React.createElement(SelectField, { label: "Articulation cible", value: form.joint, onChange: v => set("joint", v), options: JOINTS_LIST, placeholder: "\u2014 Choisir \u2014" }), React.createElement(SelectField, { label: "Type de mobilit\u00E9", value: form.mobility_type, onChange: v => set("mobility_type", v), options: MOB_TYPES, placeholder: "\u2014 Choisir \u2014" }))), isSouplesse && (React.createElement(SelectField, { label: "Type d'\u00E9tirement", value: form.stretching_type, onChange: v => set("stretching_type", v), options: STRETCH_TYPES, placeholder: "\u2014 Choisir \u2014" })), isFitness && (React.createElement(SelectField, { label: "Type (\u00E9tirement)", value: form.type || "", onChange: v => set("type", v), options: TYPES_FITNESS, placeholder: "\u2014 (optionnel) \u2014" }))), isVolley ? (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, "Joueurs id\u00E9al", React.createElement("input", { type: "number", value: form.nombre_joueurs?.ideal || 6, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, ideal: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Min. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.minimum || 4, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, minimum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Max. joueurs", React.createElement("input", { type: "number", value: form.nombre_joueurs?.maximum || 12, onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, maximum: +e.target.value }), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Dur\u00E9e indicative", React.createElement("input", { value: form.duree_indicative, onChange: e => set("duree_indicative", e.target.value), style: iStyle, placeholder: "ex: 15 \u00E0 20 min" })))) : (React.createElement("div", { className: "vc-grid-4" }, React.createElement("label", { className: "vc-lbl" }, isSouplesse ? "Tenue (s)" : "Durée (s)", React.createElement("input", { type: "number", value: (isSouplesse ? form.hold_seconds : form.duration_seconds) || "", onChange: e => set(isSouplesse ? "hold_seconds" : "duration_seconds", +e.target.value || null), style: iStyle, placeholder: "ex: 60" })), isFitness && !isSouplesse && (React.createElement(React.Fragment, null, React.createElement("label", { className: "vc-lbl" }, "R\u00E9p\u00E9titions", React.createElement("input", { type: "number", value: form.reps_default || "", onChange: e => set("reps_default", +e.target.value || null), style: iStyle, placeholder: "ex: 12" })), React.createElement("label", { className: "vc-lbl" }, "Distance (m)", React.createElement("input", { type: "number", value: form.distance_meters || "", onChange: e => set("distance_meters", +e.target.value || null), style: iStyle, placeholder: "course" })))), React.createElement("label", { className: "vc-lbl" }, "S\u00E9ries", React.createElement("input", { type: "number", value: form.sets_default || 3, onChange: e => set("sets_default", +e.target.value), style: iStyle })), React.createElement("label", { className: "vc-lbl" }, "Repos (s)", React.createElement("input", { type: "number", value: form.rest_seconds || 60, onChange: e => set("rest_seconds", +e.target.value), style: iStyle })))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Note sur les joueurs / variantes d'effectif", React.createElement("input", { value: form.nombre_joueurs?.note || "", onChange: e => set("nombre_joueurs", { ...form.nombre_joueurs, note: e.target.value }), style: iStyle, placeholder: "ex: Exercice individuel, toute la troupe en simultan\u00E9" }))), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Action travaill\u00E9e", React.createElement("input", { value: form.action_travaillee, onChange: e => set("action_travaillee", e.target.value), style: iStyle, placeholder: "ex: Touche haute, manchette, coordination balle" }))), React.createElement("label", { className: "vc-lbl" }, "Description *", React.createElement("textarea", { value: form.description, onChange: e => set("description", e.target.value), style: taStyle, placeholder: "Description compl\u00E8te de l'exercice..." })), React.createElement("label", { className: "vc-lbl" }, "Consigne courte (lue par l'annonce vocale, 15 mots maximum)", React.createElement("input", { value: form.consigne_courte || "", maxLength: 120, onChange: e => set("consigne_courte", e.target.value), style: iStyle, placeholder: "ex : Bras tendus, plan des avant-bras vers la cible, appel « Mienne ! »" })), isVolley && (React.createElement("label", { className: "vc-lbl" }, "Mise en place", React.createElement("textarea", { value: form.mise_en_place, onChange: e => set("mise_en_place", e.target.value), style: taStyle, placeholder: "Organisation spatiale, disposition des joueurs..." }))), React.createElement(MultilineField, { label: isVolley ? "Points clés (un par ligne)" : "Étapes d'exécution (un par ligne)", value: isVolley ? form.points_cles : form.execution_steps, onChange: v => set(isVolley ? "points_cles" : "execution_steps", v), placeholder: "Une instruction par ligne..." }), React.createElement(CheckGroup, { label: "Mat\u00E9riel / \u00C9quipement", options: equipList, valueKey: isVolley ? "materiel" : "equipment" }), !isVolley && (React.createElement(React.Fragment, null, React.createElement(CheckGroup, { label: "Muscles principaux", options: MUSCLES_LIST, valueKey: isSouplesse ? "muscles_targeted" : "muscles_primary" }), React.createElement(CheckGroup, { label: "Muscles secondaires", options: MUSCLES_LIST, valueKey: "muscles_secondary", secondary: true }))), React.createElement(MultilineField, { label: "Conseils (un par ligne)", value: Array.isArray(form.tips) ? form.tips : [], onChange: v => set("tips", v), minHeight: 55, placeholder: "Un conseil par ligne..." }), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Adaptations par niveau"), React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, ADAPT_KEYS.map(k => (React.createElement("label", { key: k, style: { display: "flex", gap: 8, alignItems: "flex-start", fontSize: 12, color: C.muted } }, React.createElement("span", { style: { minWidth: 90, paddingTop: 7, fontWeight: 600, textTransform: "capitalize", color: C.text } }, k), React.createElement("input", { value: form.adaptations?.[k] || "", onChange: e => updateAdapt(k, e.target.value), style: { ...iStyle, flex: 1 }, placeholder: `Adaptation pour le niveau ${k}...` }))))))), React.createElement(MultilineField, { label: "Variantes (une par ligne)", value: form.variations, onChange: v => set("variations", v), minHeight: 55, placeholder: "Une variante par ligne..." }), isSouplesse && (React.createElement(MultilineField, { label: "Indicateurs de progr\u00E8s (un par ligne)", value: form.progress_indicators, onChange: v => set("progress_indicators", v), minHeight: 50, placeholder: "ex: Distance entre l'avant-bras et le sol" })), (isSouplesse || (isFitness && form.category === "etirement")) && (React.createElement(CheckGroup, { label: "Meilleur moment", options: bestTimingList, valueKey: "best_timing" })), !isVolley && (React.createElement(MultilineField, { label: "Contre-indications (une par ligne)", value: form.contraindications, onChange: v => set("contraindications", v), minHeight: 50, placeholder: "ex: lombalgie, douleur_genou_anterieure..." })), React.createElement(TagsField, { label: "Tags (s\u00E9par\u00E9s par virgule)", value: form.tags, onChange: v => set("tags", v), placeholder: "ex: gainage, force, sans_materiel, HIIT..." }), isVolley && (React.createElement("div", null, React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 } }, React.createElement(SectionLabel, null, "\u00C9volutions (", (form.evolutions || []).length, ")"), React.createElement(ClubBtn, { onClick: addEvo, variant: "outline", size: "sm" }, "+ Ajouter une \u00E9volution")), (form.evolutions || []).length === 0 && (React.createElement("div", { style: { fontSize: 12, color: C.hint, background: C.bg, borderRadius: 8, padding: "10px 14px", textAlign: "center" } }, "Aucune \u00E9volution \u2014 cliquez sur \"+ Ajouter\" pour enrichir l'exercice")), (form.evolutions || []).map((ev, i) => (React.createElement("div", { key: i, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8 } }, React.createElement("div", { style: { display: "flex", gap: 8, marginBottom: 8, alignItems: "center" } }, React.createElement("span", { style: { fontWeight: 700, fontSize: 12, color: C.rougeText, minWidth: 70 } }, "\u00C9volution ", i + 1), React.createElement("input", { value: ev.titre, onChange: e => updateEvo(i, "titre", e.target.value), style: { ...iStyle, flex: 1 }, placeholder: "Titre de l'\u00E9volution..." }), React.createElement("button", { onClick: () => removeEvo(i), style: { background: "none", border: "none", color: C.rougeText, cursor: "pointer", fontSize: 16, flexShrink: 0 } }, "\u2715")), React.createElement("textarea", { value: ev.description, onChange: e => updateEvo(i, "description", e.target.value), style: { ...taStyle, minHeight: 60 }, placeholder: "Description d\u00E9taill\u00E9e de cette \u00E9volution..." })))))), isVolley && (React.createElement("div", null, React.createElement(SectionLabel, null, "Images sch\u00E9matiques"), React.createElement("div", { className: "vc-grid-2" }, [["image_dessus", "Vue du dessus"], ["image_filet", "Vue depuis le filet"]].map(([key, label]) => (React.createElement("div", { key: key, style: { border: `2px dashed ${C.border}`, borderRadius: 8, overflow: "hidden" } }, React.createElement("div", { style: { background: C.bg, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" } }, React.createElement("span", { style: { fontSize: 11, color: C.muted } }, label), React.createElement(ClubBtn, { onClick: () => handleImageUpload(key), variant: "outline", size: "sm" }, "\uD83D\uDCCE Charger")), form[key] ? (React.createElement("div", { style: { position: "relative" } }, React.createElement("img", { src: form[key], alt: label, style: { width: "100%", display: "block", maxHeight: 120, objectFit: "cover" } }), React.createElement("button", { onClick: () => set(key, null), style: { position: "absolute", top: 4, right: 4, background: C.rouge, color: "#fff", border: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", fontSize: 12 } }, "\u2715"))) : (React.createElement("div", { style: { height: 55, display: "flex", alignItems: "center", justifyContent: "center", color: C.hint, fontSize: 12 } }, "Aucune image")))))))), !isVolley && (React.createElement("div", { className: "vc-grid-2" }, React.createElement("label", { className: "vc-lbl" }, "URL image", React.createElement("input", { value: form.image_url || "", onChange: e => set("image_url", e.target.value || null), style: iStyle, placeholder: "https://..." })), React.createElement("label", { className: "vc-lbl" }, "URL vid\u00E9o", React.createElement("input", { value: form.video_url || "", onChange: e => set("video_url", e.target.value || null), style: iStyle, placeholder: "https://..." })))), React.createElement("label", { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: C.text, cursor: "pointer", background: form.is_public ? "var(--tint-green)" : "var(--surface-2)", border: `1px solid ${form.is_public ? "var(--ok)" : "var(--line)"}`, borderRadius: 12, padding: "12px 14px" } }, React.createElement("input", { type: "checkbox", checked: !!form.is_public, onChange: e => set("is_public", e.target.checked) }), React.createElement("span", null, "Rendre disponible pour tous les coachs (lecture seule)")), React.createElement("div", { className: "vc-editor-foot" }, React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: onCancel }, "Annuler"), React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--lg", onClick: () => { if (!(form.titre || form.name || "").trim()) { vcToast("Donnez un nom à l'exercice.", "error"); return; } onSave(form); } }, React.createElement(Icon, { name: "check", size: 16 }), "Enregistrer")))));
 }
 // ── SessionRow ──
 function PauseRow({ item, idx, total, onUpdate, onRemove, onMoveUp, onMoveDown }) {
@@ -2809,7 +2902,7 @@ function SessionSummary({ items }) {
         { l: "Exercices", v: (items || []).filter(function(e) { return e._type !== "pause"; }).length },
         { l: "Durée ≈", v: `${Math.ceil(total / 60)} min` },
         { l: "Séries", v: totalSets },
-    ].map((s) => (React.createElement("div", { key: s.l, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 12px", textAlign: "center", flex: 1, minWidth: 65 } }, React.createElement("div", { style: { fontSize: 10, color: C.hint, marginBottom: 2 } }, s.l), React.createElement("div", { style: { fontSize: 14, fontWeight: 700, color: C.text } }, s.v)))), muscles.length > 0 && (React.createElement("div", { style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 12px", flex: 2, minWidth: 130 } }, React.createElement("div", { style: { fontSize: 10, color: C.hint, marginBottom: 4 } }, "Muscles cibl\u00E9s"), React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 3 } }, muscles.slice(0, 8).map((m) => React.createElement("span", { key: m, style: { fontSize: 10, background: C.rougeLight, color: C.rougeText, borderRadius: 4, padding: "1px 5px" } }, m)), muscles.length > 8 && React.createElement("span", { style: { fontSize: 10, color: C.hint } }, "+", muscles.length - 8))))));
+    ].map((s) => (React.createElement("div", { key: s.l, style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 12px", textAlign: "center", flex: 1, minWidth: 65 } }, React.createElement("div", { style: { fontSize: 10, color: C.hint, marginBottom: 2 } }, s.l), React.createElement("div", { style: { fontSize: 14, fontWeight: 700, color: C.text } }, s.v)))), muscles.length > 0 && (React.createElement("div", { style: { background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: "7px 12px", flex: 2, minWidth: 130 } }, React.createElement("div", { style: { fontSize: 10, color: C.hint, marginBottom: 4 } }, "Muscles cibl\u00E9s"), React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 3 } }, muscles.slice(0, 8).map((m) => React.createElement("span", { key: m, style: { fontSize: 10, background: C.rougeLight, color: C.rougeText, borderRadius: 4, padding: "1px 5px" } }, vcLabel(m))), muscles.length > 8 && React.createElement("span", { style: { fontSize: 10, color: C.hint } }, "+", muscles.length - 8))))));
 }
 // ─────────────────────────── GUIDED MODE ───────────────────────────
 
@@ -2822,7 +2915,7 @@ function SessionSummary({ items }) {
 function SessionPreviewModal({ session, onClose, onShowExercise, onLaunch }) {
     var items = session.items || [];
     var exercises = items.filter(function(it) { return it._type !== 'pause'; });
-    var SCOLS = { volley: '#C8102E', fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316' };
+    var SCOLS = { volley: '#C8102E', fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316', cross: '#0EA5E9', prevention: '#14B8A6' };
     var sc = SCOLS[session.section] || '#C8102E';
     return React.createElement('div', { onClick: onClose, style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 2000, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: 0 } },
         React.createElement('div', { onClick: function(e) { e.stopPropagation(); }, style: { background: C.surface, borderRadius: '16px 16px 0 0', width: '100%', maxWidth: 640, maxHeight: '85vh', display: 'flex', flexDirection: 'column', boxShadow: '0 -8px 40px rgba(0,0,0,0.18)' } },
@@ -3542,7 +3635,7 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
     const [detailEx, setDetailEx] = useState(null);
     const [shareProgModal, setShareProgModal] = useState(null); // programme dont la modale de partage est ouverte
     const iStyle = { padding: '7px 10px', border: `1px solid ${C.border}`, borderRadius: 7, fontSize: 13, width: '100%' };
-    const sectColor = s => ({ volley: C.rouge, fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316' }[s] || C.rouge);
+    const sectColor = s => ({ volley: C.rouge, fitness: '#7C3AED', mobilite: '#3B82F6', souplesse: '#10B981', pliometrie: '#F97316', cross: '#0EA5E9', prevention: '#14B8A6' }[s] || C.rouge);
     const openNewTeam = () => { setForm({ id: crypto.randomUUID(), name: '', sport: 'volley', players: [], objectives: [] }); setShowForm(true); setEditTeam(null); };
     const openEditTeam = t => { setForm({ ...t }); setEditTeam(t.id); setShowForm(true); };
     const saveTeam = () => { onSave(form); setShowForm(false); setEditTeam(null); };
@@ -3678,10 +3771,10 @@ function TeamsPanel({ teams, history, programs, sessions, onSave, onSaveProgram,
 function PlayerSessExPicker({ section, onAdd }) {
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
-    const dbKey = { volley: 'VOLLEY_DB_RAW', fitness: 'FITNESS_DB_RAW', mobilite: 'MOBILITY_DB_RAW', souplesse: 'FLEXY_DB_RAW', pliometrie: 'PLYO_DB_RAW' }[section] || 'FITNESS_DB_RAW';
+    const dbKey = { volley: 'VOLLEY_DB_RAW', fitness: 'FITNESS_DB_RAW', mobilite: 'MOBILITY_DB_RAW', souplesse: 'FLEXY_DB_RAW', pliometrie: 'PLYO_DB_RAW', cross: 'CROSS_DB_RAW', prevention: 'PREVENTION_DB_RAW' }[section] || 'FITNESS_DB_RAW';
     // Lecture directe des variables globales (peuplées par loadCatalogFromSupabase),
     // remplace l'ancien accès via window._SPORT_DB.
-    const dbMap = { VOLLEY_DB_RAW, FITNESS_DB_RAW, MOBILITY_DB_RAW, FLEXY_DB_RAW, PLYO_DB_RAW };
+    const dbMap = { VOLLEY_DB_RAW, FITNESS_DB_RAW, MOBILITY_DB_RAW, FLEXY_DB_RAW, PLYO_DB_RAW, CROSS_DB_RAW, PREVENTION_DB_RAW };
     const allExercises = dbMap[dbKey] || [];
     const filtered = search.trim().length >= 2
         ? allExercises.filter(ex => (ex.name || ex.titre || '').toLowerCase().includes(search.toLowerCase())).slice(0, 10)
@@ -3706,7 +3799,7 @@ function PrintModal({ session, onClose }) {
     const toggle = k => setOpts(o => ({ ...o, [k]: !o[k] }));
     const doPrint = () => {
         const items = session.items || [];
-        const sectionLabel = { volley: '🏐 Volley', fitness: '🏋️ Fitness', mobilite: '🦴 Mobilité', souplesse: '🧘 Souplesse' }[session.section] || session.section;
+        const sectionLabel = { volley: '🏐 Volley', fitness: '🏋️ Fitness', mobilite: '🦴 Mobilité', souplesse: '🧘 Souplesse', pliometrie: '⚡ Pliométrie', cross: '🌐 Cross-training', prevention: '🛡️ Prévention' }[session.section] || session.section;
         const exRows = items.map((item, i) => {
             if (item._type === 'pause') {
                 const pauseDur = +(item.pause_duration ?? 60);
@@ -7436,6 +7529,7 @@ function App({ session }) {
         mobilite: MOBILITY_DB_RAW,
         souplesse: FLEXY_DB_RAW,
         cross: CROSS_DB_RAW,
+        prevention: PREVENTION_DB_RAW,
     };
     const currentDb = DB[activeSection] || [];
     const curSession = sessions.find((s) => s.id === currentSessionId);
@@ -8352,6 +8446,7 @@ Cela remplacera toutes vos données actuelles.`)) {
     // Section info
     const SECTIONS = [
         { k: "volley", l: "🏐 Volley", em: "🏐", color: C.rougeText },
+        { k: "prevention", l: "🛡️ Prévention", em: "🛡️", color: "#14B8A6" },
         { k: "fitness", l: "🏋️ Fitness", em: "🏋️", color: "var(--violet-text)" },
         { k: "pliometrie", l: "⚡ Pliométrie", em: "⚡", color: "#F97316" },
         { k: "mobilite", l: "🦴 Mobilité", em: "🦴", color: "#3B82F6" },
