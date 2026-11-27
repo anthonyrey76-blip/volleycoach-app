@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.4.4</title>
+<title>VolleyCoach Club v3.4.5</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -692,7 +692,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.4.4";
+const APP_VERSION = "3.4.5";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -739,6 +739,8 @@ const ALL_DB_BY_ID = {};
 
 // Correspondance section (app) <-> section (table catalog_exercises), et
 // tableau cible à peupler pour chacune.
+// Pendant la refonte : /dev/ lit le nouveau catalogue, la production garde l'ancien jusqu'à la bascule.
+const CATALOG_TABLE = VC_ENV === "dev" ? "catalog_exercises_v2" : "catalog_exercises";
 const CATALOG_SECTION_TARGETS = {
     volley: (rows) => { VOLLEY_DB_RAW = rows; },
     fitness: (rows) => { FITNESS_DB_RAW = rows; },
@@ -1068,7 +1070,7 @@ const OfflineSyncManager = (() => {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 5000);
             const { error } = await supabaseClient
-                .from("catalog_exercises")
+                .from(CATALOG_TABLE)
                 .select("id", { head: true, count: "exact" })
                 .limit(1)
                 .abortSignal(controller.signal);
@@ -1119,7 +1121,7 @@ async function loadCatalogFromSupabase() {
 
     try {
         const { data: freshnessRows, error: freshnessErr } = await supabaseClient
-            .from("catalog_exercises")
+            .from(CATALOG_TABLE)
             .select("updated_at")
             .order("updated_at", { ascending: false })
             .limit(1);
@@ -1132,7 +1134,7 @@ async function loadCatalogFromSupabase() {
         }
 
         const { data: rows, error: fetchErr } = await supabaseClient
-            .from("catalog_exercises")
+            .from(CATALOG_TABLE)
             .select("section, data");
         if (fetchErr) throw fetchErr;
 
