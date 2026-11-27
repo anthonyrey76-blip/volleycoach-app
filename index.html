@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.4.2</title>
+<title>VolleyCoach Club v3.4.3</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -634,6 +634,26 @@ button{color:inherit}
 .vc-run-list.is-compact .vc-run-item{padding:12px}
 .vc-run-end{padding:14px;border-radius:16px;border:1px dashed #2A2A30;color:#A1A1AA;text-align:center;font-size:13px}
 @media (max-width:760px){.vc-run-upnext{display:none}}
+/* ── 3.4.3 : Lancer sur téléphone — tout tient sur un écran, sans défilement ── */
+@media (max-width:760px){
+  .vc-run-body.is-compact .vc-run-timer{flex:1 1 auto;min-height:0;max-height:none;padding:4px 12px 2px;border-bottom:0;
+    --vc-ring-max:max(96px, calc(100vh - 575px));--vc-ring-max:max(96px, calc(100dvh - 575px))}
+  .vc-run-body.is-compact .vc-run-list{flex:none;overflow:hidden;padding:6px 12px 8px;gap:6px;border-top:1px solid #1E1E22}
+  .vc-run-list.is-compact .vc-run-item{padding:8px 10px}
+  .vc-run-list.is-compact .vc-run-item .vc-run-ex{-webkit-line-clamp:1}
+  .vc-run-list.is-compact .vc-run-item.is-cur .vc-run-ex{-webkit-line-clamp:1}
+  .vc-run-list.is-compact .vc-run-check{width:34px;height:34px;min-width:34px;min-height:34px;flex:none}
+  .vc-run-list.is-compact .vc-run-tag{font-size:9px;padding:1px 5px;margin-bottom:2px}
+  .vc-run-body.is-expanded .vc-run-timer{display:none}
+  .vc-run-foot{padding:8px 12px calc(8px + env(safe-area-inset-bottom))}
+  .vc-run-foot .vc-btn--lg{min-height:48px;padding-top:10px;padding-bottom:10px}
+}
+@media (max-width:760px) and (max-height:700px){
+  .vc-run-body.is-compact .vc-run-timer{--vc-ring-max:max(96px, calc(100vh - 540px));--vc-ring-max:max(96px, calc(100dvh - 540px))}
+  .vc-run-list.is-compact .vc-run-item.is-upnext .vc-run-chips{display:none}
+}
+.vc-run-icon.vc-run-icon--more{margin-left:auto;font-size:15px;letter-spacing:1px;color:#F0A500;font-weight:800}
+.vc-run-icon.vc-run-icon--more[aria-expanded="true"]{background:#F0A500;color:#141006}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -669,7 +689,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.4.2";
+const APP_VERSION = "3.4.3";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -5183,14 +5203,14 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
             isRepsWait
                 ? React.createElement('button', {
                     onClick: completeRepsSet,
-                    style: { width: big ? 'min(' + svgSize + 'px, 44vh, 65vw)' : svgSize, height: big ? 'min(' + svgSize + 'px, 44vh, 65vw)' : svgSize, aspectRatio: '1', borderRadius: '50%', flexShrink: 1, border: (big ? 5 : 3) + 'px solid ' + C.rouge,
-                        background: C.rouge + '20', color: C.rougeText, fontWeight: 800, fontSize: big ? Math.round(20*scale) : 11, cursor: 'pointer',
+                    style: { width: big ? 'min(' + svgSize + 'px, var(--vc-ring-max, 44vh), 65vw)' : svgSize, height: big ? 'min(' + svgSize + 'px, var(--vc-ring-max, 44vh), 65vw)' : svgSize, aspectRatio: '1', borderRadius: '50%', flexShrink: 1, border: (big ? 5 : 3) + 'px solid ' + C.rouge,
+                        background: C.rouge + '20', color: C.rougeText, fontWeight: 800, fontSize: big ? 'min(' + Math.round(20*scale) + 'px, calc(var(--vc-ring-max, 44vh) * 0.14))' : 11, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', lineHeight: 1.2 }
                 }, item.session_reps
                     ? (big ? '✓\n' + item.session_reps + ' r\u00E9p.\nfaites' : '✓ ' + item.session_reps + '\nr\u00E9p.')
                     : (big ? '✓\nSérie faite' : '✓ Série\nfaite'))
                 : React.createElement('div', { style: big
-                    ? { position: 'relative', width: 'min(' + svgSize + 'px, 44vh, 65vw)', height: 'min(' + svgSize + 'px, 44vh, 65vw)', aspectRatio: '1', flexShrink: 1 }
+                    ? { position: 'relative', width: 'min(' + svgSize + 'px, var(--vc-ring-max, 44vh), 65vw)', height: 'min(' + svgSize + 'px, var(--vc-ring-max, 44vh), 65vw)', aspectRatio: '1', flexShrink: 1 }
                     : { position: 'relative', width: svgSize, height: svgSize, flexShrink: 0 } },
                     React.createElement('svg', { viewBox: '0 0 ' + svgSize + ' ' + svgSize, style: { transform: 'rotate(-90deg)', width: '100%', height: '100%', display: 'block' } },
                         React.createElement('circle', { cx: String(svgSize/2), cy: String(svgSize/2), r: R, fill: 'none', stroke: '#1E1E22', strokeWidth: big ? Math.round(10*scale) : 5 }),
@@ -5199,8 +5219,8 @@ function ItemTimer({ item, idx, items, onDone, onClose, compact, size }) {
                             style: { transition: 'stroke-dashoffset 0.9s linear' } })),
                     React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
                         isDone
-                            ? React.createElement('span', { style: { fontSize: big ? Math.round(44*scale) : 22, color: '#10B981' } }, '✓')
-                            : React.createElement('span', { style: { fontSize: big ? Math.round(46*scale) : 16, fontWeight: 700, color: pc, fontFamily: 'var(--font-display)', fontVariantNumeric: 'tabular-nums' } }, fmtTime(tLeft)))),
+                            ? React.createElement('span', { style: { fontSize: big ? 'min(' + Math.round(44*scale) + 'px, calc(var(--vc-ring-max, 44vh) * 0.3))' : 22, color: '#10B981' } }, '✓')
+                            : React.createElement('span', { style: { fontSize: big ? 'min(' + Math.round(46*scale) + 'px, calc(var(--vc-ring-max, 44vh) * 0.3))' : 16, fontWeight: 700, color: pc, fontFamily: 'var(--font-display)', fontVariantNumeric: 'tabular-nums' } }, fmtTime(tLeft)))),
             !isDone && !isPause && big && React.createElement('div', { style: { width: '100%', textAlign: 'center', flexShrink: 0 } },
                 isRepsMode && item.session_reps && React.createElement('div', { style: { fontSize: Math.round(14*scale), color: '#888', marginBottom: Math.round(6*scale) } }, item.session_reps + ' r\u00E9p. par s\u00E9rie'),
                 !isRepsMode && !explicitTimeMode && item.session_reps && React.createElement('div', { style: { fontSize: Math.round(14*scale), color: '#888', marginBottom: Math.round(6*scale) } }, item.session_reps + ' r\u00E9p. \u00E0 r\u00E9aliser'),
@@ -6531,17 +6551,18 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
                         ? React.createElement('button', { type: 'button', className: 'vc-run-status is-live', onClick: function() { setShowElapsed(function(v) { return !v; }); }, title: showElapsed ? 'Voir le statut' : 'Voir le temps écoulé' }, showElapsed ? fmtTime(elapsedSec) : 'EN COURS')
                         : React.createElement('span', { className: 'vc-run-status' }, 'EN ATTENTE'),
                     doneCount + '/' + totalCount + ' réalisé' + (doneCount > 1 ? 's' : ''))),
+            isMobile && sessionStarted && React.createElement('button', { type: 'button', className: 'vc-run-icon vc-run-icon--more', 'aria-expanded': !runCompact, 'aria-label': runCompact ? 'Voir toute la séance' : 'Revenir à l\'exercice en cours', onClick: function() { setRunExpanded(function(v) { return !v; }); } }, runCompact ? '•••' : React.createElement(Icon, { name: 'close', size: 18 })),
             !isMobile && mainAction),
         React.createElement('div', { className: 'vc-run-progress', 'aria-hidden': 'true' },
             items.map(function(it, k) {
                 var st = checkedIds.has(it.id + k) ? 'done' : (k === (activeTimerIdx !== null ? activeTimerIdx : nextIdx) ? 'cur' : '');
                 return React.createElement('span', { key: k, className: 'vc-run-seg ' + st + (it._type === 'pause' ? ' is-pause' : '') });
             })),
-        React.createElement('div', { className: 'vc-run-body' + (activeTimerIdx !== null ? ' has-timer' : '') },
+        React.createElement('div', { className: 'vc-run-body' + (activeTimerIdx !== null ? ' has-timer' : '') + (isMobile && sessionStarted ? (runCompact ? ' is-compact' : ' is-expanded') : '') },
             activeTimerIdx !== null && items[activeTimerIdx] && React.createElement('div', { className: 'vc-run-timer' },
                 React.createElement(ItemTimer, {
                     key: 'big-it-' + activeTimerIdx, item: items[activeTimerIdx], idx: activeTimerIdx, items: items, compact: false,
-                    size: isMobile ? 168 : 280,
+                    size: isMobile ? 230 : 280,
                     onDone: function() { markDoneAndAdvance(activeTimerIdx); },
                     onClose: function() { setActiveTimerIdx(null); }
                 }),
@@ -6597,7 +6618,7 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
             }),
             runCompact && curIdx >= 0 && upNextIdx < 0 && React.createElement('div', { className: 'vc-run-end' }, 'Dernier exercice de la séance'),
             runCompact && curIdx < 0 && React.createElement('div', { className: 'vc-run-end' }, 'Tous les exercices sont faits'),
-            isMobile && sessionStarted && React.createElement('button', { type: 'button', className: 'vc-run-more', 'aria-expanded': !runCompact, onClick: function() { setRunExpanded(function(v) { return !v; }); } },
+            isMobile && sessionStarted && !runCompact && React.createElement('button', { type: 'button', className: 'vc-run-more', 'aria-expanded': !runCompact, onClick: function() { setRunExpanded(function(v) { return !v; }); } },
                 runCompact
                     ? [React.createElement('span', { key: 'd', className: 'vc-run-dots', 'aria-hidden': 'true' }, '•••'), 'Voir toute la séance (' + items.length + ')']
                     : [React.createElement(Icon, { key: 'i', name: 'close', size: 14 }), 'Réduire']))),
