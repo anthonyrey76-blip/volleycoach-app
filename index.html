@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.6.1</title>
+<title>VolleyCoach Club v3.7.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -858,6 +858,85 @@ button{color:inherit}
 }
 .vc-tt-face.is-flat{aspect-ratio:auto;padding:28px 0 12px}
 .vc-tt-full .vc-tt-face.is-flat{padding:0}
+
+/* ── Lot 5 (3.7.0) : équipes et membres ── */
+.vc-teams,.vc-team{display:flex;flex-direction:column;gap:12px;max-width:980px}
+.vc-team-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.vc-team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.vc-team-card{display:flex;align-items:center;gap:14px;padding:14px 16px;text-align:left;font:inherit;color:inherit;cursor:pointer;min-height:84px;width:100%}
+.vc-team-card:hover{border-color:var(--line-strong)}
+.vc-team-ava{width:46px;height:46px;flex:0 0 46px;border-radius:13px;color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;letter-spacing:.5px}
+.vc-team-ava--lg{width:56px;height:56px;flex-basis:56px;border-radius:16px;font-size:18px}
+.vc-team-stats{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;font-size:12px;color:var(--muted)}
+.vc-team-stats span{display:inline-flex;align-items:center;gap:4px}
+.vc-team-stats .is-ok{color:var(--ok-text)}
+.vc-back.vc-back--show{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;height:40px;margin:0 0 -6px -8px;padding:0 8px;border:none;border-radius:10px;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.vc-back.vc-back--show:hover{color:var(--text);background:var(--surface-2)}
+.vc-team-head{display:flex;align-items:center;gap:14px}
+.vc-team-titles{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.vc-team-titles h1{margin:0;font-family:var(--font-display,inherit);font-size:24px;font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.vc-team-titles span{font-size:13px;color:var(--muted)}
+.vc-tabbar{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin:0 -2px}
+.vc-tabbar::-webkit-scrollbar{display:none}
+.vc-tabbar button{flex:none;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px;border:none;background:none;color:var(--muted);font:inherit;font-size:14px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.vc-tabbar button.is-active{color:var(--text);font-weight:600;border-bottom-color:var(--brand)}
+.vc-team-body{display:flex;flex-direction:column;gap:10px}
+.vc-team-sec{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.vc-team-sec h3{display:flex;align-items:center;gap:8px;margin:0;font-size:14px;font-weight:600}
+.vc-team-sec h3>span:not(.vc-ava){font-size:12px;font-weight:500;color:var(--hint)}
+.vc-team-sec h3 em{font-style:normal;font-size:12px;font-weight:500;color:var(--muted)}
+/* Lignes de liste */
+.vc-rows{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vc-rows.vc-card{padding:2px 0}
+.vc-rows>li{border-top:1px solid var(--line)}
+.vc-rows>li:first-child{border-top:none}
+.vc-row{display:flex;align-items:center;gap:12px;padding:10px 2px;min-height:56px}
+.vc-rows.vc-card .vc-row{padding:10px 14px}
+.vc-row--btn{width:100%;border:none;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.vc-row--btn:hover{background:var(--surface-2)}
+.vc-row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.vc-row-title{font-size:14.5px;font-weight:600;overflow-wrap:anywhere}
+.vc-row-sub{font-size:12.5px;color:var(--muted);line-height:1.4}
+.vc-row-note{font-size:12.5px;color:var(--hint);font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vc-row-you{margin-left:6px;font-size:11px;font-weight:600;color:var(--muted);background:var(--surface-3);border-radius:999px;padding:1px 7px}
+.vc-row-actions{display:flex;align-items:center;gap:6px;flex:none}
+.vc-row.is-pending .vc-row-title{color:var(--muted)}
+.vc-ava{width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:var(--surface-3);color:var(--text);font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.vc-ava--sm{width:28px;height:28px;flex-basis:28px;font-size:11px}
+.vc-ava--ghost{background:none;border:1.5px dashed var(--line-strong);color:var(--muted)}
+.vc-select--sm{height:36px;font-size:13px;padding-right:28px}
+/* Objectifs */
+.vc-obj-prog{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted)}
+.vc-obj-check{width:26px;height:26px;flex:0 0 26px;border-radius:8px;border:2px solid var(--line-strong);background:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.vc-obj.is-done .vc-obj-check{background:var(--ok);border-color:var(--ok)}
+.vc-obj.is-done .vc-row-title{color:var(--muted);text-decoration:line-through;font-weight:500}
+.vc-obj{min-height:48px}
+.vc-obj-add{display:flex;gap:8px}
+.vc-obj-add .vc-field{flex:1}
+/* Formulaires */
+.vc-sheet--narrow{max-width:520px}
+.vc-fl{display:flex;flex-direction:column;gap:8px}
+.vc-fl>span{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.vc-fl-hint{margin:0;font-size:13px;color:var(--muted);line-height:1.45}
+.vc-field--area{height:auto;min-height:84px;padding:10px 12px;resize:vertical;line-height:1.45}
+.vc-danger-text{color:var(--brand-text)}
+.vc-note-box{padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:13.5px;color:var(--muted);line-height:1.45}
+.vc-members{display:flex;flex-direction:column;gap:10px}
+.vc-rows--sugg{border:1px solid var(--line);border-radius:12px;padding:0 10px}
+.vc-psess-items{display:flex;flex-direction:column;gap:8px}
+.vc-exsearch{position:relative;display:flex;flex-direction:column;gap:6px}
+.vc-exsearch-list{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.vc-exsearch-item{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:8px 12px;border:none;border-top:1px solid var(--line);background:none;color:inherit;font:inherit;font-size:14px;text-align:left;cursor:pointer}
+.vc-exsearch-item:first-child{border-top:none}
+.vc-exsearch-item:hover{background:var(--surface-2)}
+.vc-exsearch-item span:nth-child(2){flex:1;min-width:0}
+.vc-exsearch-cat{font-size:12px;color:var(--hint)}
+@media (max-width:760px){
+  .vc-team-grid{grid-template-columns:1fr}
+  .vc-team-titles h1{font-size:21px}
+  .vc-row-actions .vc-btn--sm{padding:0 10px}
+}
+.vc-sheet .vc-fl .vc-chips{flex-wrap:wrap;overflow:visible}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -893,7 +972,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.6.1";
+const APP_VERSION = "3.7.0";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -3240,6 +3319,387 @@ function VcToolsPage({ onScorer, onReferee }) {
                 React.createElement("h2", null, React.createElement(Icon, { name: "flag", size: 20 }), "Arbitrage", React.createElement("span", { className: "vc-nav-tag" }, "Bêta")),
                 React.createElement("p", null, "Rotations, libéro, remplacements et temps morts. Outil en cours de refonte : à utiliser pour tester."),
                 React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg vc-btn--block", onClick: onReferee }, "Configurer un match"))));
+}
+
+
+// ─── LOT 5 (3.7.0) : ÉQUIPES ET MEMBRES ───────────────────────────────────────
+const VC_NIVEAUX_JOUEUR = ["Débutant", "Intermédiaire", "Avancé", "Élite"];
+const vcInitials = (n) => { const w = String(n || "?").trim().split(/\s+/); return ((w[0] || "?")[0] + (w[1] ? w[1][0] : (w[0] || "")[1] || "")).toUpperCase(); };
+const vcPlural = (n, s, p) => n + " " + (n > 1 ? (p || s + "s") : s);
+
+// Feuille modale générique (bas d'écran sur mobile, centrée sur ordinateur).
+function VcSheet({ title, sub, onClose, children, footer, wide, label }) {
+    useEffect(() => { const k = (e) => { if (e.key === "Escape") onClose(); }; document.addEventListener("keydown", k); return () => document.removeEventListener("keydown", k); }, [onClose]);
+    return React.createElement("div", { className: "vc-sheet-wrap", role: "presentation", onClick: onClose },
+        React.createElement("div", { className: "vc-sheet" + (wide ? "" : " vc-sheet--narrow"), role: "dialog", "aria-modal": "true", "aria-label": label || title, onClick: (e) => e.stopPropagation() },
+            React.createElement("header", { className: "vc-sheet-head" },
+                React.createElement("div", { className: "vc-sheet-titles" },
+                    React.createElement("h2", null, title),
+                    sub && React.createElement("p", { className: "vc-sheet-goal" }, sub)),
+                React.createElement("button", { type: "button", className: "vc-icon-btn", onClick: onClose, "aria-label": "Fermer" }, React.createElement(Icon, { name: "close", size: 18 }))),
+            React.createElement("div", { className: "vc-sheet-body" }, children),
+            footer && React.createElement("footer", { className: "vc-sheet-foot" }, footer)));
+}
+
+function VcTeamForm({ team, sections, onSave, onClose }) {
+    const [name, setName] = useState(team?.name || "");
+    const [sport, setSport] = useState(team?.sport || "volley");
+    const ok = name.trim().length > 0;
+    const submit = () => { if (ok) onSave({ name: name.trim(), sport }); };
+    return React.createElement(VcSheet, { title: team ? "Modifier l'équipe" : "Nouvelle équipe", onClose,
+        footer: React.createElement(React.Fragment, null,
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--md", onClick: onClose }, "Annuler"),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", disabled: !ok, onClick: submit }, team ? "Enregistrer" : "Créer l'équipe")) },
+        React.createElement("label", { className: "vc-fl" }, React.createElement("span", null, "Nom de l'équipe"),
+            React.createElement("input", { className: "vc-field", autoFocus: true, value: name, maxLength: 60, placeholder: "U18 Filles, Seniors A…", onChange: (e) => setName(e.target.value), onKeyDown: (e) => { if (e.key === "Enter") submit(); } })),
+        React.createElement("div", { className: "vc-fl" }, React.createElement("span", null, "Discipline principale"),
+            React.createElement("div", { className: "vc-chips vc-chips--sm", role: "radiogroup", "aria-label": "Discipline principale" },
+                sections.map((s) => React.createElement("button", { key: s.k, type: "button", role: "radio", "aria-checked": sport === s.k, className: "vc-chip" + (sport === s.k ? " is-active" : ""), onClick: () => setSport(s.k) },
+                    React.createElement("span", { className: "vc-dot", style: { background: s.color } }), vcSectionLabel(s))))),
+        !team && React.createElement("p", { className: "vc-fl-hint" }, "Vous ajouterez les joueurs, les objectifs et les autres coachs depuis la fiche de l'équipe."));
+}
+
+function VcPlayerForm({ player, team, onSave, onDelete, onClose }) {
+    const [f, setF] = useState(() => ({ id: player?.id || crypto.randomUUID(), name: player?.name || "", poste: player?.poste || "", niveau: player?.niveau || "", notes: player?.notes || "", sessions: player?.sessions || [] }));
+    const set = (k, v) => setF((x) => ({ ...x, [k]: v }));
+    const ok = f.name.trim().length > 0;
+    const submit = () => { if (ok) onSave({ ...f, name: f.name.trim() }); };
+    const isVolley = (team.sport || "volley") === "volley";
+    return React.createElement(VcSheet, { title: player ? player.name : "Nouveau joueur", sub: team.name, onClose,
+        footer: React.createElement(React.Fragment, null,
+            player && React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--md vc-danger-text", onClick: onDelete, style: { marginRight: "auto" } }, React.createElement(Icon, { name: "trash", size: 15 }), "Retirer"),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--md", onClick: onClose }, "Annuler"),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", disabled: !ok, onClick: submit }, player ? "Enregistrer" : "Ajouter")) },
+        React.createElement("label", { className: "vc-fl" }, React.createElement("span", null, "Prénom et nom"),
+            React.createElement("input", { className: "vc-field", autoFocus: !player, value: f.name, maxLength: 60, onChange: (e) => set("name", e.target.value), onKeyDown: (e) => { if (e.key === "Enter") submit(); } })),
+        isVolley && React.createElement("div", { className: "vc-fl" }, React.createElement("span", null, "Poste"),
+            React.createElement("div", { className: "vc-chips vc-chips--sm" }, POSTES_VOLLEY.map((p) => React.createElement("button", { key: p, type: "button", className: "vc-chip" + (f.poste === p ? " is-active" : ""), "aria-pressed": f.poste === p, onClick: () => set("poste", f.poste === p ? "" : p) }, p)))),
+        React.createElement("div", { className: "vc-fl" }, React.createElement("span", null, "Niveau"),
+            React.createElement("div", { className: "vc-chips vc-chips--sm" }, VC_NIVEAUX_JOUEUR.map((n) => React.createElement("button", { key: n, type: "button", className: "vc-chip" + (f.niveau === n ? " is-active" : ""), "aria-pressed": f.niveau === n, onClick: () => set("niveau", f.niveau === n ? "" : n) }, n)))),
+        React.createElement("label", { className: "vc-fl" }, React.createElement("span", null, "Notes"),
+            React.createElement("textarea", { className: "vc-field vc-field--area", rows: 3, value: f.notes, placeholder: "Blessure, point à travailler, disponibilités…", onChange: (e) => set("notes", e.target.value) })),
+        player && (player.sessions || []).length > 0 && React.createElement("p", { className: "vc-fl-hint" }, "Retirer ce joueur supprime aussi ses " + vcPlural(player.sessions.length, "séance perso", "séances perso") + "."));
+}
+
+function VcExSearch({ section, onAdd }) {
+    const [q, setQ] = useState("");
+    const dbMap = { volley: VOLLEY_DB_RAW, fitness: FITNESS_DB_RAW, mobilite: MOBILITY_DB_RAW, souplesse: FLEXY_DB_RAW, pliometrie: PLYO_DB_RAW, cross: CROSS_DB_RAW, prevention: PREVENTION_DB_RAW };
+    const all = dbMap[section] || FITNESS_DB_RAW || [];
+    const ql = q.trim().toLowerCase();
+    const res = ql.length >= 2 ? all.filter((ex) => (ex.name || ex.titre || "").toLowerCase().includes(ql)).slice(0, 8) : [];
+    return React.createElement("div", { className: "vc-exsearch" },
+        React.createElement("label", { className: "vc-search" }, React.createElement(Icon, { name: "search", size: 18 }),
+            React.createElement("input", { type: "search", value: q, onChange: (e) => setQ(e.target.value), placeholder: "Ajouter un exercice : tapez son nom", "aria-label": "Rechercher un exercice à ajouter" })),
+        res.length > 0 && React.createElement("div", { className: "vc-exsearch-list", role: "listbox" }, res.map((ex) => React.createElement("button", { key: ex.id, type: "button", role: "option", className: "vc-exsearch-item", onClick: () => { onAdd(ex); setQ(""); } },
+            React.createElement(Icon, { name: "plus", size: 15 }), React.createElement("span", null, ex.name || ex.titre),
+            React.createElement("span", { className: "vc-exsearch-cat" }, vcLabel(ex.categorie || ex.category || ""))))),
+        ql.length >= 2 && res.length === 0 && React.createElement("p", { className: "vc-fl-hint" }, "Aucun exercice ne correspond."));
+}
+
+function VcPlayerSessEditor({ team, player, sess, onSave, onClose, onShowDetail }) {
+    const [name, setName] = useState(sess?.name || "Séance " + player.name);
+    const [items, setItems] = useState(sess?.items ? [...sess.items] : []);
+    const section = sess?.section || team.sport || "volley";
+    const move = (i, d) => setItems((its) => { const n = [...its]; const j = i + d; if (j < 0 || j >= n.length) return its; [n[i], n[j]] = [n[j], n[i]]; return n; });
+    const ok = name.trim() && items.length > 0;
+    return React.createElement(VcSheet, { wide: true, title: sess ? "Modifier la séance" : "Séance personnalisée", sub: player.name + " · " + team.name, onClose,
+        footer: React.createElement(React.Fragment, null,
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--md", onClick: onClose }, "Annuler"),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", disabled: !ok, onClick: () => onSave({ id: sess?.id || crypto.randomUUID(), name: name.trim(), items, section, coach_name: sess?.coach_name || "", createdAt: sess?.createdAt || Date.now(), playerId: player.id }) }, "Enregistrer")) },
+        React.createElement("label", { className: "vc-fl" }, React.createElement("span", null, "Nom de la séance"),
+            React.createElement("input", { className: "vc-field", value: name, maxLength: 80, onChange: (e) => setName(e.target.value) })),
+        React.createElement("div", { className: "vc-fl" }, React.createElement("span", null, vcPlural(items.length, "exercice")),
+            items.length === 0 && React.createElement("p", { className: "vc-fl-hint" }, "Ajoutez au moins un exercice avec la recherche ci-dessous."),
+            React.createElement("div", { className: "vc-psess-items" }, items.map((item, i) => React.createElement(SessionRow, { key: item.id + "_" + i, item, idx: i, total: items.length,
+                onUpdate: (p) => setItems((its) => its.map((it, j) => j === i ? { ...it, ...p } : it)), onRemove: () => setItems((its) => its.filter((_, j) => j !== i)),
+                onMoveUp: () => move(i, -1), onMoveDown: () => move(i, 1), onShowDetail: (ex) => onShowDetail(ex, section) })))),
+        React.createElement(VcExSearch, { section, onAdd: (ex) => setItems((its) => [...its, { ...ex, id: generateId(), session_sets: ex.sets_default ?? 3, session_reps: ex.reps_default ?? null, session_rest: ex.rest_seconds ?? 60, session_duration: ex.duration_seconds ?? ex.hold_seconds ?? null, session_note: "" }]) }));
+}
+
+// ── Membres et invitations (mêmes requêtes que l'ancien onglet, erreurs affichées) ──
+function VcTeamMembers({ teamId, myUserId, onRole }) {
+    const [members, setMembers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loadErr, setLoadErr] = useState(false);
+    const [pending, setPending] = useState([]);
+    const [q, setQ] = useState("");
+    const [sugg, setSugg] = useState([]);
+    const [searching, setSearching] = useState(false);
+    const [busy, setBusy] = useState(null);
+    const names = async (ids) => {
+        if (!ids.length) return {};
+        const { data } = await supabaseClient.rpc("resolve_coach_names", { p_ids: ids });
+        return Object.fromEntries((data || []).map((n) => [n.id, n.display_name]));
+    };
+    const loadMembers = useCallback(async () => {
+        try {
+            const { data, error } = await supabaseClient.from("team_members").select("coach_id, role").eq("team_id", teamId);
+            if (error) throw error;
+            const rows = data || []; const nm = await names(rows.map((r) => r.coach_id));
+            setMembers(rows.map((r) => ({ ...r, display_name: nm[r.coach_id] || "Coach" }))); setLoadErr(false);
+        } catch (err) { console.warn("Membres :", err.message || err); setLoadErr(true); }
+        finally { setLoading(false); }
+    }, [teamId]);
+    const loadPending = useCallback(async () => {
+        try {
+            const { data, error } = await supabaseClient.from("team_join_requests").select("id, invited_coach_id").eq("team_id", teamId).eq("status", "pending");
+            if (error) throw error;
+            const rows = data || []; const nm = await names(rows.map((r) => r.invited_coach_id));
+            setPending(rows.map((r) => ({ ...r, display_name: nm[r.invited_coach_id] || "Coach" })));
+        } catch (err) { console.warn("Invitations :", err.message || err); }
+    }, [teamId]);
+    useEffect(() => { setLoading(true); loadMembers(); loadPending(); }, [loadMembers, loadPending]);
+    const myRole = members.find((m) => m.coach_id === myUserId)?.role || null;
+    useEffect(() => { onRole && onRole(myRole); }, [myRole]);
+    const isOwner = myRole === "owner";
+    useEffect(() => {
+        const t = q.trim();
+        if (t.length < 2) { setSugg([]); return; }
+        setSearching(true);
+        const timer = setTimeout(async () => {
+            try {
+                const { data, error } = await supabaseClient.rpc("search_coaches_by_name", { p_query: t });
+                if (error) throw error;
+                const taken = new Set([...members.map((m) => m.coach_id), ...pending.map((p) => p.invited_coach_id)]);
+                setSugg((data || []).filter((c) => !taken.has(c.id)));
+            } catch (err) { console.warn("Recherche :", err.message || err); setSugg([]); }
+            finally { setSearching(false); }
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [q, members, pending]);
+    const invite = async (c) => {
+        setBusy(c.id);
+        try {
+            const { error } = await supabaseClient.from("team_join_requests").insert({ team_id: teamId, invited_coach_id: c.id, invited_by: myUserId });
+            if (error) { if (error.code === "23505") vcToast("Une invitation est déjà en attente pour " + c.display_name + ".", "info"); else throw error; }
+            else { vcToast("Invitation envoyée à " + c.display_name + ".", "success"); setQ(""); setSugg([]); }
+            await loadPending();
+        } catch (err) { vcToast("Invitation impossible : " + (err.message || "erreur inconnue"), "error"); }
+        finally { setBusy(null); }
+    };
+    const cancel = async (inv) => {
+        if (!(await vcConfirm("Annuler l'invitation de " + inv.display_name + " ?", { confirmLabel: "Annuler l'invitation", cancelLabel: "Garder", danger: true }))) return;
+        setBusy(inv.id);
+        try {
+            const { error } = await supabaseClient.from("team_join_requests").update({ status: "denied", resolved_at: new Date().toISOString() }).eq("id", inv.id);
+            if (error) throw error;
+            vcToast("Invitation annulée.", "success"); await loadPending();
+        } catch (err) { vcToast("Annulation impossible : " + (err.message || "erreur inconnue"), "error"); }
+        finally { setBusy(null); }
+    };
+    const changeRole = async (m, role) => {
+        if (role === "owner" && !(await vcConfirm("Donner le rôle de propriétaire à " + m.display_name + " ? Il pourra gérer les membres et supprimer l'équipe.", { confirmLabel: "Confirmer" }))) return;
+        setBusy(m.coach_id);
+        try {
+            const { error } = await supabaseClient.from("team_members").update({ role }).eq("team_id", teamId).eq("coach_id", m.coach_id);
+            if (error) throw error;
+            await loadMembers();
+        } catch (err) { vcToast("Changement de rôle impossible : " + (err.message || "erreur inconnue"), "error"); }
+        finally { setBusy(null); }
+    };
+    const remove = async (m) => {
+        if (!(await vcConfirm("Retirer " + m.display_name + " de l'équipe ?", { confirmLabel: "Retirer" }))) return;
+        setBusy(m.coach_id);
+        try {
+            const { error } = await supabaseClient.from("team_members").delete().eq("team_id", teamId).eq("coach_id", m.coach_id);
+            if (error) throw error;
+            await loadMembers();
+        } catch (err) { vcToast("Retrait impossible : " + (err.message || "erreur inconnue"), "error"); }
+        finally { setBusy(null); }
+    };
+    const ROLE = { owner: "Propriétaire", editor: "Éditeur", viewer: "Lecteur" };
+    const ROLE_SUB = { owner: "Gère les membres et peut supprimer l'équipe", editor: "Modifie l'équipe, les joueurs et les séances", viewer: "Consulte sans modifier" };
+    if (loading) return React.createElement("p", { className: "vc-fl-hint", style: { padding: 4 } }, "Chargement des membres…");
+    return React.createElement("div", { className: "vc-members" },
+        loadErr && React.createElement("div", { className: "vc-note-box" }, "Membres indisponibles hors connexion. Ils s'afficheront au retour du réseau."),
+        !loadErr && members.length === 0 && React.createElement("div", { className: "vc-note-box" }, "Cette équipe n'est pas encore synchronisée. Elle apparaîtra ici dès que l'indicateur passe à « À jour »."),
+        members.length > 0 && React.createElement("section", { className: "vc-card vc-team-sec" },
+            React.createElement("h3", null, "Coachs de l'équipe", React.createElement("span", null, members.length)),
+            React.createElement("ul", { className: "vc-rows" }, members.map((m) => React.createElement("li", { key: m.coach_id, className: "vc-row" },
+                React.createElement("span", { className: "vc-ava" }, vcInitials(m.display_name)),
+                React.createElement("span", { className: "vc-row-main" },
+                    React.createElement("span", { className: "vc-row-title" }, m.display_name, m.coach_id === myUserId && React.createElement("span", { className: "vc-row-you" }, "vous")),
+                    React.createElement("span", { className: "vc-row-sub", title: ROLE_SUB[m.role] || "" }, ROLE[m.role] || m.role)),
+                isOwner && m.coach_id !== myUserId && React.createElement("span", { className: "vc-row-actions" },
+                    React.createElement("select", { className: "vc-select vc-select--sm", value: m.role, disabled: busy === m.coach_id, "aria-label": "Rôle de " + m.display_name, onChange: (e) => changeRole(m, e.target.value) },
+                        ["viewer", "editor", "owner"].map((r) => React.createElement("option", { key: r, value: r }, ROLE[r]))),
+                    React.createElement("button", { type: "button", className: "vc-icon-btn", disabled: busy === m.coach_id, "aria-label": "Retirer " + m.display_name, onClick: () => remove(m) }, React.createElement(Icon, { name: "close", size: 16 }))))))),
+        pending.length > 0 && React.createElement("section", { className: "vc-card vc-team-sec" },
+            React.createElement("h3", null, "Invitations en attente", React.createElement("span", null, pending.length)),
+            React.createElement("ul", { className: "vc-rows" }, pending.map((inv) => React.createElement("li", { key: inv.id, className: "vc-row is-pending" },
+                React.createElement("span", { className: "vc-ava vc-ava--ghost" }, vcInitials(inv.display_name)),
+                React.createElement("span", { className: "vc-row-main" }, React.createElement("span", { className: "vc-row-title" }, inv.display_name), React.createElement("span", { className: "vc-row-sub" }, "Doit accepter l'invitation dans ses notifications")),
+                React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", disabled: busy === inv.id, onClick: () => cancel(inv) }, "Annuler"))))),
+        (isOwner || myRole === "editor" || !myRole) && !loadErr && members.length > 0 && React.createElement("section", { className: "vc-card vc-team-sec" },
+            React.createElement("h3", null, "Inviter un coach"),
+            React.createElement("label", { className: "vc-search" }, React.createElement(Icon, { name: "search", size: 18 }),
+                React.createElement("input", { type: "search", value: q, onChange: (e) => setQ(e.target.value), placeholder: "Nom du coach (2 lettres minimum)", "aria-label": "Chercher un coach à inviter" })),
+            searching && React.createElement("p", { className: "vc-fl-hint" }, "Recherche…"),
+            !searching && sugg.length > 0 && React.createElement("ul", { className: "vc-rows vc-rows--sugg" }, sugg.map((c) => React.createElement("li", { key: c.id, className: "vc-row" },
+                React.createElement("span", { className: "vc-ava vc-ava--ghost" }, vcInitials(c.display_name)),
+                React.createElement("span", { className: "vc-row-main" }, React.createElement("span", { className: "vc-row-title" }, c.display_name)),
+                React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--sm", disabled: busy === c.id, onClick: () => invite(c) }, "Inviter")))),
+            !searching && q.trim().length >= 2 && sugg.length === 0 && React.createElement("p", { className: "vc-fl-hint" }, "Aucun coach trouvé (ou déjà membre, ou déjà invité).")),
+        members.length > 0 && React.createElement("p", { className: "vc-fl-hint" }, "Propriétaire : " + ROLE_SUB.owner.toLowerCase() + ". Éditeur : " + ROLE_SUB.editor.toLowerCase() + ". Lecteur : " + ROLE_SUB.viewer.toLowerCase() + "." + (isOwner ? "" : " Seul un propriétaire peut changer les rôles et retirer des coachs.")));
+}
+
+function VcTeamPage({ team, sections, history, programs, myUserId, onBack, onEdit, onDelete, onSave, onLaunch, onExportPlayer, onDeleteHistory }) {
+    const [tab, setTab] = useState("effectif");
+    const [playerEd, setPlayerEd] = useState(null); // { player | null }
+    const [sessEd, setSessEd] = useState(null); // { player, sess }
+    const [detailEx, setDetailEx] = useState(null);
+    const [objText, setObjText] = useState("");
+    const [openH, setOpenH] = useState(null);
+    const [role, setRole] = useState(null);
+    const isMobile = useIsMobile();
+    // Mon rôle dans l'équipe (inconnu hors ligne : on n'interdit rien, la RLS tranche).
+    useEffect(() => {
+        let live = true;
+        supabaseClient.from("team_members").select("role").eq("team_id", team.id).eq("coach_id", myUserId)
+            .then(({ data, error }) => { if (live && !error) setRole((Array.isArray(data) ? data[0] : data)?.role || null); }, () => { });
+        return () => { live = false; };
+    }, [team.id, myUserId]);
+    const sx = vcSectionOf(sections, team.sport || "volley");
+    const players = team.players || [];
+    const objs = team.objectives || [];
+    const doneObjs = objs.filter((o) => o.done).length;
+    const hist = history.filter((h) => h.teamId === team.id).sort((a, b) => (b.date || 0) - (a.date || 0));
+    const progs = (programs || []).filter((p) => p.teamId === team.id && !p.playerId);
+    const persoCount = players.reduce((a, p) => a + (p.sessions || []).length, 0);
+    const savePlayer = (p) => { const exists = players.some((x) => x.id === p.id); onSave({ ...team, players: exists ? players.map((x) => x.id === p.id ? p : x) : [...players, p] }); setPlayerEd(null); };
+    const removePlayer = async (p) => {
+        if (!(await vcConfirm("Retirer " + p.name + " de l'équipe ?" + ((p.sessions || []).length ? " Ses séances perso seront supprimées." : ""), { confirmLabel: "Retirer" }))) return;
+        onSave({ ...team, players: players.filter((x) => x.id !== p.id) }); setPlayerEd(null);
+    };
+    const savePSess = (player, s) => {
+        const pl = { ...player, sessions: (player.sessions || []).some((x) => x.id === s.id) ? player.sessions.map((x) => x.id === s.id ? s : x) : [...(player.sessions || []), s] };
+        onSave({ ...team, players: players.map((x) => x.id === player.id ? pl : x) }); setSessEd(null);
+    };
+    const delPSess = async (player, s) => {
+        if (!(await vcConfirm("Supprimer la séance « " + s.name + " » ?", { confirmLabel: "Supprimer" }))) return;
+        onSave({ ...team, players: players.map((x) => x.id === player.id ? { ...x, sessions: (x.sessions || []).filter((y) => y.id !== s.id) } : x) });
+    };
+    const addObj = () => { const t = objText.trim(); if (!t) return; onSave({ ...team, objectives: [...objs, { id: crypto.randomUUID(), text: t, done: false, createdAt: Date.now() }] }); setObjText(""); };
+    const toggleObj = (o) => onSave({ ...team, objectives: objs.map((x) => x.id === o.id ? { ...x, done: !x.done } : x) });
+    const delObj = (o) => onSave({ ...team, objectives: objs.filter((x) => x.id !== o.id) });
+    const TABS = [["effectif", "Effectif", players.length], ["seances", "Séances perso", persoCount], ["objectifs", "Objectifs", objs.length ? doneObjs + "/" + objs.length : null], ["programmes", "Programmes", progs.length], ["historique", "Historique", hist.length], ["membres", "Membres", null]];
+    const empty = (icon, title, text, action) => React.createElement("div", { className: "vc-empty vc-hist-empty" }, React.createElement(Icon, { name: icon, size: 28 }), React.createElement("p", null, title), text && React.createElement("span", null, text), action);
+    return React.createElement("div", { className: "vc-team" },
+        React.createElement("button", { type: "button", className: "vc-back vc-back--show", onClick: onBack }, React.createElement(Icon, { name: "back", size: 18 }), "Équipes"),
+        React.createElement("header", { className: "vc-team-head" },
+            React.createElement("span", { className: "vc-team-ava vc-team-ava--lg", style: { background: sx.color } }, vcInitials(team.name)),
+            React.createElement("div", { className: "vc-team-titles" },
+                React.createElement("h1", null, team.name),
+                React.createElement("span", null, [vcSectionLabel(sx), vcPlural(players.length, "joueur"), role ? ({ owner: "Propriétaire", editor: "Éditeur", viewer: "Lecteur" })[role] : null].filter(Boolean).join(" · "))),
+            React.createElement(VcActionMenu, { isMobile, label: "Actions de l'équipe", items: [
+                { icon: "edit", label: "Modifier le nom ou la discipline", onClick: onEdit, hidden: role === "viewer" },
+                { icon: "plus", label: "Ajouter un joueur", onClick: () => { setTab("effectif"); setPlayerEd({ player: null }); }, hidden: role === "viewer" },
+                { divider: true, hidden: role && role !== "owner" },
+                { icon: "trash", label: "Supprimer l'équipe", danger: true, onClick: onDelete, hidden: role && role !== "owner" },
+            ] })),
+        React.createElement("div", { className: "vc-tabbar", role: "tablist", "aria-label": "Fiche équipe" },
+            TABS.map(([k, l, n]) => React.createElement("button", { key: k, type: "button", role: "tab", "aria-selected": tab === k, className: tab === k ? "is-active" : "", onClick: () => setTab(k) },
+                l, n ? React.createElement("span", { className: "vc-seg-count" }, n) : null))),
+        tab === "effectif" && React.createElement("div", { className: "vc-team-body" },
+            players.length === 0 ? empty("teams", "Aucun joueur pour l'instant.", "Ajoutez l'effectif pour suivre les présences et créer des séances personnalisées.",
+                    React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", onClick: () => setPlayerEd({ player: null }) }, React.createElement(Icon, { name: "plus", size: 16 }), "Ajouter un joueur"))
+                : React.createElement(React.Fragment, null,
+                    React.createElement("div", { className: "vc-team-bar" }, React.createElement("span", null, vcPlural(players.length, "joueur")),
+                        React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", onClick: () => setPlayerEd({ player: null }) }, React.createElement(Icon, { name: "plus", size: 14 }), "Ajouter un joueur")),
+                    React.createElement("ul", { className: "vc-rows vc-card" }, players.map((p) => React.createElement("li", { key: p.id },
+                        React.createElement("button", { type: "button", className: "vc-row vc-row--btn", onClick: () => setPlayerEd({ player: p }) },
+                            React.createElement("span", { className: "vc-ava", style: { color: sx.color } }, vcInitials(p.name)),
+                            React.createElement("span", { className: "vc-row-main" },
+                                React.createElement("span", { className: "vc-row-title" }, p.name),
+                                React.createElement("span", { className: "vc-row-sub" }, [p.poste, p.niveau, (p.sessions || []).length ? vcPlural(p.sessions.length, "séance perso", "séances perso") : null].filter(Boolean).join(" · ") || "Poste et niveau non renseignés"),
+                                p.notes && React.createElement("span", { className: "vc-row-note" }, p.notes)),
+                            React.createElement(Icon, { name: "chevron", size: 16, style: { color: "var(--hint)", flex: "none" } }))))))),
+        tab === "seances" && React.createElement("div", { className: "vc-team-body" },
+            players.length === 0 ? empty("sessions", "Ajoutez d'abord des joueurs.", "Chaque joueur peut avoir ses propres séances, à lancer ou à lui envoyer.")
+                : players.map((p) => React.createElement("section", { key: p.id, className: "vc-card vc-team-sec" },
+                    React.createElement("h3", null, React.createElement("span", { className: "vc-ava vc-ava--sm", style: { color: sx.color } }, vcInitials(p.name)), p.name, p.poste && React.createElement("em", null, p.poste),
+                        React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--sm", style: { marginLeft: "auto" }, onClick: () => setSessEd({ player: p, sess: null }) }, React.createElement(Icon, { name: "plus", size: 14 }), "Séance")),
+                    (p.sessions || []).length === 0 ? React.createElement("p", { className: "vc-fl-hint" }, "Aucune séance personnalisée.")
+                        : React.createElement("ul", { className: "vc-rows" }, p.sessions.map((s) => React.createElement("li", { key: s.id, className: "vc-row" },
+                            React.createElement("span", { className: "vc-row-main" },
+                                React.createElement("span", { className: "vc-row-title" }, s.name),
+                                React.createElement("span", { className: "vc-row-sub" }, vcPlural((s.items || []).length, "exercice"), " · ", vcFmtMin(sessionEstimatedTime(s.items || [])))),
+                            React.createElement("span", { className: "vc-row-actions" },
+                                React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--sm", disabled: !(s.items || []).length, onClick: () => onLaunch({ ...s, teamId: team.id }) }, React.createElement(Icon, { name: "play", size: 13 }), "Lancer"),
+                                React.createElement(VcActionMenu, { isMobile, label: "Actions de la séance " + s.name, items: [
+                                    { icon: "edit", label: "Modifier", onClick: () => setSessEd({ player: p, sess: s }) },
+                                    { icon: "upload", label: "Envoyer au joueur", sub: "PDF ou lien de partage", onClick: () => onExportPlayer(s, p) },
+                                    { divider: true },
+                                    { icon: "trash", label: "Supprimer", danger: true, onClick: () => delPSess(p, s) },
+                                ] })))))))),
+        tab === "objectifs" && React.createElement("div", { className: "vc-team-body" },
+            React.createElement("section", { className: "vc-card vc-team-sec" },
+                objs.length > 0 && React.createElement("div", { className: "vc-obj-prog" },
+                    React.createElement("div", { className: "vc-hist-bar" }, React.createElement("i", { style: { width: Math.round(doneObjs / objs.length * 100) + "%" } })),
+                    React.createElement("span", null, doneObjs + " sur " + objs.length + " atteint" + (doneObjs > 1 ? "s" : ""))),
+                objs.length === 0 && React.createElement("p", { className: "vc-fl-hint" }, "Fixez quelques objectifs de saison : qualité de réception, nombre de séances de prévention, résultat visé…"),
+                React.createElement("ul", { className: "vc-rows" }, objs.map((o) => React.createElement("li", { key: o.id, className: "vc-row vc-obj" + (o.done ? " is-done" : "") },
+                    React.createElement("button", { type: "button", className: "vc-obj-check", role: "checkbox", "aria-checked": !!o.done, "aria-label": (o.done ? "Rouvrir : " : "Marquer atteint : ") + o.text, onClick: () => toggleObj(o) }, o.done && React.createElement(Icon, { name: "check", size: 14, stroke: 3 })),
+                    React.createElement("span", { className: "vc-row-main" }, React.createElement("span", { className: "vc-row-title" }, o.text)),
+                    React.createElement("button", { type: "button", className: "vc-icon-btn", "aria-label": "Supprimer l'objectif " + o.text, onClick: () => delObj(o) }, React.createElement(Icon, { name: "close", size: 15 }))))),
+                React.createElement("div", { className: "vc-obj-add" },
+                    React.createElement("input", { className: "vc-field", value: objText, maxLength: 140, placeholder: "Nouvel objectif", "aria-label": "Nouvel objectif", onChange: (e) => setObjText(e.target.value), onKeyDown: (e) => { if (e.key === "Enter") addObj(); } }),
+                    React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", disabled: !objText.trim(), onClick: addObj }, "Ajouter")))),
+        tab === "programmes" && React.createElement("div", { className: "vc-team-body" },
+            progs.length === 0 ? empty("programs", "Aucun programme lié à cette équipe.", "Dans Programmes, créez un programme et choisissez « " + team.name + " » comme équipe.")
+                : React.createElement("ul", { className: "vc-rows vc-card" }, progs.map((pr) => React.createElement("li", { key: pr.id, className: "vc-row" },
+                    React.createElement("span", { className: "vc-ava vc-ava--ghost" }, React.createElement(Icon, { name: "programs", size: 16 })),
+                    React.createElement("span", { className: "vc-row-main" }, React.createElement("span", { className: "vc-row-title" }, pr.name),
+                        React.createElement("span", { className: "vc-row-sub" }, vcPlural((pr.sessionIds || []).length, "séance"), pr.description ? " · " + pr.description : "")))))),
+        tab === "historique" && React.createElement("div", { className: "vc-team-body vc-hist" },
+            hist.length === 0 ? empty("history", "Aucune séance enregistrée pour cette équipe.", "Choisissez l'équipe au moment de terminer une séance pour qu'elle apparaisse ici, avec les présences.")
+                : hist.map((h, i) => { const key = vcHistKey(h, i); const props = { key, h, open: openH === key, onToggle: () => setOpenH(openH === key ? null : key), onDelete: async () => { if (await vcConfirm("Supprimer « " + (h.sessionName || "cette entrée") + " » de l'historique ?", { confirmLabel: "Supprimer" })) onDeleteHistory(h); } };
+                    return h.matchData ? React.createElement(VcMatchCard, props) : React.createElement(VcHistSessionCard, { ...props, sections, teams: [team] }); })),
+        tab === "membres" && React.createElement("div", { className: "vc-team-body" }, React.createElement(VcTeamMembers, { teamId: team.id, myUserId, onRole: setRole })),
+        playerEd && React.createElement(VcPlayerForm, { team, player: playerEd.player, onSave: savePlayer, onDelete: () => removePlayer(playerEd.player), onClose: () => setPlayerEd(null) }),
+        sessEd && React.createElement(VcPlayerSessEditor, { team, player: sessEd.player, sess: sessEd.sess, onSave: (s) => savePSess(sessEd.player, s), onClose: () => setSessEd(null), onShowDetail: (ex, section) => setDetailEx({ ex, section }) }),
+        detailEx && React.createElement(ExerciseModal, { ex: detailEx.ex, section: detailEx.section, onClose: () => { markModalClosed(); setDetailEx(null); }, inSession: true }));
+}
+
+function VcTeamsPanel({ teams, history, programs, sections, myUserId, onSave, onLaunch, onExportPlayer, onDeleteHistory }) {
+    const [openId, setOpenId] = useState(null);
+    const [form, setForm] = useState(null); // { team | null }
+    const team = openId && teams.find((t) => t.id === openId);
+    const submitForm = (vals) => {
+        if (form.team) onSave({ ...form.team, ...vals });
+        else { const t = { id: crypto.randomUUID(), players: [], objectives: [], ...vals }; onSave(t); setOpenId(t.id); }
+        setForm(null);
+    };
+    const del = async (t) => {
+        if (!(await vcConfirm("Supprimer l'équipe « " + t.name + " » ? Joueurs, objectifs et séances perso seront supprimés pour tous les coachs de l'équipe.", { confirmLabel: "Supprimer" }))) return;
+        onSave(null, t.id); setOpenId(null);
+    };
+    const formEl = form && React.createElement(VcTeamForm, { team: form.team, sections, onSave: submitForm, onClose: () => setForm(null) });
+    if (team) return React.createElement(React.Fragment, null,
+        React.createElement(VcTeamPage, { team, sections, history, programs, myUserId, onBack: () => setOpenId(null), onEdit: () => setForm({ team }), onDelete: () => del(team), onSave, onLaunch, onExportPlayer, onDeleteHistory }), formEl);
+    return React.createElement("div", { className: "vc-teams" },
+        React.createElement("div", { className: "vc-team-bar" },
+            React.createElement("span", null, teams.length ? vcPlural(teams.length, "équipe") : ""),
+            React.createElement("button", { type: "button", className: "vc-btn vc-btn--primary vc-btn--md", onClick: () => setForm({ team: null }) }, React.createElement(Icon, { name: "plus", size: 16 }), "Nouvelle équipe")),
+        teams.length === 0 && React.createElement("div", { className: "vc-empty vc-hist-empty" }, React.createElement(Icon, { name: "teams", size: 30 }),
+            React.createElement("p", null, "Aucune équipe pour l'instant."),
+            React.createElement("span", null, "Une équipe regroupe l'effectif, les objectifs, l'historique des séances et les autres coachs qui la suivent.")),
+        React.createElement("div", { className: "vc-team-grid" }, teams.map((t) => {
+            const sx = vcSectionOf(sections, t.sport || "volley");
+            const np = (t.players || []).length, ob = t.objectives || [], od = ob.filter((o) => o.done).length;
+            const nh = history.filter((h) => h.teamId === t.id).length;
+            const last = history.filter((h) => h.teamId === t.id).reduce((a, h) => Math.max(a, h.date || 0), 0);
+            return React.createElement("button", { key: t.id, type: "button", className: "vc-card vc-team-card", onClick: () => setOpenId(t.id) },
+                React.createElement("span", { className: "vc-team-ava", style: { background: sx.color } }, vcInitials(t.name)),
+                React.createElement("span", { className: "vc-row-main" },
+                    React.createElement("span", { className: "vc-row-title" }, t.name),
+                    React.createElement("span", { className: "vc-row-sub" }, vcSectionLabel(sx) + " · " + vcPlural(np, "joueur")),
+                    React.createElement("span", { className: "vc-team-stats" },
+                        ob.length > 0 && React.createElement("span", { className: od === ob.length ? "is-ok" : "" }, React.createElement(Icon, { name: "check", size: 12 }), od + "/" + ob.length + " objectifs"),
+                        React.createElement("span", null, React.createElement(Icon, { name: "history", size: 12 }), nh ? vcPlural(nh, "séance") + " · dernière le " + new Date(last).toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : "Aucune séance"))),
+                React.createElement(Icon, { name: "chevron", size: 16, style: { color: "var(--hint)", flex: "none" } }));
+        })),
+        formEl);
 }
 
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
@@ -9803,7 +10263,7 @@ Cela remplacera toutes vos données actuelles.`)) {
                 onOpen: () => { setShowTemplates(false); setActiveTab("session"); setSessMobileView("editor"); },
                 onLaunch: () => setLaunchSession(curSession),
                 onRemoveItem: (i) => removeItem(i),
-                onNew: () => setNewSessPickerOpen(true) })), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(TeamsPanel, { teams: teams, history: history, programs: programs, sessions: sessions, onSave: saveTeam, onSaveProgram: saveProgram, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), myUserId: session.user.id, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "outils" && React.createElement(VcToolsPage, { onScorer: () => setShowScorer(true), onReferee: () => setShowRefereeSetup(true) }),
+                onNew: () => setNewSessPickerOpen(true) })), activeTab === "programs" && (React.createElement(ProgramBuilder, { openNewSignal: progNewSignal, onOpenNewConsumed: () => setProgNewSignal(0), sessions: sessions, programs: programs, teams: teams, onSave: saveProgram, onDelete: deleteProgram, onExport: exportProgram, onLaunch: function(sess) { setLaunchSession(sess); }, onShowExercise: function(item, section) { setProgramDetailEx({ item, section }); }, onCascadeShareIsShared: cascadeShareProgramIsShared, onCascadeShareTargeted: cascadeShareProgramTargeted })), activeTab === "equipes" && (React.createElement(VcTeamsPanel, { teams: teams, history: history, programs: programs, sections: SECTIONS, myUserId: session.user.id, onSave: saveTeam, onLaunch: s => setLaunchSession(s), onExportPlayer: (sess) => setPlayersExportModal({ sessions: [sess], program: null }), onDeleteHistory: deleteHistoryEntry })), activeTab === "outils" && React.createElement(VcToolsPage, { onScorer: () => setShowScorer(true), onReferee: () => setShowRefereeSetup(true) }),
     showScorer && React.createElement(VcScorer, { teams: teams, onClose: () => setShowScorer(false), onSave: (m, teamId, dur) => persistHistory({
         sessionName: m.teamAName + " vs " + m.teamBName, section: "volley", teamId: null, note: null, programme: null,
         exerciseCount: 0, doneCount: 0, totalTime: dur || 0, totalTimeIsReal: true, date: m.date, exercises: [], matchData: m,
