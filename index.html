@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.4.5</title>
+<title>VolleyCoach Club v3.4.6</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -692,7 +692,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.4.5";
+const APP_VERSION = "3.4.6";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -2444,6 +2444,25 @@ function VcSessionMuscles({ items, title }) {
                     React.createElement("button", { type: "button", className: "vc-btn vc-btn--ghost vc-btn--lg", onClick: () => setOpen(false) }, "Fermer")))));
 }
 
+// ─── TRI DE LA BIBLIOTHÈQUE (3.4.6) ───
+const VC_LIB_SORTS = [["az", "Tri : A → Z"], ["za", "Tri : Z → A"], ["lvl", "Tri : niveau croissant"], ["lvl_desc", "Tri : niveau décroissant"], ["cat", "Tri : catégorie"]];
+const vcLevelRank = (lv) => {
+    const l = vcLabel(lv || "");
+    if (/^Débutant/.test(l) || l === "Tous niveaux") return /Intermédiaire/.test(l) ? 1 : 0;
+    if (/^Intermédiaire/.test(l)) return /Avancé/.test(l) ? 3 : 2;
+    if (/^Avancé/.test(l)) return /Compétition/.test(l) ? 5 : 4;
+    if (/^(Élite|Compétition)/.test(l)) return 6;
+    return 9;
+};
+function vcLibSorter(mode) {
+    const nm = (e) => e.titre || e.name || "";
+    const byName = (a, b) => nm(a).localeCompare(nm(b), "fr", { sensitivity: "base", numeric: true });
+    if (mode === "za") return (a, b) => byName(b, a);
+    if (mode === "lvl") return (a, b) => (vcLevelRank(a.niveau || a.level) - vcLevelRank(b.niveau || b.level)) || byName(a, b);
+    if (mode === "lvl_desc") return (a, b) => (vcLevelRank(b.niveau || b.level) - vcLevelRank(a.niveau || a.level)) || byName(a, b);
+    if (mode === "cat") return (a, b) => vcLabel(a.categorie || a.category || "").localeCompare(vcLabel(b.categorie || b.category || ""), "fr", { sensitivity: "base" }) || byName(a, b);
+    return byName;
+}
 // ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
     constructor(props) { super(props); this.state = { error: null }; }
@@ -2772,6 +2791,9 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
     const [levelFilter, setLevelFilter] = useState("tous");
     const [muscleFilter, setMuscleFilter] = useState("tous");
     const [noEquip, setNoEquip] = useState(false);
+    // Tri de la bibliothèque : alphabétique par défaut, choix mémorisé sur l'appareil
+    const [sortBy, setSortBy] = useState(() => { try { return localStorage.getItem("vc_lib_sort") || "az"; } catch (e) { return "az"; } });
+    const changeSort = (v) => { setSortBy(v); try { localStorage.setItem("vc_lib_sort", v); } catch (e) { } };
     const [q, setQ] = useState("");
     const [detailEx, setDetailEx] = useState(null);
     const [editingEx, setEditingEx] = useState(null);
@@ -2818,7 +2840,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 return false;
         }
         return true;
-    }), [allExercises, catFilter, levelFilter, muscleFilter, noEquip, q]);
+    }).sort(vcLibSorter(sortBy)), [allExercises, catFilter, levelFilter, muscleFilter, noEquip, q, sortBy]);
     const modalStyle = {
         position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 2000,
         display: "flex", alignItems: "flex-start", justifyContent: "center",
@@ -2839,7 +2861,9 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 isFitness && allMuscles.length > 0 && React.createElement("select", { className: "vc-select", value: muscleFilter, onChange: e => setMuscleFilter(e.target.value), "aria-label": "Groupe musculaire" },
                     React.createElement("option", { value: "tous" }, "Tous muscles"),
                     allMuscles.map(m => React.createElement("option", { key: m, value: m }, vcLabel(m)))),
-                React.createElement("button", { type: "button", className: "vc-chip" + (noEquip ? " is-active" : ""), style: { height: 36 }, "aria-pressed": noEquip, onClick: () => setNoEquip(v => !v) }, "Sans matériel"))),
+                React.createElement("button", { type: "button", className: "vc-chip" + (noEquip ? " is-active" : ""), style: { height: 36 }, "aria-pressed": noEquip, onClick: () => setNoEquip(v => !v) }, "Sans matériel"),
+                React.createElement("select", { className: "vc-select vc-select--sort", value: sortBy, onChange: e => changeSort(e.target.value), "aria-label": "Trier les exercices" },
+                    VC_LIB_SORTS.map(([k, l]) => React.createElement("option", { key: k, value: k }, l))))),
         React.createElement("div", { className: "vc-lib-count" },
             filtered.length + " exercice" + (filtered.length > 1 ? "s" : ""),
             !hideCreate && React.createElement("div", { className: "vc-lib-actions" },
