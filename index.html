@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.6.0</title>
+<title>VolleyCoach Club v3.6.1</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -893,7 +893,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.6.0";
+const APP_VERSION = "3.6.1";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -3577,6 +3577,8 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
     const [levelFilter, setLevelFilter] = useState("tous");
     const [muscleFilter, setMuscleFilter] = useState("tous");
     const [noEquip, setNoEquip] = useState(false);
+    // Origine : catalogue, mes exercices, partagés par d'autres coachs (tous ou un coach précis). Lecture seule.
+    const [origin, setOrigin] = useState("tous");
     // Tri de la bibliothèque : alphabétique par défaut, choix mémorisé sur l'appareil
     const [sortBy, setSortBy] = useState(() => { try { return localStorage.getItem("vc_lib_sort") || "az"; } catch (e) { return "az"; } });
     const changeSort = (v) => { setSortBy(v); try { localStorage.setItem("vc_lib_sort", v); } catch (e) { } };
@@ -3590,6 +3592,16 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
         const custom = (customExercises || []).filter(e => e._section === section);
         return [...db, ...custom];
     }, [db, customExercises, section]);
+    const originOf = (ex) => !ex._section ? "catalogue" : ex._ownedByMe === false ? "autres" : "miens";
+    const origins = useMemo(() => {
+        const o = { catalogue: 0, miens: 0, autres: 0, coachs: {} };
+        allExercises.forEach((ex) => {
+            const k = originOf(ex); o[k]++;
+            if (k === "autres") { const n = ex._sharedByName || "Coach sans nom"; o.coachs[n] = (o.coachs[n] || 0) + 1; }
+        });
+        return o;
+    }, [allExercises]);
+    useEffect(() => { setOrigin("tous"); }, [section]);
     const cats = useMemo(() => [...new Set(allExercises.map(e => e.categorie || e.category))].filter(Boolean), [allExercises]);
     const levels = useMemo(() => vcSortLevels([...new Set(allExercises.map(e => e.niveau || e.level))].filter(Boolean)), [allExercises]);
     const allMuscles = useMemo(() => {
@@ -3616,6 +3628,11 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
         }
         if (noEquip && (ex.materiel?.length > 0 || ex.equipment?.length > 0))
             return false;
+        if (origin !== "tous") {
+            const o = originOf(ex);
+            if (origin.startsWith("coach:")) { if (o !== "autres" || (ex._sharedByName || "Coach sans nom") !== origin.slice(6)) return false; }
+            else if (o !== origin) return false;
+        }
         if (q) {
             const ql = q.toLowerCase();
             const n = [(ex.titre || ex.name || ""), ...vcVariants(ex).map(v => v.nom)].join(" ").toLowerCase();
@@ -3626,7 +3643,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 return false;
         }
         return true;
-    }).sort(vcLibSorter(sortBy)), [allExercises, catFilter, levelFilter, muscleFilter, noEquip, q, sortBy]);
+    }).sort(vcLibSorter(sortBy)), [allExercises, catFilter, levelFilter, muscleFilter, noEquip, origin, q, sortBy]);
     const modalStyle = {
         position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 2000,
         display: "flex", alignItems: "flex-start", justifyContent: "center",
@@ -3647,6 +3664,13 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                 isFitness && allMuscles.length > 0 && React.createElement("select", { className: "vc-select", value: muscleFilter, onChange: e => setMuscleFilter(e.target.value), "aria-label": "Groupe musculaire" },
                     React.createElement("option", { value: "tous" }, "Tous muscles"),
                     allMuscles.map(m => React.createElement("option", { key: m, value: m }, vcLabel(m)))),
+                (origins.miens + origins.autres > 0) && React.createElement("select", { className: "vc-select" + (origin !== "tous" ? " is-active" : ""), value: origin, onChange: e => setOrigin(e.target.value), "aria-label": "Origine des exercices" },
+                    React.createElement("option", { value: "tous" }, "Toutes origines"),
+                    React.createElement("option", { value: "catalogue" }, "Catalogue (" + origins.catalogue + ")"),
+                    origins.miens > 0 && React.createElement("option", { value: "miens" }, "Mes exercices (" + origins.miens + ")"),
+                    origins.autres > 0 && React.createElement("option", { value: "autres" }, "Partagés par d'autres coachs (" + origins.autres + ")"),
+                    Object.keys(origins.coachs).length > 1 && Object.entries(origins.coachs).sort((a, b) => a[0].localeCompare(b[0], "fr")).map(([n, c]) =>
+                        React.createElement("option", { key: n, value: "coach:" + n }, "\u2003" + n + " (" + c + ")"))),
                 React.createElement("button", { type: "button", className: "vc-chip" + (noEquip ? " is-active" : ""), style: { height: 36 }, "aria-pressed": noEquip, onClick: () => setNoEquip(v => !v) }, "Sans matériel"),
                 React.createElement("select", { className: "vc-select vc-select--sort", value: sortBy, onChange: e => changeSort(e.target.value), "aria-label": "Trier les exercices" },
                     VC_LIB_SORTS.map(([k, l]) => React.createElement("option", { key: k, value: k }, l))))),
@@ -3673,7 +3697,7 @@ function LibraryPanel({ db, section, sessIds, onAdd, onAddEvolution, customExerc
                         onAddEvolution?.(item);
                     }
                 } }))),
-            filtered.length === 0 && React.createElement("div", { className: "vc-empty vc-lib-empty" }, "Aucun exercice ne correspond à ces filtres.")),
+            filtered.length === 0 && React.createElement("div", { className: "vc-empty vc-lib-empty" }, origin === "miens" && !q ? "Vous n'avez pas encore créé d'exercice dans cette discipline." : "Aucun exercice ne correspond à ces filtres.")),
         showNew && (React.createElement("div", { onClick: () => setShowNew(false), className: "vc-editor-modal" },
             React.createElement("div", { onClick: e => e.stopPropagation(), className: "vc-editor-box" },
                 React.createElement(ExerciseEditor, { section: section, onSave: ex => { onSaveCustom({ ...ex, _section: section }); setShowNew(false); }, onCancel: () => setShowNew(false) })))),
