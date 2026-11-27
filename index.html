@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#111111">
-<title>VolleyCoach Club v3.4.0</title>
+<title>VolleyCoach Club v3.4.1</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -599,6 +599,33 @@ button{color:inherit}
 .vc-mus-scale span{display:inline-flex;align-items:center;gap:5px}
 .vc-mus-scale i{display:inline-block;width:12px;height:12px;border-radius:3px}
 @media (max-width:640px){.vc-mus-split{grid-template-columns:1fr}.vc-mus-split>.vc-mmap,.vc-mus-split>div:last-child{order:-1}.vc-mmap svg{max-height:340px}}
+/* ── 3.4.1 : Lancer — exercice en cours toujours visible + exercice suivant ── */
+.vc-run-list{position:relative;scroll-behavior:smooth}
+.vc-run-item.is-done{padding:8px 12px;opacity:.55}
+.vc-run-item.is-done .vc-run-chips,.vc-run-item.is-done .vc-run-variant,.vc-run-item.is-done .vc-run-circuit{display:none}
+.vc-run-item.is-cur{border-color:#F0A500;border-left-color:#F0A500;background:#1A1712}
+.vc-run-item.is-upnext{border-color:#3A3A42;border-left-color:#8A8A93}
+.vc-run-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;padding:2px 6px;margin-bottom:4px}
+.vc-run-tag--cur{background:#F0A500;color:#141006}
+.vc-run-tag--next{background:#2A2A30;color:#C9C9CF}
+.vc-run-upnext{display:flex;align-items:center;gap:10px;width:100%;max-width:420px;margin-top:10px;padding:10px 12px;border-radius:14px;background:#141417;border:1px solid #2A2A30;color:#F5F5F4;text-align:left}
+.vc-run-upnext b{display:block;font-size:14px;line-height:1.25}
+.vc-run-upnext small{display:block;font-size:12px;color:#A1A1AA;margin-top:2px}
+.vc-run-upnext .vc-run-tag{margin:0;flex:none}
+.vc-run-timer{flex-direction:column;padding:12px}
+@media (max-width:760px){
+  .vc-run-timer{flex:0 0 auto;max-height:48vh;padding:8px 12px 10px}
+  .vc-run-upnext{margin-top:6px;padding:8px 10px}
+  .vc-run-item{padding:9px 10px}
+  .vc-run-item .vc-run-live{display:none}
+  .vc-run-item .vc-run-chips{flex-wrap:nowrap;overflow:hidden}
+  .vc-run-item .vc-run-chips>*{flex:none}
+  .vc-run-item .vc-run-ex{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .vc-run-item.is-cur .vc-run-ex{-webkit-line-clamp:2}
+  .vc-run-item .vc-btn--sm{font-size:0;gap:0;padding:8px}
+  .vc-run-item .vc-btn--sm svg{width:18px;height:18px}
+  .vc-run-tag{margin-bottom:2px}
+}
 </style>
 <script>(function(){var p="system";try{p=localStorage.getItem("vc_theme")||"system"}catch(e){}var t=p==="light"||p==="dark"?p:((window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark");document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="light"?"#F6F5F2":"#0D0D0F");})();</script>
 </head>
@@ -634,7 +661,7 @@ G.ReactDOM={
 <script src="config.js"></script>
 <script>const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-const APP_VERSION = "3.4.0";
+const APP_VERSION = "3.4.1";
 const APP_ICON_DATA_URI = "data:image/svg+xml,%3Csvg%20width%3D%22512%22%20height%3D%22512%22%20viewBox%3D%220%200%20512%20512%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%20%3Crect%20width%3D%22512%22%20height%3D%22512%22%20rx%3D%2296%22%20fill%3D%22%23111111%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22220%22%20x2%3D%22422%22%20y2%3D%22220%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22/%3E%20%3Cline%20x1%3D%2290%22%20y1%3D%22180%22%20x2%3D%2290%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22422%22%20y1%3D%22180%22%20x2%3D%22422%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%20%3Cline%20x1%3D%22130%22%20y1%3D%22220%22%20x2%3D%22130%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22180%22%20y1%3D%22220%22%20x2%3D%22180%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22230%22%20y1%3D%22220%22%20x2%3D%22230%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22280%22%20y1%3D%22220%22%20x2%3D%22280%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22330%22%20y1%3D%22220%22%20x2%3D%22330%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Cline%20x1%3D%22380%22%20y1%3D%22220%22%20x2%3D%22380%22%20y2%3D%22260%22%20stroke%3D%22%23F5F5F5%22%20stroke-width%3D%226%22/%3E%20%3Ccircle%20cx%3D%22330%22%20cy%3D%22330%22%20r%3D%2270%22%20fill%3D%22%23F0A500%22/%3E%20%3Cpath%20d%3D%22M%20330%20260%20A%2070%2070%200%200%201%20396%20355%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3Cpath%20d%3D%22M%20264%20305%20A%2070%2070%200%200%200%20330%20400%22%20fill%3D%22none%22%20stroke%3D%22%23C8102E%22%20stroke-width%3D%228%22/%3E%20%3C/svg%3E";
 
 // ─── SUPABASE ─────────────────────────────────────────────────────────────────
@@ -6451,6 +6478,33 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
     };
 
     var nextIdx = (function() { for (var k = 0; k < items.length; k++) { if (!checkedIds.has(items[k].id + k)) return k; } return -1; })();
+    // Exercice en cours = minuteur actif, sinon premier non fait. « Ensuite » = le suivant non fait.
+    var curIdx = activeTimerIdx !== null ? activeTimerIdx : nextIdx;
+    var upNextIdx = (function() { if (curIdx < 0) return -1; for (var k = curIdx + 1; k < items.length; k++) { if (!checkedIds.has(items[k].id + k)) return k; } return -1; })();
+    var runListRef = useRef(null);
+    // Défilement automatique : l'exercice en cours remonte en haut de la liste, le suivant juste dessous.
+    useEffect(function() {
+        var list = runListRef.current;
+        if (!list || curIdx < 0) return;
+        var el = list.querySelector('[data-run-idx="' + curIdx + '"]');
+        if (!el) return;
+        var target = Math.max(0, el.offsetTop - 8);
+        if (Math.abs(list.scrollTop - target) > 4) list.scrollTo({ top: target, behavior: 'smooth' });
+    }, [curIdx, activeTimerIdx]);
+    var describeItem = function(it) {
+        if (!it) return '';
+        if (it._type === 'pause') return 'Pause · ' + fmtTime(+(it.pause_duration || 60));
+        var d = it.session_mode === 'reps' ? 0 : +(it.session_duration || it.duration_seconds || it.hold_seconds || 0);
+        var parts = [];
+        var sets = it.session_sets || 3;
+        if (sets > 0) parts.push(sets + ' série' + (sets > 1 ? 's' : ''));
+        if (d) parts.push(fmtTime(d));
+        if (it.session_mode !== 'time' && it.session_reps) parts.push(it.session_reps + ' rép.');
+        var r = it.session_rest ?? it.rest_seconds ?? 0;
+        if (r > 0) parts.push(r + ' s repos');
+        return parts.join(' · ');
+    };
+    var upNextItem = upNextIdx >= 0 ? items[upNextIdx] : null;
     var mainAction = !sessionStarted
         ? React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--gold vc-btn--lg', onClick: startSession }, React.createElement(Icon, { name: 'play', size: 16 }), 'Démarrer')
         : React.createElement('button', { type: 'button', className: 'vc-btn vc-btn--lg ' + (doneCount === totalCount && totalCount > 0 ? 'vc-btn--success' : 'vc-btn--primary'), onClick: handleFinish },
@@ -6476,24 +6530,32 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
             activeTimerIdx !== null && items[activeTimerIdx] && React.createElement('div', { className: 'vc-run-timer' },
                 React.createElement(ItemTimer, {
                     key: 'big-it-' + activeTimerIdx, item: items[activeTimerIdx], idx: activeTimerIdx, items: items, compact: false,
-                    size: isMobile ? 210 : 280,
+                    size: isMobile ? 168 : 280,
                     onDone: function() { markDoneAndAdvance(activeTimerIdx); },
                     onClose: function() { setActiveTimerIdx(null); }
-                })),
-            React.createElement('div', { className: 'vc-run-list' },
+                }),
+                upNextItem
+                    ? React.createElement('button', { type: 'button', className: 'vc-run-upnext', onClick: function() { if (upNextItem._type !== 'pause') setActiveEx(upNextItem); }, 'aria-label': 'Exercice suivant : ' + (upNextItem.titre || upNextItem.name || 'Pause') },
+                        React.createElement('span', { className: 'vc-run-tag vc-run-tag--next' }, 'Ensuite'),
+                        React.createElement('span', null, React.createElement('b', null, upNextItem._type === 'pause' ? (upNextItem.name || 'Pause / transition') : (upNextItem.titre || upNextItem.name || 'Exercice')), React.createElement('small', null, describeItem(upNextItem))))
+                    : React.createElement('div', { className: 'vc-run-upnext' }, React.createElement('span', { className: 'vc-run-tag vc-run-tag--next' }, 'Ensuite'), React.createElement('span', null, React.createElement('b', null, 'Dernier exercice'), React.createElement('small', null, 'Fin de la séance après celui-ci')))),
+            React.createElement('div', { className: 'vc-run-list', ref: runListRef },
             items.map(function(item, idx) {
                 var itemId = item.id + idx;
                 var checked = checkedIds.has(itemId);
                 var isTimerActive = activeTimerIdx === idx;
                 var hasDur = itemHasDur(item);
                 var isNext = idx === nextIdx && !isTimerActive;
-                var cls = 'vc-run-item' + (checked ? ' is-done' : '') + (isTimerActive ? ' is-timer' : '') + (isNext ? ' is-next' : '');
+                var isCur = idx === curIdx && !checked && sessionStarted;
+                var isUp = idx === upNextIdx && !checked && sessionStarted;
+                var cls = 'vc-run-item' + (checked ? ' is-done' : '') + (isTimerActive ? ' is-timer' : '') + (isNext ? ' is-next' : '') + (isCur ? ' is-cur' : '') + (isUp ? ' is-upnext' : '');
+                var runTag = isCur ? React.createElement('span', { className: 'vc-run-tag vc-run-tag--cur' }, 'En cours') : isUp ? React.createElement('span', { className: 'vc-run-tag vc-run-tag--next' }, 'Ensuite') : null;
                 var startTimer = function(e) { e && e.stopPropagation(); if (!sessionStarted) setSessionStarted(true); setActiveTimerIdx(idx); };
                 var check = React.createElement('button', { type: 'button', className: 'vc-run-check', 'aria-pressed': checked, 'aria-label': (checked ? 'Annuler : ' : 'Marquer comme fait : ') + (item.titre || item.name || 'exercice'), onClick: function(e) { e.stopPropagation(); toggle(idx); } }, checked ? React.createElement(Icon, { name: 'check', size: 20, stroke: 3 }) : null);
 
                 if (item._type === 'pause') {
                     var pauseDur = +(item.pause_duration || 60);
-                    return React.createElement('div', { key: itemId, className: cls + ' vc-run-item--pause', style: item._circuitColor ? { '--circuit': item._circuitColor } : null },
+                    return React.createElement('div', { key: itemId, 'data-run-idx': idx, className: cls + ' vc-run-item--pause', style: item._circuitColor ? { '--circuit': item._circuitColor } : null }, runTag,
                         item._circuitLabel && React.createElement('div', { className: 'vc-run-circuit' }, item._circuitLabel + ' — repos entre tours'),
                         React.createElement('div', { className: 'vc-run-row' }, check,
                             React.createElement('div', { className: 'vc-run-main' },
@@ -6506,7 +6568,7 @@ function LaunchSession({ session, allSessions, onClose, onMarkDone }) {
                 var isExplicitReps = item.session_mode === 'reps';
                 var dur = isExplicitReps ? 0 : +(item.session_duration || item.duration_seconds || item.hold_seconds || 0);
                 var restV = item.session_rest ?? item.rest_seconds ?? 0;
-                return React.createElement('div', { key: itemId, className: cls, onClick: function() { setActiveEx(item); }, style: item._circuitColor ? { '--circuit': item._circuitColor } : null },
+                return React.createElement('div', { key: itemId, 'data-run-idx': idx, className: cls, onClick: function() { setActiveEx(item); }, style: item._circuitColor ? { '--circuit': item._circuitColor } : null }, runTag,
                     item._circuitLabel && React.createElement('div', { className: 'vc-run-circuit' }, item._circuitLabel + (item._circuitTotalRounds ? ' — tour ' + item._circuitRound + '/' + item._circuitTotalRounds : '')),
                     React.createElement('div', { className: 'vc-run-row' }, check,
                         React.createElement('div', { className: 'vc-run-main' },
